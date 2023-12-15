@@ -1,0 +1,571 @@
+brood_ID,species,population,collection,female_ID,fresh_or_etoh.preserved,brood_size,sample_storage,embryo_ID,stage,embryo_dry_weight_g,ovarian_tissue_dry_weight_g,Comments,mother_std_length
+CHIC-UP_V-2022_F2,Xmalinche,CHIC-UP,V-2022,2,fresh,7,2ml etoh,1,0,0.0032,0.0013,"white yolk, even lipid distribution",4.4
+CHIC-UP_V-2022_F2,Xmalinche,CHIC-UP,V-2022,2,fresh,7,2ml etoh,2,0,0.0037,0.0013,"white yolk, even lipid distribution",4.4
+CHIC-UP_V-2022_F2,Xmalinche,CHIC-UP,V-2022,2,fresh,7,2ml etoh,3,0,0.0034,0.0013,"white yolk, even lipid distribution",4.4
+CHIC-UP_V-2022_F2,Xmalinche,CHIC-UP,V-2022,2,fresh,7,2ml etoh,4,0,0.0036,0.0013,"white yolk, even lipid distribution",4.4
+CHIC-UP_V-2022_F2,Xmalinche,CHIC-UP,V-2022,2,fresh,7,2ml etoh,5,0,0.0035,0.0013,"white yolk, even lipid distribution",4.4
+CHIC-UP_V-2022_F2,Xmalinche,CHIC-UP,V-2022,2,fresh,7,2ml etoh,6,0,0.0031,0.0013,"white yolk, even lipid distribution",4.4
+CHIC-UP_V-2022_F2,Xmalinche,CHIC-UP,V-2022,2,fresh,7,2ml etoh,7,0,0.0035,0.0013,"white yolk, even lipid distribution",4.4
+CHIC-UP_V-2022_F3,Xmalinche,CHIC-UP,V-2022,3,fresh,8,2ml etoh,1,0,0.0029,0.0011,"even lipid distribution, white yolk",4.6
+CHIC-UP_V-2022_F7,Xmalinche,CHIC-UP,V-2022,7,fresh,10,2ml etoh,3,0,0.0039,8.00E-04,even lipid distribution,4.5
+CHIC-UP_V-2022_F7,Xmalinche,CHIC-UP,V-2022,7,fresh,10,2ml etoh,4,0,0.0046,8.00E-04,even lipid distribution,4.5
+CHIC-UP_V-2022_F7,Xmalinche,CHIC-UP,V-2022,7,fresh,10,2ml etoh,5,0,0.0045,8.00E-04,even lipid distribution,4.5
+CHIC-UP_V-2022_F8,Xmalinche,CHIC-UP,V-2022,8,fresh,12,2ml etoh,5,0,0.005,0.0028,even lipid distribution,4.9
+CHIC-UP_V-2022_F8,Xmalinche,CHIC-UP,V-2022,8,fresh,12,2ml etoh,6,0,0.0049,0.0028,even lipid distribution,4.9
+CHIC-UP_V-2022_F8,Xmalinche,CHIC-UP,V-2022,8,fresh,12,2ml etoh,11,0,0.0048,0.0028,even lipid distribution,4.9
+CHIC-UP_V-2022_F8,Xmalinche,CHIC-UP,V-2022,8,fresh,12,2ml etoh,12,0,0.005,0.0028,even lipid distribution,4.9
+CHIC-UP_V-2022_F13,Xmalinche,CHIC-UP,V-2022,13,fresh,13,2ml 10% formalin,5,0,0.0032,0.0028,even lipid distribution,4.4
+CHIC-UP_V-2022_F13,Xmalinche,CHIC-UP,V-2022,13,fresh,13,2ml 10% formalin,8,0,0.0035,0.0028,even lipid distribution,4.4
+CHIC-UP_V-2022_F13,Xmalinche,CHIC-UP,V-2022,13,fresh,13,2ml 10% formalin,9,0,0.0035,0.0028,even lipid distribution,4.4
+CHIC-UP_V-2022_F13,Xmalinche,CHIC-UP,V-2022,13,fresh,13,2ml 10% formalin,13,0,0.0031,0.0028,even lipid distribution,4.4
+CHIC-UP_V-2022_F15,Xmalinche,CHIC-UP,V-2022,15,fresh,5,2ml etoh,1,0,0.0032,0.0013,even lipid distribution,4.1
+CHIC-UP_V-2022_F15,Xmalinche,CHIC-UP,V-2022,15,fresh,5,2ml etoh,2,0,0.0032,0.0013,even lipid distribution,4.1
+CHIC-UP_V-2022_F15,Xmalinche,CHIC-UP,V-2022,15,fresh,5,2ml etoh,3,0,0.0021,0.0013,even lipid distribution,4.1
+CHIC-UP_V-2022_F15,Xmalinche,CHIC-UP,V-2022,15,fresh,5,2ml etoh,4,0,2.00E-04,0.0013,"small, even lipid distribution",4.1
+CHIC-UP_V-2022_F15,Xmalinche,CHIC-UP,V-2022,15,fresh,5,2ml etoh,5,0,6.00E-04,0.0013,"small, even lipid distribution",4.1
+CHIC-UP_V-2022_F19,Xmalinche,CHIC-UP,V-2022,19,fresh,6,2ml etoh,1,0,0.0019,0.0018,even lipid distribution,4
+CHIC-UP_V-2022_F19,Xmalinche,CHIC-UP,V-2022,19,fresh,6,2ml etoh,2,0,0.003,0.0018,even lipid distribution,4
+CHIC-UP_V-2022_F19,Xmalinche,CHIC-UP,V-2022,19,fresh,6,2ml etoh,3,0,0.0022,0.0018,even lipid distribution,4
+CHIC-UP_V-2022_F19,Xmalinche,CHIC-UP,V-2022,19,fresh,6,2ml etoh,4,0,0.0023,0.0018,even lipid distribution,4
+CHIC-UP_V-2022_F19,Xmalinche,CHIC-UP,V-2022,19,fresh,6,2ml etoh,5,0,0.0028,0.0018,even lipid distribution,4
+CHIC-UP_V-2022_F19,Xmalinche,CHIC-UP,V-2022,19,fresh,6,2ml etoh,6,0,0.0029,0.0018,even lipid distribution,4
+CHIC-DOWN_V-2022_F6,Xmalinche,CHIC-DOWN,V-2022,6,fresh,13,2ml etoh,2,0,0.0029,0.0026,even lipid distribution,4.5
+CHIC-DOWN_V-2022_F6,Xmalinche,CHIC-DOWN,V-2022,6,fresh,13,2ml etoh,3,0,0.0041,0.0026,even lipid distribution,4.5
+CHIC-DOWN_V-2022_F6,Xmalinche,CHIC-DOWN,V-2022,6,fresh,13,2ml etoh,4,0,0.0037,0.0026,even lipid distribution,4.5
+CHIC-DOWN_V-2022_F6,Xmalinche,CHIC-DOWN,V-2022,6,fresh,13,2ml etoh,5,0,0.0034,0.0026,even lipid distribution,4.5
+CHIC-DOWN_V-2022_F6,Xmalinche,CHIC-DOWN,V-2022,6,fresh,13,2ml etoh,6,0,0.0032,0.0026,even lipid distribution,4.5
+CHIC-DOWN_V-2022_F6,Xmalinche,CHIC-DOWN,V-2022,6,fresh,13,2ml etoh,7,0,0.0039,0.0026,even lipid distribution,4.5
+CHIC-DOWN_V-2022_F6,Xmalinche,CHIC-DOWN,V-2022,6,fresh,13,2ml etoh,8,0,0.0042,0.0026,even lipid distribution,4.5
+CHIC-DOWN_V-2022_F6,Xmalinche,CHIC-DOWN,V-2022,6,fresh,13,2ml etoh,9,0,0.0037,0.0026,even lipid distribution,4.5
+CHIC-DOWN_V-2022_F6,Xmalinche,CHIC-DOWN,V-2022,6,fresh,13,2ml etoh,10,0,0.0035,0.0026,even lipid distribution,4.5
+CHIC-DOWN_V-2022_F6,Xmalinche,CHIC-DOWN,V-2022,6,fresh,13,2ml etoh,11,0,0.0032,0.0026,even lipid distribution,4.5
+CHIC-DOWN_V-2022_F6,Xmalinche,CHIC-DOWN,V-2022,6,fresh,13,2ml etoh,13,0,0.0037,0.0026,even lipid distribution,4.5
+CHIC-DOWN_V-2022_F9,Xmalinche,CHIC-DOWN,V-2022,9,fresh,28,2ml etoh,22,0,0.0022,0.0081,even lipid distribution,5.7
+CHIC-DOWN_V-2022_F9,Xmalinche,CHIC-DOWN,V-2022,9,fresh,28,2ml etoh,28,0,0.0041,0.0081,even lipid dsitribution,5.7
+CHIC-DOWN_V-2022_F10,Xmalinche,CHIC-DOWN,V-2022,10,fresh,9,2ml etoh,3,0,0.0038,0.0013,even lipid distribution,NA
+CHIC-DOWN_V-2022_F10,Xmalinche,CHIC-DOWN,V-2022,10,fresh,9,2ml etoh,4,0,0.0029,0.0013,even lipid distribution,NA
+CHIC-DOWN_V-2022_F10,Xmalinche,CHIC-DOWN,V-2022,10,fresh,9,2ml etoh,5,0,0.0037,0.0013,even lipid distribution,NA
+CHIC-DOWN_V-2022_F10,Xmalinche,CHIC-DOWN,V-2022,10,fresh,9,2ml etoh,8,0,0.0035,0.0013,even lipid distribution,NA
+CHIC-DOWN_V-2022_F10,Xmalinche,CHIC-DOWN,V-2022,10,fresh,9,2ml etoh,9,0,0.0041,0.0013,even lipid distribution,NA
+CHIC-DOWN_V-2022_F13,Xmalinche,CHIC-DOWN,V-2022,13,fresh,4,2ml etoh,1,0,0.0021,0.0017,even lipid distribution,4.4
+CHIC-DOWN_V-2022_F13,Xmalinche,CHIC-DOWN,V-2022,13,fresh,4,2ml etoh,2,0,0.0026,0.0017,even lipid distribution,4.4
+CHIC-DOWN_V-2022_F13,Xmalinche,CHIC-DOWN,V-2022,13,fresh,4,2ml etoh,3,0,0.004,0.0017,even lipid distribution,4.4
+CHIC-DOWN_V-2022_F13,Xmalinche,CHIC-DOWN,V-2022,13,fresh,4,2ml etoh,4,0,0.0033,0.0017,even lipid distribution,4.4
+CHIC-DOWN_V-2022_F15,Xmalinche,CHIC-DOWN,V-2022,15,fresh,7,2ml etoh,1,0,0.0043,0.0028,even lipid distribution,4.6
+CHIC-DOWN_V-2022_F15,Xmalinche,CHIC-DOWN,V-2022,15,fresh,7,2ml etoh,2,0,0.004,0.0028,even lipid distribution,4.6
+CHIC-DOWN_V-2022_F15,Xmalinche,CHIC-DOWN,V-2022,15,fresh,7,2ml etoh,3,0,0.0033,0.0028,even lipid distribution,4.6
+CHIC-DOWN_V-2022_F15,Xmalinche,CHIC-DOWN,V-2022,15,fresh,7,2ml etoh,4,0,0.0039,0.0028,even lipid distribution,4.6
+CHIC-DOWN_V-2022_F15,Xmalinche,CHIC-DOWN,V-2022,15,fresh,7,2ml etoh,5,0,0.0039,0.0028,even lipid distribution,4.6
+CHIC-DOWN_V-2022_F15,Xmalinche,CHIC-DOWN,V-2022,15,fresh,7,2ml etoh,6,0,0.0032,0.0028,even lipid distribution,4.6
+CHIC-DOWN_V-2022_F15,Xmalinche,CHIC-DOWN,V-2022,15,fresh,7,2ml etoh,7,0,7.00E-04,0.0028,even lipid distribution,4.6
+CHIC-DOWN_V-2022_F16,Xmalinche,CHIC-DOWN,V-2022,16,fresh,25,2ml etoh,1,0,0.0044,0.0067,even lipid distribution,4.8
+CHIC-DOWN_V-2022_F16,Xmalinche,CHIC-DOWN,V-2022,16,fresh,25,2ml etoh,2,0,0.0035,0.0067,even lipid distribution,4.8
+CHIC-DOWN_V-2022_F16,Xmalinche,CHIC-DOWN,V-2022,16,fresh,25,2ml etoh,6,0,0.0042,0.0067,even lipid distribution,4.8
+CHIC-DOWN_V-2022_F16,Xmalinche,CHIC-DOWN,V-2022,16,fresh,25,2ml etoh,7,0,0.0045,0.0067,even lipid distribution,4.8
+CHIC-DOWN_V-2022_F16,Xmalinche,CHIC-DOWN,V-2022,16,fresh,25,2ml etoh,8,0,0.0041,0.0067,even lipid distribution,4.8
+CHIC-DOWN_V-2022_F16,Xmalinche,CHIC-DOWN,V-2022,16,fresh,25,2ml etoh,9,0,0.0045,0.0067,even lipid distribution,4.8
+CHIC-DOWN_V-2022_F16,Xmalinche,CHIC-DOWN,V-2022,16,fresh,25,2ml etoh,10,0,0.0045,0.0067,even lipid distribution,4.8
+CHIC-DOWN_V-2022_F16,Xmalinche,CHIC-DOWN,V-2022,16,fresh,25,2ml etoh,11,0,0.0042,0.0067,even lipid distribution,4.8
+CHIC-DOWN_V-2022_F16,Xmalinche,CHIC-DOWN,V-2022,16,fresh,25,2ml etoh,12,0,0.0043,0.0067,even lipid distribution,4.8
+CHIC-DOWN_V-2022_F16,Xmalinche,CHIC-DOWN,V-2022,16,fresh,25,2ml etoh,13,0,0.0038,0.0067,even lipid distribution,4.8
+CHIC-DOWN_V-2022_F16,Xmalinche,CHIC-DOWN,V-2022,16,fresh,25,2ml etoh,16,0,0.0047,0.0067,even lipid distribution,4.8
+CHIC-DOWN_V-2022_F16,Xmalinche,CHIC-DOWN,V-2022,16,fresh,25,2ml etoh,17,0,0.0036,0.0067,even lipid distribution,4.8
+CHIC-DOWN_V-2022_F16,Xmalinche,CHIC-DOWN,V-2022,16,fresh,25,2ml etoh,18,0,0.0047,0.0067,even lipid distribution,4.8
+CHIC-DOWN_V-2022_F16,Xmalinche,CHIC-DOWN,V-2022,16,fresh,25,2ml etoh,19,0,0.0038,0.0067,even lipid distribution,4.8
+CHIC-DOWN_V-2022_F16,Xmalinche,CHIC-DOWN,V-2022,16,fresh,25,2ml etoh,20,0,0.0052,0.0067,even lipid distribution,4.8
+CHIC-DOWN_V-2022_F16,Xmalinche,CHIC-DOWN,V-2022,16,fresh,25,2ml etoh,21,0,0.004,0.0067,even lipid distribution,4.8
+CHIC-DOWN_V-2022_F16,Xmalinche,CHIC-DOWN,V-2022,16,fresh,25,2ml etoh,24,0,0.0049,0.0067,even lipid distribution,4.8
+CHIC-DOWN_V-2022_F17,Xmalinche,CHIC-DOWN,V-2022,17,fresh,19,2ml etoh,1,0,0.0011,0.0044,small with even lipid distribution,5.6
+CHIC-DOWN_V-2022_F17,Xmalinche,CHIC-DOWN,V-2022,17,fresh,19,2ml etoh,2,0,0.0016,0.0044,small with even lipid distribution,5.6
+CHIC-DOWN_V-2022_F17,Xmalinche,CHIC-DOWN,V-2022,17,fresh,19,2ml etoh,3,0,0.0021,0.0044,small with even lipid distribution,5.6
+CHIC-DOWN_V-2022_F17,Xmalinche,CHIC-DOWN,V-2022,17,fresh,19,2ml etoh,4,0,0.0028,0.0044,small with even lipid distribution,5.6
+CHIC-DOWN_V-2022_F17,Xmalinche,CHIC-DOWN,V-2022,17,fresh,19,2ml etoh,5,0,0.0021,0.0044,small with even lipid distribution,5.6
+CHIC-DOWN_V-2022_F17,Xmalinche,CHIC-DOWN,V-2022,17,fresh,19,2ml etoh,6,0,0.0022,0.0044,small with even lipid distribution,5.6
+CHIC-DOWN_V-2022_F17,Xmalinche,CHIC-DOWN,V-2022,17,fresh,19,2ml etoh,7,0,0.0023,0.0044,small with even lipid distribution,5.6
+CHIC-DOWN_V-2022_F17,Xmalinche,CHIC-DOWN,V-2022,17,fresh,19,2ml etoh,8,0,0.0016,0.0044,small with even lipid distribution,5.6
+CHIC-DOWN_V-2022_F17,Xmalinche,CHIC-DOWN,V-2022,17,fresh,19,2ml etoh,9,0,0.0011,0.0044,small with even lipid distribution,5.6
+CHIC-DOWN_V-2022_F17,Xmalinche,CHIC-DOWN,V-2022,17,fresh,19,2ml etoh,10,0,0.0023,0.0044,small with even lipid distribution,5.6
+CHIC-DOWN_V-2022_F17,Xmalinche,CHIC-DOWN,V-2022,17,fresh,19,2ml etoh,11,0,0.0014,0.0044,small with even lipid distribution,5.6
+CHIC-DOWN_V-2022_F17,Xmalinche,CHIC-DOWN,V-2022,17,fresh,19,2ml etoh,12,0,0.0011,0.0044,small with even lipid distribution,5.6
+CHIC-DOWN_V-2022_F17,Xmalinche,CHIC-DOWN,V-2022,17,fresh,19,2ml etoh,13,0,0.0016,0.0044,small with even lipid distribution,5.6
+CHIC-DOWN_V-2022_F17,Xmalinche,CHIC-DOWN,V-2022,17,fresh,19,2ml etoh,14,0,7.00E-04,0.0044,small with even lipid distribution,5.6
+CHIC-DOWN_V-2022_F17,Xmalinche,CHIC-DOWN,V-2022,17,fresh,19,2ml etoh,15,0,0.0013,0.0044,small with even lipid distribution,5.6
+CHIC-DOWN_V-2022_F17,Xmalinche,CHIC-DOWN,V-2022,17,fresh,19,2ml etoh,16,0,9.00E-04,0.0044,small with even lipid distribution,5.6
+CHIC-DOWN_V-2022_F17,Xmalinche,CHIC-DOWN,V-2022,17,fresh,19,2ml etoh,17,0,0.0011,0.0044,small with even lipid distribution,5.6
+CHIC-DOWN_V-2022_F17,Xmalinche,CHIC-DOWN,V-2022,17,fresh,19,2ml etoh,18,0,5.00E-04,0.0044,small with even lipid distribution,5.6
+CHIC-DOWN_V-2022_F17,Xmalinche,CHIC-DOWN,V-2022,17,fresh,19,2ml etoh,19,0,8.00E-04,0.0044,small with even lipid distribution,5.6
+CHIC-DOWN_V-2022_F24,Xmalinche,CHIC-DOWN,V-2022,24,fresh,12,2ml etoh,3,0,0.0045,0.0022,even lipid distribution,4.7
+CHIC-DOWN_V-2022_F24,Xmalinche,CHIC-DOWN,V-2022,24,fresh,12,2ml etoh,4,0,0.005,0.0022,even lipid distribution,4.7
+CHIC-DOWN_V-2022_F24,Xmalinche,CHIC-DOWN,V-2022,24,fresh,12,2ml etoh,5,0,0.0047,0.0022,even lipid distribution,4.7
+CHIC-DOWN_V-2022_F24,Xmalinche,CHIC-DOWN,V-2022,24,fresh,12,2ml etoh,8,0,0.0046,0.0022,even lipid distribution,4.7
+CHIC-DOWN_V-2022_F24,Xmalinche,CHIC-DOWN,V-2022,24,fresh,12,2ml etoh,9,0,0.0046,0.0022,even lipid distribution,4.7
+CHIC-DOWN_V-2022_F24,Xmalinche,CHIC-DOWN,V-2022,24,fresh,12,2ml etoh,10,0,0.005,0.0022,even lipid distribution,4.7
+CHIC-DOWN_V-2022_F24,Xmalinche,CHIC-DOWN,V-2022,24,fresh,12,2ml etoh,11,0,0.0052,0.0022,even lipid distribution,4.7
+CHIC-DOWN_V-2022_F24,Xmalinche,CHIC-DOWN,V-2022,24,fresh,12,2ml etoh,12,0,0.0049,0.0022,even lipid distribution,4.7
+COAC_IX-2022_F1,Xbirchmanni,COAC,IX-2022,1,etoh,8,2ml etoh,1,0,0.0038,0.0027,even lipid distribution,3.4
+COAC_IX-2022_F1,Xbirchmanni,COAC,IX-2022,1,etoh,8,2ml etoh,2,0,0.0028,0.0027,even lipid distribution,3.4
+COAC_IX-2022_F1,Xbirchmanni,COAC,IX-2022,1,etoh,8,2ml etoh,3,0,0.0039,0.0027,even lipid distribution,3.4
+COAC_IX-2022_F1,Xbirchmanni,COAC,IX-2022,1,etoh,8,2ml etoh,4,0,0.0038,0.0027,even lipid distribution,3.4
+COAC_IX-2022_F1,Xbirchmanni,COAC,IX-2022,1,etoh,8,2ml etoh,5,0,0.0038,0.0027,even lipid distribution,3.4
+COAC_IX-2022_F1,Xbirchmanni,COAC,IX-2022,1,etoh,8,2ml etoh,6,0,0.0028,0.0027,even lipid distribution,3.4
+COAC_IX-2022_F1,Xbirchmanni,COAC,IX-2022,1,etoh,8,2ml etoh,7,0,0.004,0.0027,even lipid distribution,3.4
+COAC_IX-2022_F1,Xbirchmanni,COAC,IX-2022,1,etoh,8,2ml etoh,8,0,0.0039,0.0027,even lipid distribution,3.4
+COAC_IX-2022_F6,Xbirchmanni,COAC,IX-2022,6,etoh,31,2ml etoh,1,0,0.0013,0.0042,even lipid distribution,4
+COAC_IX-2022_F6,Xbirchmanni,COAC,IX-2022,6,etoh,31,2ml etoh,2,0,0.0017,0.0042,even lipid distribution,4
+COAC_IX-2022_F6,Xbirchmanni,COAC,IX-2022,6,etoh,31,2ml etoh,3,0,0.001,0.0042,even lipid distribution,4
+COAC_IX-2022_F6,Xbirchmanni,COAC,IX-2022,6,etoh,31,2ml etoh,4,0,0.0025,0.0042,even lipid distribution,4
+COAC_IX-2022_F6,Xbirchmanni,COAC,IX-2022,6,etoh,31,2ml etoh,5,0,0.0027,0.0042,even lipid distribution,4
+COAC_IX-2022_F6,Xbirchmanni,COAC,IX-2022,6,etoh,31,2ml etoh,6,0,0.0025,0.0042,even lipid distribution,4
+COAC_IX-2022_F6,Xbirchmanni,COAC,IX-2022,6,etoh,31,2ml etoh,7,0,0.0023,0.0042,even lipid distribution,4
+COAC_IX-2022_F6,Xbirchmanni,COAC,IX-2022,6,etoh,31,2ml etoh,8,0,0.0028,0.0042,even lipid distribution,4
+COAC_IX-2022_F6,Xbirchmanni,COAC,IX-2022,6,etoh,31,2ml etoh,9,0,0.0028,0.0042,even lipid distribution,4
+COAC_IX-2022_F6,Xbirchmanni,COAC,IX-2022,6,etoh,31,2ml etoh,10,0,7.00E-04,0.0042,even lipid distribution,4
+COAC_IX-2022_F6,Xbirchmanni,COAC,IX-2022,6,etoh,31,2ml etoh,11,0,0.0025,0.0042,even lipid distribution,4
+COAC_IX-2022_F6,Xbirchmanni,COAC,IX-2022,6,etoh,31,2ml etoh,12,0,0.0016,0.0042,even lipid distribution,4
+COAC_IX-2022_F6,Xbirchmanni,COAC,IX-2022,6,etoh,31,2ml etoh,13,0,0.0016,0.0042,even lipid distribution,4
+COAC_IX-2022_F6,Xbirchmanni,COAC,IX-2022,6,etoh,31,2ml etoh,14,0,0.0018,0.0042,even lipid distribution,4
+COAC_IX-2022_F6,Xbirchmanni,COAC,IX-2022,6,etoh,31,2ml etoh,15,0,0.0029,0.0042,even lipid distribution,4
+COAC_IX-2022_F6,Xbirchmanni,COAC,IX-2022,6,etoh,31,2ml etoh,16,0,9.00E-04,0.0042,even lipid distribution,4
+COAC_IX-2022_F6,Xbirchmanni,COAC,IX-2022,6,etoh,31,2ml etoh,17,0,0.0013,0.0042,even lipid distribution,4
+COAC_IX-2022_F6,Xbirchmanni,COAC,IX-2022,6,etoh,31,2ml etoh,18,0,0.002,0.0042,even lipid distribution,4
+COAC_IX-2022_F6,Xbirchmanni,COAC,IX-2022,6,etoh,31,2ml etoh,19,0,0.0024,0.0042,even lipid distribution,4
+COAC_IX-2022_F6,Xbirchmanni,COAC,IX-2022,6,etoh,31,2ml etoh,20,0,0.0027,0.0042,even lipid distribution,4
+COAC_IX-2022_F6,Xbirchmanni,COAC,IX-2022,6,etoh,31,2ml etoh,21,0,0.0025,0.0042,even lipid distribution,4
+COAC_IX-2022_F6,Xbirchmanni,COAC,IX-2022,6,etoh,31,2ml etoh,22,0,0.0029,0.0042,even lipid distribution,4
+COAC_IX-2022_F6,Xbirchmanni,COAC,IX-2022,6,etoh,31,2ml etoh,23,0,0.003,0.0042,even lipid distribution,4
+COAC_IX-2022_F6,Xbirchmanni,COAC,IX-2022,6,etoh,31,2ml etoh,24,0,0.0027,0.0042,even lipid distribution,4
+COAC_IX-2022_F6,Xbirchmanni,COAC,IX-2022,6,etoh,31,2ml etoh,25,0,0.0027,0.0042,even lipid distribution,4
+COAC_IX-2022_F6,Xbirchmanni,COAC,IX-2022,6,etoh,31,2ml etoh,26,0,8.00E-04,0.0042,even lipid distribution,4
+COAC_IX-2022_F6,Xbirchmanni,COAC,IX-2022,6,etoh,31,2ml etoh,27,0,0.0027,0.0042,even lipid distribution,4
+COAC_IX-2022_F6,Xbirchmanni,COAC,IX-2022,6,etoh,31,2ml etoh,28,0,0.0033,0.0042,even lipid distribution,4
+COAC_IX-2022_F6,Xbirchmanni,COAC,IX-2022,6,etoh,31,2ml etoh,29,0,0.0031,0.0042,even lipid distribution,4
+COAC_IX-2022_F6,Xbirchmanni,COAC,IX-2022,6,etoh,31,2ml etoh,30,0,0.0029,0.0042,even lipid distribution,4
+COAC_IX-2022_F6,Xbirchmanni,COAC,IX-2022,6,etoh,31,2ml etoh,31,0,0.0031,0.0042,even lipid distribution,4
+COAC_IX-2022_F8,Xbirchmanni,COAC,IX-2022,8,etoh,31,2ml etoh,1,0,0.0029,0.0022,even lipid distribution,4.3
+COAC_IX-2022_F8,Xbirchmanni,COAC,IX-2022,8,etoh,31,2ml etoh,2,0,0.002,0.0022,even lipid distribution,4.3
+COAC_IX-2022_F8,Xbirchmanni,COAC,IX-2022,8,etoh,31,2ml etoh,3,0,0.003,0.0022,even lipid distribution,4.3
+COAC_IX-2022_F8,Xbirchmanni,COAC,IX-2022,8,etoh,31,2ml etoh,4,0,0.0031,0.0022,even lipid distribution,4.3
+COAC_IX-2022_F8,Xbirchmanni,COAC,IX-2022,8,etoh,31,2ml etoh,5,0,0.0028,0.0022,even lipid distribution,4.3
+COAC_IX-2022_F8,Xbirchmanni,COAC,IX-2022,8,etoh,31,2ml etoh,6,0,0.0029,0.0022,even lipid distribution,4.3
+COAC_IX-2022_F8,Xbirchmanni,COAC,IX-2022,8,etoh,31,2ml etoh,7,0,0.0029,0.0022,even lipid distribution,4.3
+COAC_IX-2022_F8,Xbirchmanni,COAC,IX-2022,8,etoh,31,2ml etoh,8,0,0.0031,0.0022,even lipid distribution,4.3
+COAC_IX-2022_F8,Xbirchmanni,COAC,IX-2022,8,etoh,31,2ml etoh,9,0,0.003,0.0022,even lipid distribution,4.3
+COAC_IX-2022_F8,Xbirchmanni,COAC,IX-2022,8,etoh,31,2ml etoh,10,0,0.003,0.0022,even lipid distribution,4.3
+COAC_IX-2022_F8,Xbirchmanni,COAC,IX-2022,8,etoh,31,2ml etoh,11,0,0.0031,0.0022,even lipid distribution,4.3
+COAC_IX-2022_F8,Xbirchmanni,COAC,IX-2022,8,etoh,31,2ml etoh,12,0,0.003,0.0022,even lipid distribution,4.3
+COAC_IX-2022_F8,Xbirchmanni,COAC,IX-2022,8,etoh,31,2ml etoh,13,0,0.0031,0.0022,even lipid distribution,4.3
+COAC_IX-2022_F8,Xbirchmanni,COAC,IX-2022,8,etoh,31,2ml etoh,14,0,0.0031,0.0022,even lipid distribution,4.3
+COAC_IX-2022_F8,Xbirchmanni,COAC,IX-2022,8,etoh,31,2ml etoh,15,0,0.003,0.0022,even lipid distribution,4.3
+COAC_IX-2022_F8,Xbirchmanni,COAC,IX-2022,8,etoh,31,2ml etoh,16,0,0.0029,0.0022,even lipid distribution,4.3
+COAC_IX-2022_F8,Xbirchmanni,COAC,IX-2022,8,etoh,31,2ml etoh,17,0,0.003,0.0022,even lipid distribution,4.3
+COAC_IX-2022_F8,Xbirchmanni,COAC,IX-2022,8,etoh,31,2ml etoh,18,0,0.0029,0.0022,even lipid distribution,4.3
+COAC_IX-2022_F8,Xbirchmanni,COAC,IX-2022,8,etoh,31,2ml etoh,19,0,0.0029,0.0022,even lipid distribution,4.3
+COAC_IX-2022_F8,Xbirchmanni,COAC,IX-2022,8,etoh,31,2ml etoh,20,0,0.0026,0.0022,even lipid distribution,4.3
+COAC_IX-2022_F8,Xbirchmanni,COAC,IX-2022,8,etoh,31,2ml etoh,21,0,0.003,0.0022,even lipid distribution,4.3
+COAC_IX-2022_F8,Xbirchmanni,COAC,IX-2022,8,etoh,31,2ml etoh,22,0,0.003,0.0022,even lipid distribution,4.3
+COAC_IX-2022_F8,Xbirchmanni,COAC,IX-2022,8,etoh,31,2ml etoh,23,0,0.0028,0.0022,even lipid distribution,4.3
+COAC_IX-2022_F8,Xbirchmanni,COAC,IX-2022,8,etoh,31,2ml etoh,24,0,0.0018,0.0022,even lipid distribution,4.3
+COAC_IX-2022_F8,Xbirchmanni,COAC,IX-2022,8,etoh,31,2ml etoh,25,0,0.0029,0.0022,even lipid distribution,4.3
+COAC_IX-2022_F11,Xbirchmanni,COAC,IX-2022,11,etoh,6,2ml etoh,1,0,0.0028,8.00E-04,even lipid distribution,2.4
+COAC_IX-2022_F11,Xbirchmanni,COAC,IX-2022,11,etoh,6,2ml etoh,2,0,0.0029,8.00E-04,even lipid distribution,2.4
+COAC_IX-2022_F11,Xbirchmanni,COAC,IX-2022,11,etoh,6,2ml etoh,3,0,0.0027,8.00E-04,even lipid distribution,2.4
+COAC_IX-2022_F11,Xbirchmanni,COAC,IX-2022,11,etoh,6,2ml etoh,4,0,0.0028,8.00E-04,even lipid distribution,2.4
+COAC_IX-2022_F11,Xbirchmanni,COAC,IX-2022,11,etoh,6,2ml etoh,5,0,0.0027,8.00E-04,even lipid distribution,2.4
+COAC_IX-2022_F12,Xbirchmanni,COAC,IX-2022,12,etoh,10,2ml etoh,1,0,0.0033,0.0014,even lipid distribution,3.6
+COAC_IX-2022_F12,Xbirchmanni,COAC,IX-2022,12,etoh,10,2ml etoh,2,0,0.0029,0.0014,even lipid distribution,3.6
+COAC_IX-2022_F12,Xbirchmanni,COAC,IX-2022,12,etoh,10,2ml etoh,3,0,0.0028,0.0014,even lipid distribution,3.6
+COAC_IX-2022_F12,Xbirchmanni,COAC,IX-2022,12,etoh,10,2ml etoh,4,0,0.0031,0.0014,even lipid distribution,3.6
+COAC_IX-2022_F12,Xbirchmanni,COAC,IX-2022,12,etoh,10,2ml etoh,5,0,0.0027,0.0014,even lipid distribution,3.6
+COAC_IX-2022_F12,Xbirchmanni,COAC,IX-2022,12,etoh,10,2ml etoh,6,0,0.0027,0.0014,even lipid distribution,3.6
+COAC_IX-2022_F12,Xbirchmanni,COAC,IX-2022,12,etoh,10,2ml etoh,7,0,0.0026,0.0014,even lipid distribution,3.6
+COAC_IX-2022_F12,Xbirchmanni,COAC,IX-2022,12,etoh,10,2ml etoh,8,0,0.0028,0.0014,even lipid distribution,3.6
+COAC_IX-2022_F12,Xbirchmanni,COAC,IX-2022,12,etoh,10,2ml etoh,9,0,0.003,0.0014,even lipid distribution,3.6
+COAC_IX-2022_F12,Xbirchmanni,COAC,IX-2022,12,etoh,10,2ml etoh,10,0,0.0032,0.0014,even lipid distribution,3.6
+COAC_IX-2022_F16,Xbirchmanni,COAC,IX-2022,16,etoh,5,2ml etoh,1,0,0.0039,0.0019,even lipid distribution,3.1
+COAC_IX-2022_F16,Xbirchmanni,COAC,IX-2022,16,etoh,5,2ml etoh,2,0,0.0014,0.0019,even lipid distribution,3.1
+COAC_IX-2022_F16,Xbirchmanni,COAC,IX-2022,16,etoh,5,2ml etoh,3,0,0.0034,0.0019,even lipid distribution,3.1
+COAC_IX-2022_F17,Xbirchmanni,COAC,IX-2022,17,etoh,19,2ml etoh,1,0,0.0039,0.0031,even lipid distribution,4.1
+COAC_IX-2022_F17,Xbirchmanni,COAC,IX-2022,17,etoh,19,2ml etoh,2,0,0.0041,0.0031,even lipid distribution,4.1
+COAC_IX-2022_F24,Xbirchmanni,COAC,IX-2022,24,etoh,7,2ml etoh,1,0,0.0014,0.0022,"9 oocytes, even lipid distribution",3.2
+COAC_IX-2022_F24,Xbirchmanni,COAC,IX-2022,24,etoh,7,2ml etoh,2,0,0.0013,0.0022,even lipid distribution,3.2
+COAC_IX-2022_F24,Xbirchmanni,COAC,IX-2022,24,etoh,7,2ml etoh,3,0,0.0012,0.0022,even lipid distribution,3.2
+COAC_IX-2022_F24,Xbirchmanni,COAC,IX-2022,24,etoh,7,2ml etoh,4,0,0.0013,0.0022,even lipid distribution,3.2
+COAC_IX-2022_F24,Xbirchmanni,COAC,IX-2022,24,etoh,7,2ml etoh,5,0,0.0018,0.0022,even lipid distribution,3.2
+COAC_IX-2022_F24,Xbirchmanni,COAC,IX-2022,24,etoh,7,2ml etoh,6,0,0.0012,0.0022,even lipid distribution,3.2
+COAC_IX-2022_F24,Xbirchmanni,COAC,IX-2022,24,etoh,7,2ml etoh,7,0,0.0014,0.0022,even lipid distribution,3.2
+COAC_IX-2022_F28,Xbirchmanni,COAC,IX-2022,28,etoh,12,2ml etoh,2,0,0.003,0.0024,even lipid distribution,3.1
+COAC_IX-2022_F28,Xbirchmanni,COAC,IX-2022,28,etoh,12,2ml etoh,3,0,0.0024,0.0024,even lipid distribution,3.1
+COAC_IX-2022_F28,Xbirchmanni,COAC,IX-2022,28,etoh,12,2ml etoh,4,0,0.0028,0.0024,even lipid distribution,3.1
+COAC_IX-2022_F28,Xbirchmanni,COAC,IX-2022,28,etoh,12,2ml etoh,5,0,0.0029,0.0024,even lipid distribution,3.1
+COAC_IX-2022_F28,Xbirchmanni,COAC,IX-2022,28,etoh,12,2ml etoh,6,0,0.0031,0.0024,even lipid distribution,3.1
+COAC_IX-2022_F28,Xbirchmanni,COAC,IX-2022,28,etoh,12,2ml etoh,7,0,0.0032,0.0024,even lipid distribution,3.1
+COAC_IX-2022_F28,Xbirchmanni,COAC,IX-2022,28,etoh,12,2ml etoh,8,0,0.003,0.0024,even lipid distribution,3.1
+COAC_IX-2022_F28,Xbirchmanni,COAC,IX-2022,28,etoh,12,2ml etoh,9,0,0.0031,0.0024,even lipid distribution,3.1
+COAC_IX-2022_F28,Xbirchmanni,COAC,IX-2022,28,etoh,12,2ml etoh,10,0,0.003,0.0024,even lipid distribution,3.1
+COAC_IX-2022_F28,Xbirchmanni,COAC,IX-2022,28,etoh,12,2ml etoh,11,0,0.0031,0.0024,even lipid distribution,3.1
+COAC_IX-2022_F28,Xbirchmanni,COAC,IX-2022,28,etoh,12,2ml etoh,12,0,0.0028,0.0024,even lipid distribution,3.1
+COAC_IX-2022_F30,Xbirchmanni,COAC,IX-2022,30,etoh,12,2ml etoh,1,0,0.0025,0.0028,"6 oocytes, even lipid distribution",3.4
+COAC_IX-2022_F30,Xbirchmanni,COAC,IX-2022,30,etoh,12,2ml etoh,2,0,0.0014,0.0028,even lipid distribution,3.4
+COAC_IX-2022_F30,Xbirchmanni,COAC,IX-2022,30,etoh,12,2ml etoh,3,0,0.0032,0.0028,even lipid distribution,3.4
+COAC_IX-2022_F30,Xbirchmanni,COAC,IX-2022,30,etoh,12,2ml etoh,4,0,0.003,0.0028,even lipid distribution,3.4
+COAC_IX-2022_F30,Xbirchmanni,COAC,IX-2022,30,etoh,12,2ml etoh,5,0,0.0014,0.0028,even lipid distribution,3.4
+COAC_IX-2022_F30,Xbirchmanni,COAC,IX-2022,30,etoh,12,2ml etoh,6,0,0.0023,0.0028,even lipid distribution,3.4
+COAC_IX-2022_F30,Xbirchmanni,COAC,IX-2022,30,etoh,12,2ml etoh,7,0,0.0017,0.0028,even lipid distribution,3.4
+COAC_IX-2022_F30,Xbirchmanni,COAC,IX-2022,30,etoh,12,2ml etoh,8,0,0.0032,0.0028,even lipid distribution,3.4
+COAC_IX-2022_F30,Xbirchmanni,COAC,IX-2022,30,etoh,12,2ml etoh,9,0,0.0027,0.0028,even lipid distribution,3.4
+COAC_IX-2022_F30,Xbirchmanni,COAC,IX-2022,30,etoh,12,2ml etoh,10,0,0.0027,0.0028,even lipid distribution,3.4
+COAC_IX-2022_F30,Xbirchmanni,COAC,IX-2022,30,etoh,12,2ml etoh,11,0,9.00E-04,0.0028,even lipid distribution,3.4
+COAC_IX-2022_F30,Xbirchmanni,COAC,IX-2022,30,etoh,12,2ml etoh,12,0,0.0022,0.0028,even lipid distribution,3.4
+COAC_II-2023_F3,Xbirchmanni,COAC,II-2023,3,etoh,22,2ml etoh,1,0,7.00E-04,0.0023,even lipid distribution,4.2
+COAC_II-2023_F3,Xbirchmanni,COAC,II-2023,3,etoh,22,2ml etoh,2,0,0.0022,0.0023,even lipid distribution,4.2
+COAC_II-2023_F3,Xbirchmanni,COAC,II-2023,3,etoh,22,2ml etoh,3,0,0.0012,0.0023,even lipid distribution,4.2
+COAC_II-2023_F3,Xbirchmanni,COAC,II-2023,3,etoh,22,2ml etoh,4,0,0.0011,0.0023,even lipid distribution,4.2
+COAC_II-2023_F3,Xbirchmanni,COAC,II-2023,3,etoh,22,2ml etoh,5,0,0.0019,0.0023,even lipid distribution,4.2
+COAC_II-2023_F3,Xbirchmanni,COAC,II-2023,3,etoh,22,2ml etoh,6,0,0.0015,0.0023,even lipid distribution,4.2
+COAC_II-2023_F3,Xbirchmanni,COAC,II-2023,3,etoh,22,2ml etoh,7,0,0.002,0.0023,even lipid distribution,4.2
+COAC_II-2023_F3,Xbirchmanni,COAC,II-2023,3,etoh,22,2ml etoh,8,0,9.00E-04,0.0023,even lipid distribution,4.2
+COAC_II-2023_F3,Xbirchmanni,COAC,II-2023,3,etoh,22,2ml etoh,9,0,0.0012,0.0023,even lipid distribution,4.2
+COAC_II-2023_F3,Xbirchmanni,COAC,II-2023,3,etoh,22,2ml etoh,10,0,0.001,0.0023,even lipid distribution,4.2
+COAC_II-2023_F3,Xbirchmanni,COAC,II-2023,3,etoh,22,2ml etoh,11,0,0.0024,0.0023,even lipid distribution,4.2
+COAC_II-2023_F3,Xbirchmanni,COAC,II-2023,3,etoh,22,2ml etoh,12,0,0.0015,0.0023,even lipid distribution,4.2
+COAC_II-2023_F3,Xbirchmanni,COAC,II-2023,3,etoh,22,2ml etoh,13,0,0.0014,0.0023,even lipid distribution,4.2
+COAC_II-2023_F3,Xbirchmanni,COAC,II-2023,3,etoh,22,2ml etoh,14,0,9.00E-04,0.0023,even lipid distribution,4.2
+COAC_II-2023_F3,Xbirchmanni,COAC,II-2023,3,etoh,22,2ml etoh,15,0,0.0026,0.0023,even lipid distribution,4.2
+COAC_II-2023_F3,Xbirchmanni,COAC,II-2023,3,etoh,22,2ml etoh,16,0,0.0021,0.0023,even lipid distribution,4.2
+COAC_II-2023_F3,Xbirchmanni,COAC,II-2023,3,etoh,22,2ml etoh,17,0,0.0023,0.0023,even lipid distribution,4.2
+COAC_II-2023_F3,Xbirchmanni,COAC,II-2023,3,etoh,22,2ml etoh,18,0,6.00E-04,0.0023,even lipid distribution,4.2
+COAC_II-2023_F3,Xbirchmanni,COAC,II-2023,3,etoh,22,2ml etoh,19,0,6.00E-04,0.0023,even lipid distribution,4.2
+COAC_II-2023_F3,Xbirchmanni,COAC,II-2023,3,etoh,22,2ml etoh,20,0,5.00E-04,0.0023,even lipid distribution,4.2
+COAC_II-2023_F3,Xbirchmanni,COAC,II-2023,3,etoh,22,2ml etoh,21,0,9.00E-04,0.0023,even lipid distribution,4.2
+COAC_II-2023_F3,Xbirchmanni,COAC,II-2023,3,etoh,22,2ml etoh,22,0,6.00E-04,0.0023,even lipid distribution,4.2
+COAC_II-2023_F6,Xbirchmanni,COAC,II-2023,6,etoh,6,2ml etoh,1,0,0.0033,0.0011,even lipid distribution,3.2
+COAC_II-2023_F6,Xbirchmanni,COAC,II-2023,6,etoh,6,2ml etoh,2,0,0.0033,0.0011,even lipid distribution,3.2
+COAC_II-2023_F6,Xbirchmanni,COAC,II-2023,6,etoh,6,2ml etoh,3,0,0.0034,0.0011,even lipid distribution,3.2
+COAC_II-2023_F6,Xbirchmanni,COAC,II-2023,6,etoh,6,2ml etoh,4,0,0.0032,0.0011,even lipid distribution,3.2
+COAC_II-2023_F6,Xbirchmanni,COAC,II-2023,6,etoh,6,2ml etoh,5,0,0.0036,0.0011,even lipid distribution,3.2
+COAC_II-2023_F6,Xbirchmanni,COAC,II-2023,6,etoh,6,2ml etoh,6,0,0.0032,0.0011,even lipid distribution,3.2
+COAC_II-2023_F7,Xbirchmanni,COAC,II-2023,7,etoh,10,2ml etoh,1,0,0.0039,0.0013,even lipid distribution,3.6
+COAC_II-2023_F7,Xbirchmanni,COAC,II-2023,7,etoh,10,2ml etoh,2,0,0.0026,0.0013,even lipid distribution,3.6
+COAC_II-2023_F7,Xbirchmanni,COAC,II-2023,7,etoh,10,2ml etoh,3,0,0.0027,0.0013,even lipid distribution,3.6
+COAC_II-2023_F7,Xbirchmanni,COAC,II-2023,7,etoh,10,2ml etoh,4,0,0.0041,0.0013,even lipid distribution,3.6
+COAC_II-2023_F7,Xbirchmanni,COAC,II-2023,7,etoh,10,2ml etoh,5,0,0.0038,0.0013,even lipid distribution,3.6
+COAC_II-2023_F7,Xbirchmanni,COAC,II-2023,7,etoh,10,2ml etoh,6,0,0.0042,0.0013,even lipid distribution,3.6
+COAC_II-2023_F7,Xbirchmanni,COAC,II-2023,7,etoh,10,2ml etoh,7,0,0.004,0.0013,even lipid distribution,3.6
+COAC_II-2023_F7,Xbirchmanni,COAC,II-2023,7,etoh,10,2ml etoh,8,0,0.0011,0.0013,even lipid distribution,3.6
+COAC_II-2023_F7,Xbirchmanni,COAC,II-2023,7,etoh,10,2ml etoh,9,0,0.0016,0.0013,even lipid distribution,3.6
+COAC_II-2023_F7,Xbirchmanni,COAC,II-2023,7,etoh,10,2ml etoh,10,0,8.00E-04,0.0013,even lipid distribution,3.6
+COAC_II-2023_F10,Xbirchmanni,COAC,II-2023,10,etoh,15,2ml etoh,1,0,0.004,0.0031,even lipid distribution,3.9
+COAC_II-2023_F10,Xbirchmanni,COAC,II-2023,10,etoh,15,2ml etoh,2,0,0.0035,0.0031,even lipid distribution,3.9
+COAC_II-2023_F10,Xbirchmanni,COAC,II-2023,10,etoh,15,2ml etoh,3,0,0.0037,0.0031,even lipid distribution,3.9
+COAC_II-2023_F10,Xbirchmanni,COAC,II-2023,10,etoh,15,2ml etoh,4,0,0.0042,0.0031,even lipid distribution,3.9
+COAC_II-2023_F10,Xbirchmanni,COAC,II-2023,10,etoh,15,2ml etoh,5,0,0.004,0.0031,even lipid distribution,3.9
+COAC_II-2023_F10,Xbirchmanni,COAC,II-2023,10,etoh,15,2ml etoh,6,0,0.0041,0.0031,even lipid distribution,3.9
+COAC_II-2023_F10,Xbirchmanni,COAC,II-2023,10,etoh,15,2ml etoh,7,0,0.0026,0.0031,even lipid distribution,3.9
+COAC_II-2023_F10,Xbirchmanni,COAC,II-2023,10,etoh,15,2ml etoh,8,0,0.0042,0.0031,even lipid distribution,3.9
+COAC_II-2023_F10,Xbirchmanni,COAC,II-2023,10,etoh,15,2ml etoh,9,0,0.0025,0.0031,even lipid distribution,3.9
+COAC_II-2023_F10,Xbirchmanni,COAC,II-2023,10,etoh,15,2ml etoh,10,0,0.004,0.0031,even lipid distribution,3.9
+COAC_II-2023_F10,Xbirchmanni,COAC,II-2023,10,etoh,15,2ml etoh,11,0,0.0012,0.0031,even lipid distribution,3.9
+COAC_II-2023_F10,Xbirchmanni,COAC,II-2023,10,etoh,15,2ml etoh,12,0,0.0042,0.0031,even lipid distribution,3.9
+COAC_II-2023_F10,Xbirchmanni,COAC,II-2023,10,etoh,15,2ml etoh,13,0,0.0036,0.0031,even lipid distribution,3.9
+COAC_II-2023_F10,Xbirchmanni,COAC,II-2023,10,etoh,15,2ml etoh,14,0,0.0031,0.0031,even lipid distribution,3.9
+COAC_II-2023_F10,Xbirchmanni,COAC,II-2023,10,etoh,15,2ml etoh,15,0,0.003,0.0031,even lipid distribution,3.9
+COAC_II-2023_F13,Xbirchmanni,COAC,II-2023,13,etoh,10,2ml etoh,1,0,0.0019,0.0022,even lipid distribution,3.5
+COAC_II-2023_F13,Xbirchmanni,COAC,II-2023,13,etoh,10,2ml etoh,2,0,0.0024,0.0022,even lipid distribution,3.5
+COAC_II-2023_F13,Xbirchmanni,COAC,II-2023,13,etoh,10,2ml etoh,3,0,0.0026,0.0022,even lipid distribution,3.5
+COAC_II-2023_F13,Xbirchmanni,COAC,II-2023,13,etoh,10,2ml etoh,4,0,0.002,0.0022,even lipid distribution,3.5
+COAC_II-2023_F13,Xbirchmanni,COAC,II-2023,13,etoh,10,2ml etoh,5,0,0.0023,0.0022,even lipid distribution,3.5
+COAC_II-2023_F13,Xbirchmanni,COAC,II-2023,13,etoh,10,2ml etoh,6,0,0.001,0.0022,even lipid distribution,3.5
+COAC_II-2023_F13,Xbirchmanni,COAC,II-2023,13,etoh,10,2ml etoh,7,0,0.0023,0.0022,even lipid distribution,3.5
+COAC_II-2023_F13,Xbirchmanni,COAC,II-2023,13,etoh,10,2ml etoh,8,0,3.00E-04,0.0022,even lipid distribution,3.5
+COAC_II-2023_F13,Xbirchmanni,COAC,II-2023,13,etoh,10,2ml etoh,9,0,0.001,0.0022,even lipid distribution,3.5
+COAC_II-2023_F13,Xbirchmanni,COAC,II-2023,13,etoh,10,2ml etoh,10,0,7.00E-04,0.0022,even lipid distribution,3.5
+COAC_II-2023_F17,Xbirchmanni,COAC,II-2023,17,etoh,15,2ml etoh,1,0,0.0027,0.002,even lipid distribution,3.7
+COAC_II-2023_F17,Xbirchmanni,COAC,II-2023,17,etoh,15,2ml etoh,2,0,0.0025,0.002,even lipid distribution,3.7
+COAC_II-2023_F17,Xbirchmanni,COAC,II-2023,17,etoh,15,2ml etoh,3,0,0.003,0.002,even lipid distribution,3.7
+COAC_II-2023_F17,Xbirchmanni,COAC,II-2023,17,etoh,15,2ml etoh,4,0,0.0019,0.002,even lipid distribution,3.7
+COAC_II-2023_F17,Xbirchmanni,COAC,II-2023,17,etoh,15,2ml etoh,5,0,0.0033,0.002,even lipid distribution,3.7
+COAC_II-2023_F17,Xbirchmanni,COAC,II-2023,17,etoh,15,2ml etoh,6,0,0.0034,0.002,even lipid distribution,3.7
+COAC_II-2023_F17,Xbirchmanni,COAC,II-2023,17,etoh,15,2ml etoh,7,0,0.0024,0.002,even lipid distribution,3.7
+COAC_II-2023_F17,Xbirchmanni,COAC,II-2023,17,etoh,15,2ml etoh,8,0,0.0031,0.002,even lipid distribution,3.7
+COAC_II-2023_F17,Xbirchmanni,COAC,II-2023,17,etoh,15,2ml etoh,9,0,0.0024,0.002,even lipid distribution,3.7
+COAC_II-2023_F17,Xbirchmanni,COAC,II-2023,17,etoh,15,2ml etoh,10,0,0.0033,0.002,even lipid distribution,3.7
+COAC_II-2023_F17,Xbirchmanni,COAC,II-2023,17,etoh,15,2ml etoh,11,0,0.0031,0.002,even lipid distribution,3.7
+COAC_II-2023_F17,Xbirchmanni,COAC,II-2023,17,etoh,15,2ml etoh,12,0,0.0023,0.002,even lipid distribution,3.7
+COAC_II-2023_F17,Xbirchmanni,COAC,II-2023,17,etoh,15,2ml etoh,13,0,0.0033,0.002,even lipid distribution,3.7
+COAC_II-2023_F17,Xbirchmanni,COAC,II-2023,17,etoh,15,2ml etoh,14,0,0.0026,0.002,even lipid distribution,3.7
+COAC_II-2023_F17,Xbirchmanni,COAC,II-2023,17,etoh,15,2ml etoh,15,0,0.002,0.002,even lipid distribution,3.7
+COAC_II-2023_F18,Xbirchmanni,COAC,II-2023,18,etoh,16,2ml etoh,4,0,0.0034,0.0022,even lipid distribution,4
+COAC_II-2023_F18,Xbirchmanni,COAC,II-2023,18,etoh,16,2ml etoh,5,0,0.0039,0.0022,even lipid distribution,4
+COAC_II-2023_F18,Xbirchmanni,COAC,II-2023,18,etoh,16,2ml etoh,6,0,0.0021,0.0022,even lipid distribution,4
+COAC_II-2023_F18,Xbirchmanni,COAC,II-2023,18,etoh,16,2ml etoh,7,0,0.0038,0.0022,even lipid distribution,4
+COAC_II-2023_F18,Xbirchmanni,COAC,II-2023,18,etoh,16,2ml etoh,8,0,0.0023,0.0022,even lipid distribution,4
+COAC_II-2023_F18,Xbirchmanni,COAC,II-2023,18,etoh,16,2ml etoh,9,0,0.0039,0.0022,even lipid distribution,4
+COAC_II-2023_F18,Xbirchmanni,COAC,II-2023,18,etoh,16,2ml etoh,11,0,0.0037,0.0022,even lipid distribution,4
+COAC_II-2023_F18,Xbirchmanni,COAC,II-2023,18,etoh,16,2ml etoh,13,0,0.0033,0.0022,even lipid distribution,4
+COAC_II-2023_F18,Xbirchmanni,COAC,II-2023,18,etoh,16,2ml etoh,14,0,0.0026,0.0022,even lipid distribution,4
+COAC_II-2023_F18,Xbirchmanni,COAC,II-2023,18,etoh,16,2ml etoh,15,0,0.0026,0.0022,even lipid distribution,4
+COAC_II-2023_F18,Xbirchmanni,COAC,II-2023,18,etoh,16,2ml etoh,16,0,0.0031,0.0022,even lipid distribution,4
+COAC_II-2023_F19,Xbirchmanni,COAC,II-2023,19,etoh,30,2ml etoh,18,0,0.0037,0.0047,even lipid distribution,4.5
+COAC_VIII_20_F01,Xbirchmanni,COAC,VIII_20,F01,etoh,10,2ml etoh,1,0,0.0036,NA,even lipid distribution,4.1
+COAC_VIII_20_F01,Xbirchmanni,COAC,VIII_20,F01,etoh,10,2ml etoh,2,0,0.0037,NA,even lipid distribution,4.1
+COAC_VIII_20_F01,Xbirchmanni,COAC,VIII_20,F01,etoh,10,2ml etoh,3,0,0.0034,NA,even lipid distribution,4.1
+COAC_VIII_20_F01,Xbirchmanni,COAC,VIII_20,F01,etoh,10,2ml etoh,4,0,0.0037,NA,even lipid distribution,4.1
+COAC_VIII_20_F01,Xbirchmanni,COAC,VIII_20,F01,etoh,10,2ml etoh,5,0,0.0033,NA,even lipid distribution,4.1
+COAC_VIII_20_F01,Xbirchmanni,COAC,VIII_20,F01,etoh,10,2ml etoh,7,0,0.0036,NA,even lipid distribution,4.1
+COAC_VIII_20_F01,Xbirchmanni,COAC,VIII_20,F01,etoh,10,2ml etoh,8,0,0.0036,NA,even lipid distribution,4.1
+COAC_VIII_20_F01,Xbirchmanni,COAC,VIII_20,F01,etoh,10,2ml etoh,9,0,0.0037,NA,even lipid distribution,4.1
+COAC_VIII_20_F01,Xbirchmanni,COAC,VIII_20,F01,etoh,10,2ml etoh,10,0,0.004,NA,even lipid distribution,4.1
+COAC_VIII_20_F03,Xbirchmanni,COAC,VIII_20,F03,etoh,25,2ml etoh,2,0,0.002,NA,even lipid distribution,4.2
+COAC_VIII_20_F03,Xbirchmanni,COAC,VIII_20,F03,etoh,25,2ml etoh,3,0,0.0025,NA,even lipid distribution,4.2
+COAC_VIII_20_F03,Xbirchmanni,COAC,VIII_20,F03,etoh,25,2ml etoh,4,0,0.0019,NA,even lipid distribution,4.2
+COAC_VIII_20_F03,Xbirchmanni,COAC,VIII_20,F03,etoh,25,2ml etoh,5,0,0.0019,NA,even lipid distribution,4.2
+COAC_VIII_20_F03,Xbirchmanni,COAC,VIII_20,F03,etoh,25,2ml etoh,6,0,0.0016,NA,even lipid distribution,4.2
+COAC_VIII_20_F03,Xbirchmanni,COAC,VIII_20,F03,etoh,25,2ml etoh,7,0,0.001,NA,even lipid distribution,4.2
+COAC_VIII_20_F03,Xbirchmanni,COAC,VIII_20,F03,etoh,25,2ml etoh,8,0,0.0018,NA,even lipid distribution,4.2
+COAC_VIII_20_F03,Xbirchmanni,COAC,VIII_20,F03,etoh,25,2ml etoh,9,0,0.0009,NA,even lipid distribution,4.2
+COAC_VIII_20_F03,Xbirchmanni,COAC,VIII_20,F03,etoh,25,2ml etoh,10,0,0.0014,NA,even lipid distribution,4.2
+COAC_VIII_20_F03,Xbirchmanni,COAC,VIII_20,F03,etoh,25,2ml etoh,11,0,0.0013,NA,even lipid distribution,4.2
+COAC_VIII_20_F03,Xbirchmanni,COAC,VIII_20,F03,etoh,25,2ml etoh,12,0,0.0026,NA,even lipid distribution,4.2
+COAC_VIII_20_F03,Xbirchmanni,COAC,VIII_20,F03,etoh,25,2ml etoh,13,0,0.0027,NA,even lipid distribution,4.2
+COAC_VIII_20_F03,Xbirchmanni,COAC,VIII_20,F03,etoh,25,2ml etoh,14,0,0.0026,NA,even lipid distribution,4.2
+COAC_VIII_20_F03,Xbirchmanni,COAC,VIII_20,F03,etoh,25,2ml etoh,15,0,0.0012,NA,even lipid distribution,4.2
+COAC_VIII_20_F03,Xbirchmanni,COAC,VIII_20,F03,etoh,25,2ml etoh,16,0,0.0013,NA,even lipid distribution,4.2
+COAC_VIII_20_F03,Xbirchmanni,COAC,VIII_20,F03,etoh,25,2ml etoh,17,0,0.0008,NA,even lipid distribution,4.2
+COAC_VIII_20_F03,Xbirchmanni,COAC,VIII_20,F03,etoh,25,2ml etoh,18,0,0.0009,NA,even lipid distribution,4.2
+COAC_VIII_20_F03,Xbirchmanni,COAC,VIII_20,F03,etoh,25,2ml etoh,19,0,0.0023,NA,even lipid distribution,4.2
+COAC_VIII_20_F03,Xbirchmanni,COAC,VIII_20,F03,etoh,25,2ml etoh,20,0,0.0014,NA,even lipid distribution,4.2
+COAC_VIII_20_F03,Xbirchmanni,COAC,VIII_20,F03,etoh,25,2ml etoh,21,0,0.002,NA,even lipid distribution,4.2
+COAC_VIII_20_F03,Xbirchmanni,COAC,VIII_20,F03,etoh,25,2ml etoh,22,0,0.0011,NA,even lipid distribution,4.2
+COAC_VIII_20_F03,Xbirchmanni,COAC,VIII_20,F03,etoh,25,2ml etoh,23,0,0.0011,NA,even lipid distribution,4.2
+COAC_VIII_20_F03,Xbirchmanni,COAC,VIII_20,F03,etoh,25,2ml etoh,24,0,0.0009,NA,even lipid distribution,4.2
+COAC_VIII_20_F03,Xbirchmanni,COAC,VIII_20,F03,etoh,25,2ml etoh,25,0,0.0004,NA,even lipid distribution,4.2
+COAC_VIII_20_F09,Xbirchmanni,COAC,VIII_20,F09,etoh,7,2ml etoh,2,0,0.0031,0.0008,even lipid distribution,3.4
+COAC_VIII_20_F09,Xbirchmanni,COAC,VIII_20,F09,etoh,7,2ml etoh,3,0,0.0026,0.0008,even lipid distribution,3.4
+COAC_VIII_20_F09,Xbirchmanni,COAC,VIII_20,F09,etoh,7,2ml etoh,4,0,0.0028,0.0008,even lipid distribution,3.4
+COAC_VIII_20_F09,Xbirchmanni,COAC,VIII_20,F09,etoh,7,2ml etoh,5,15,0.0028,0.0008,even lipid distribution,3.4
+COAC_VIII_20_F10,Xbirchmanni,COAC,VIII_20,F10,etoh,38,2ml etoh,1,0,0.0033,0.0056,even lipid distribution,5.3
+COAC_VIII_20_F10,Xbirchmanni,COAC,VIII_20,F10,etoh,38,2ml etoh,2,0,0.0038,0.0056,even lipid distribution,5.3
+COAC_VIII_20_F10,Xbirchmanni,COAC,VIII_20,F10,etoh,38,2ml etoh,3,0,0.0023,0.0056,even lipid distribution,5.3
+COAC_VIII_20_F10,Xbirchmanni,COAC,VIII_20,F10,etoh,38,2ml etoh,4,0,0.0039,0.0056,even lipid distribution,5.3
+COAC_VIII_20_F10,Xbirchmanni,COAC,VIII_20,F10,etoh,38,2ml etoh,5,0,0.0033,0.0056,even lipid distribution,5.3
+COAC_VIII_20_F10,Xbirchmanni,COAC,VIII_20,F10,etoh,38,2ml etoh,6,0,0.0032,0.0056,even lipid distribution,5.3
+COAC_VIII_20_F10,Xbirchmanni,COAC,VIII_20,F10,etoh,38,2ml etoh,7,0,0.0035,0.0056,even lipid distribution,5.3
+COAC_VIII_20_F10,Xbirchmanni,COAC,VIII_20,F10,etoh,38,2ml etoh,8,0,0.0033,0.0056,even lipid distribution,5.3
+COAC_VIII_20_F10,Xbirchmanni,COAC,VIII_20,F10,etoh,38,2ml etoh,9,0,0.0034,0.0056,even lipid distribution,5.3
+COAC_VIII_20_F10,Xbirchmanni,COAC,VIII_20,F10,etoh,38,2ml etoh,10,0,0.0018,0.0056,even lipid distribution,5.3
+COAC_VIII_20_F10,Xbirchmanni,COAC,VIII_20,F10,etoh,38,2ml etoh,11,0,0.0014,0.0056,even lipid distribution,5.3
+COAC_VIII_20_F10,Xbirchmanni,COAC,VIII_20,F10,etoh,38,2ml etoh,12,0,0.0014,0.0056,even lipid distribution,5.3
+COAC_VIII_20_F10,Xbirchmanni,COAC,VIII_20,F10,etoh,38,2ml etoh,13,0,0.003,0.0056,even lipid distribution,5.3
+COAC_VIII_20_F10,Xbirchmanni,COAC,VIII_20,F10,etoh,38,2ml etoh,14,0,0.0029,0.0056,even lipid distribution,5.3
+COAC_VIII_20_F10,Xbirchmanni,COAC,VIII_20,F10,etoh,38,2ml etoh,15,0,0.0009,0.0056,even lipid distribution,5.3
+COAC_VIII_20_F10,Xbirchmanni,COAC,VIII_20,F10,etoh,38,2ml etoh,16,0,0.0036,0.0056,even lipid distribution,5.3
+COAC_VIII_20_F10,Xbirchmanni,COAC,VIII_20,F10,etoh,38,2ml etoh,17,0,0.003,0.0056,even lipid distribution,5.3
+COAC_VIII_20_F10,Xbirchmanni,COAC,VIII_20,F10,etoh,38,2ml etoh,18,0,0.0028,0.0056,even lipid distribution,5.3
+COAC_VIII_20_F10,Xbirchmanni,COAC,VIII_20,F10,etoh,38,2ml etoh,19,0,0.0034,0.0056,even lipid distribution,5.3
+COAC_VIII_20_F10,Xbirchmanni,COAC,VIII_20,F10,etoh,38,2ml etoh,20,0,0.0035,0.0056,even lipid distribution,5.3
+COAC_VIII_20_F10,Xbirchmanni,COAC,VIII_20,F10,etoh,38,2ml etoh,21,0,0.0036,0.0056,even lipid distribution,5.3
+COAC_VIII_20_F10,Xbirchmanni,COAC,VIII_20,F10,etoh,38,2ml etoh,22,0,0.0017,0.0056,even lipid distribution,5.3
+COAC_VIII_20_F10,Xbirchmanni,COAC,VIII_20,F10,etoh,38,2ml etoh,23,0,0.002,0.0056,even lipid distribution,5.3
+COAC_VIII_20_F10,Xbirchmanni,COAC,VIII_20,F10,etoh,38,2ml etoh,24,0,0.0018,0.0056,even lipid distribution,5.3
+COAC_VIII_20_F10,Xbirchmanni,COAC,VIII_20,F10,etoh,38,2ml etoh,25,0,0.0038,0.0056,even lipid distribution,5.3
+COAC_VIII_20_F10,Xbirchmanni,COAC,VIII_20,F10,etoh,38,2ml etoh,26,0,0.0034,0.0056,even lipid distribution,5.3
+COAC_VIII_20_F10,Xbirchmanni,COAC,VIII_20,F10,etoh,38,2ml etoh,27,0,0.0031,0.0056,even lipid distribution,5.3
+COAC_VIII_20_F10,Xbirchmanni,COAC,VIII_20,F10,etoh,38,2ml etoh,28,0,0.0036,0.0056,even lipid distribution,5.3
+COAC_VIII_20_F10,Xbirchmanni,COAC,VIII_20,F10,etoh,38,2ml etoh,29,0,0.0011,0.0056,"even lipid distribution, crumbly",5.3
+COAC_VIII_20_F10,Xbirchmanni,COAC,VIII_20,F10,etoh,38,2ml etoh,30,0,0.0009,0.0056,even lipid distribution,5.3
+COAC_VIII_20_F10,Xbirchmanni,COAC,VIII_20,F10,etoh,38,2ml etoh,31,0,0.0025,0.0056,even lipid distribution,5.3
+COAC_VIII_20_F10,Xbirchmanni,COAC,VIII_20,F10,etoh,38,2ml etoh,32,0,0.0015,0.0056,even lipid distribution,5.3
+COAC_VIII_20_F10,Xbirchmanni,COAC,VIII_20,F10,etoh,38,2ml etoh,33,0,0.003,0.0056,even lipid distribution,5.3
+COAC_VIII_20_F10,Xbirchmanni,COAC,VIII_20,F10,etoh,38,2ml etoh,34,0,0.0035,0.0056,even lipid distribution,5.3
+COAC_VIII_20_F10,Xbirchmanni,COAC,VIII_20,F10,etoh,38,2ml etoh,35,0,0.0014,0.0056,even lipid distribution,5.3
+COAC_VIII_20_F10,Xbirchmanni,COAC,VIII_20,F10,etoh,38,2ml etoh,36,0,0.0038,0.0056,even lipid distribution,5.3
+COAC_VIII_20_F10,Xbirchmanni,COAC,VIII_20,F10,etoh,38,2ml etoh,37,0,0.0008,0.0056,"even lipid distribution, small",5.3
+COAC_VIII_20_F10,Xbirchmanni,COAC,VIII_20,F10,etoh,38,2ml etoh,38,0,0.0039,0.0056,even lipid distribution,5.3
+COAC_VIII_20_F15,Xbirchmanni,COAC,VIII_20,F15,etoh,14,2ml etoh,1,0,0.0028,0.0002,even lipid distribution,3.6
+COAC_VIII_20_F15,Xbirchmanni,COAC,VIII_20,F15,etoh,14,2ml etoh,2,0,0.0032,0.0002,even lipid distribution,3.6
+COAC_VIII_20_F15,Xbirchmanni,COAC,VIII_20,F15,etoh,14,2ml etoh,3,0,0.0025,0.0002,even lipid distribution,3.6
+COAC_VIII_20_F15,Xbirchmanni,COAC,VIII_20,F15,etoh,14,2ml etoh,4,0,0.0032,0.0002,even lipid distribution,3.6
+COAC_VIII_20_F15,Xbirchmanni,COAC,VIII_20,F15,etoh,14,2ml etoh,5,0,0.0025,0.0002,even lipid distribution,3.6
+COAC_VIII_20_F15,Xbirchmanni,COAC,VIII_20,F15,etoh,14,2ml etoh,6,0,0.0027,0.0002,even lipid distribution,3.6
+COAC_VIII_20_F15,Xbirchmanni,COAC,VIII_20,F15,etoh,14,2ml etoh,7,0,0.0028,0.0002,even lipid distribution,3.6
+COAC_VIII_20_F15,Xbirchmanni,COAC,VIII_20,F15,etoh,14,2ml etoh,8,0,0.0017,0.0002,even lipid distribution,3.6
+COAC_VIII_20_F15,Xbirchmanni,COAC,VIII_20,F15,etoh,14,2ml etoh,9,0,0.0026,0.0002,even lipid distribution,3.6
+COAC_VIII_20_F15,Xbirchmanni,COAC,VIII_20,F15,etoh,14,2ml etoh,10,0,0.0035,0.0002,even lipid distribution,3.6
+COAC_VIII_20_F15,Xbirchmanni,COAC,VIII_20,F15,etoh,14,2ml etoh,11,0,0.0025,0.0002,even lipid distribution,3.6
+COAC_VIII_20_F15,Xbirchmanni,COAC,VIII_20,F15,etoh,14,2ml etoh,12,0,0.0029,0.0002,even lipid distribution,3.6
+COAC_VIII_20_F15,Xbirchmanni,COAC,VIII_20,F15,etoh,14,2ml etoh,13,0,0.0025,0.0002,even lipid distribution,3.6
+COAC_VIII_20_F15,Xbirchmanni,COAC,VIII_20,F15,etoh,14,2ml etoh,14,0,0.003,0.0002,even lipid distribution,3.6
+COAC_VIII_20_F16,Xbirchmanni,COAC,VIII_20,F16,etoh,12,2ml etoh,5,0,0.0038,0.0017,even lipid distribution,4.4
+COAC_VIII_20_F16,Xbirchmanni,COAC,VIII_20,F16,etoh,12,2ml etoh,9,0,0.0025,0.0017,even lipid distribution,4.4
+COAC_VIII_20_F16,Xbirchmanni,COAC,VIII_20,F16,etoh,12,2ml etoh,10,0,0.0043,0.0017,even lipid distribution,4.4
+COAC_VIII_20_F17,Xbirchmanni,COAC,VIII_20,F17,etoh,17,2ml etoh,1,0,0.003,0.0005,even lipid distribution,3.9
+COAC_VIII_20_F17,Xbirchmanni,COAC,VIII_20,F17,etoh,17,2ml etoh,2,0,0.004,0.0005,even lipid distribution,3.9
+COAC_VIII_20_F17,Xbirchmanni,COAC,VIII_20,F17,etoh,17,2ml etoh,3,0,0.0034,0.0005,even lipid distribution,3.9
+COAC_VIII_20_F17,Xbirchmanni,COAC,VIII_20,F17,etoh,17,2ml etoh,4,0,0.0041,0.0005,even lipid distribution,3.9
+COAC_VIII_20_F17,Xbirchmanni,COAC,VIII_20,F17,etoh,17,2ml etoh,5,0,0.003,0.0005,even lipid distribution,3.9
+COAC_VIII_20_F17,Xbirchmanni,COAC,VIII_20,F17,etoh,17,2ml etoh,6,0,0.0023,0.0005,even lipid distribution,3.9
+COAC_VIII_20_F17,Xbirchmanni,COAC,VIII_20,F17,etoh,17,2ml etoh,7,0,0.0016,0.0005,small,3.9
+COAC_VIII_20_F17,Xbirchmanni,COAC,VIII_20,F17,etoh,17,2ml etoh,8,0,0.0032,0.0005,even lipid distribution,3.9
+COAC_VIII_20_F17,Xbirchmanni,COAC,VIII_20,F17,etoh,17,2ml etoh,9,0,0.0042,0.0005,even lipid distribution,3.9
+COAC_VIII_20_F17,Xbirchmanni,COAC,VIII_20,F17,etoh,17,2ml etoh,10,0,0.0011,0.0005,small,3.9
+COAC_VIII_20_F17,Xbirchmanni,COAC,VIII_20,F17,etoh,17,2ml etoh,11,0,0.0039,0.0005,even lipid distribution,3.9
+COAC_VIII_20_F17,Xbirchmanni,COAC,VIII_20,F17,etoh,17,2ml etoh,12,0,0.0027,0.0005,even lipid distribution,3.9
+COAC_VIII_20_F17,Xbirchmanni,COAC,VIII_20,F17,etoh,17,2ml etoh,13,0,0.0037,0.0005,even lipid distribution,3.9
+COAC_VIII_20_F17,Xbirchmanni,COAC,VIII_20,F17,etoh,17,2ml etoh,14,0,0.003,0.0005,even lipid distribution,3.9
+COAC_VIII_20_F17,Xbirchmanni,COAC,VIII_20,F17,etoh,17,2ml etoh,15,0,0.0037,0.0005,even lipid distribution,3.9
+COAC_VIII_20_F17,Xbirchmanni,COAC,VIII_20,F17,etoh,17,2ml etoh,16,0,0.0043,0.0005,even lipid distribution,3.9
+COAC_VIII_20_F17,Xbirchmanni,COAC,VIII_20,F17,etoh,17,2ml etoh,17,0,NA,0.0005,lost egg before weighing,3.9
+COAC_VIII_20_F18,Xbirchmanni,COAC,VIII_20,F18,etoh,17,2ml etoh,1,0,0.002,0.0005,even lipid distribution,4
+COAC_VIII_20_F18,Xbirchmanni,COAC,VIII_20,F18,etoh,17,2ml etoh,2,0,0.002,0.0005,even lipid distribution,4
+COAC_VIII_20_F18,Xbirchmanni,COAC,VIII_20,F18,etoh,17,2ml etoh,3,0,0.0028,0.0005,even lipid distribution,4
+COAC_VIII_20_F18,Xbirchmanni,COAC,VIII_20,F18,etoh,17,2ml etoh,4,0,0.003,0.0005,even lipid distribution,4
+COAC_VIII_20_F18,Xbirchmanni,COAC,VIII_20,F18,etoh,17,2ml etoh,5,0,0.0016,0.0005,even lipid distribution,4
+COAC_VIII_20_F18,Xbirchmanni,COAC,VIII_20,F18,etoh,17,2ml etoh,6,0,0.0016,0.0005,even lipid distribution,4
+COAC_VIII_20_F18,Xbirchmanni,COAC,VIII_20,F18,etoh,17,2ml etoh,7,0,0.0036,0.0005,even lipid distribution,4
+COAC_VIII_20_F18,Xbirchmanni,COAC,VIII_20,F18,etoh,17,2ml etoh,8,0,0.0016,0.0005,even lipid distribution,4
+COAC_VIII_20_F18,Xbirchmanni,COAC,VIII_20,F18,etoh,17,2ml etoh,9,0,0.0033,0.0005,even lipid distribution,4
+COAC_VIII_20_F18,Xbirchmanni,COAC,VIII_20,F18,etoh,17,2ml etoh,10,0,0.0015,0.0005,even lipid distribution,4
+COAC_VIII_20_F18,Xbirchmanni,COAC,VIII_20,F18,etoh,17,2ml etoh,11,0,0.0038,0.0005,even lipid distribution,4
+COAC_VIII_20_F18,Xbirchmanni,COAC,VIII_20,F18,etoh,17,2ml etoh,12,0,0.0024,0.0005,even lipid distribution,4
+COAC_VIII_20_F18,Xbirchmanni,COAC,VIII_20,F18,etoh,17,2ml etoh,13,0,0.0023,0.0005,even lipid distribution,4
+COAC_VIII_20_F18,Xbirchmanni,COAC,VIII_20,F18,etoh,17,2ml etoh,14,0,0.001,0.0005,even lipid distribution,4
+COAC_VIII_20_F18,Xbirchmanni,COAC,VIII_20,F18,etoh,17,2ml etoh,15,0,0.0015,0.0005,even lipid distribution,4
+COAC_VIII_20_F18,Xbirchmanni,COAC,VIII_20,F18,etoh,17,2ml etoh,16,0,0.0019,0.0005,even lipid distribution,4
+COAC_VIII_20_F18,Xbirchmanni,COAC,VIII_20,F18,etoh,17,2ml etoh,17,0,0.0032,0.0005,even lipid distribution,4
+COAC_VIII_20_F19,Xbirchmanni,COAC,VIII_20,F19,etoh,5,2ml etoh,5,0,0.0033,0.0005,even lipid distribution,4
+COAC_VIII_20_F20,Xbirchmanni,COAC,VIII_20,F20,etoh,25,2ml etoh,1,0,0.0017,0.0024,even lipid distribution,5
+COAC_VIII_20_F20,Xbirchmanni,COAC,VIII_20,F20,etoh,25,2ml etoh,2,0,0.0026,0.0024,even lipid distribution,5
+COAC_VIII_20_F20,Xbirchmanni,COAC,VIII_20,F20,etoh,25,2ml etoh,3,0,0.0019,0.0024,even lipid distribution,5
+COAC_VIII_20_F20,Xbirchmanni,COAC,VIII_20,F20,etoh,25,2ml etoh,4,0,0.0026,0.0024,even lipid distribution,5
+COAC_VIII_20_F20,Xbirchmanni,COAC,VIII_20,F20,etoh,25,2ml etoh,5,0,0.0037,0.0024,even lipid distribution,5
+COAC_VIII_20_F20,Xbirchmanni,COAC,VIII_20,F20,etoh,25,2ml etoh,6,0,0.0026,0.0024,even lipid distribution,5
+COAC_VIII_20_F20,Xbirchmanni,COAC,VIII_20,F20,etoh,25,2ml etoh,7,0,0.0031,0.0024,even lipid distribution,5
+COAC_VIII_20_F20,Xbirchmanni,COAC,VIII_20,F20,etoh,25,2ml etoh,8,0,0.0013,0.0024,even lipid distribution,5
+COAC_VIII_20_F20,Xbirchmanni,COAC,VIII_20,F20,etoh,25,2ml etoh,9,0,0.0033,0.0024,even lipid distribution,5
+COAC_VIII_20_F20,Xbirchmanni,COAC,VIII_20,F20,etoh,25,2ml etoh,10,0,0.0019,0.0024,even lipid distribution,5
+COAC_VIII_20_F20,Xbirchmanni,COAC,VIII_20,F20,etoh,25,2ml etoh,11,0,0.0023,0.0024,even lipid distribution,5
+COAC_VIII_20_F20,Xbirchmanni,COAC,VIII_20,F20,etoh,25,2ml etoh,12,0,0.0015,0.0024,even lipid distribution,5
+COAC_VIII_20_F20,Xbirchmanni,COAC,VIII_20,F20,etoh,25,2ml etoh,13,0,0.0028,0.0024,even lipid distribution,5
+COAC_VIII_20_F20,Xbirchmanni,COAC,VIII_20,F20,etoh,25,2ml etoh,14,0,0.0015,0.0024,even lipid distribution,5
+COAC_VIII_20_F20,Xbirchmanni,COAC,VIII_20,F20,etoh,25,2ml etoh,15,0,0.0035,0.0024,even lipid distribution,5
+COAC_VIII_20_F20,Xbirchmanni,COAC,VIII_20,F20,etoh,25,2ml etoh,16,0,0.0012,0.0024,even lipid distribution,5
+COAC_VIII_20_F20,Xbirchmanni,COAC,VIII_20,F20,etoh,25,2ml etoh,17,0,0.0015,0.0024,even lipid distribution,5
+COAC_VIII_20_F20,Xbirchmanni,COAC,VIII_20,F20,etoh,25,2ml etoh,18,0,0.0029,0.0024,even lipid distribution,5
+COAC_VIII_20_F20,Xbirchmanni,COAC,VIII_20,F20,etoh,25,2ml etoh,19,0,0.0032,0.0024,even lipid distribution,5
+COAC_VIII_20_F20,Xbirchmanni,COAC,VIII_20,F20,etoh,25,2ml etoh,20,0,0.0031,0.0024,even lipid distribution,5
+COAC_VIII_20_F20,Xbirchmanni,COAC,VIII_20,F20,etoh,25,2ml etoh,21,0,0.0033,0.0024,even lipid distribution,5
+COAC_VIII_20_F20,Xbirchmanni,COAC,VIII_20,F20,etoh,25,2ml etoh,22,0,0.0032,0.0024,even lipid distribution,5
+COAC_VIII_20_F20,Xbirchmanni,COAC,VIII_20,F20,etoh,25,2ml etoh,23,0,0.0036,0.0024,even lipid distribution,5
+COAC_VIII_20_F20,Xbirchmanni,COAC,VIII_20,F20,etoh,25,2ml etoh,24,0,0.0037,0.0024,even lipid distribution,5
+COAC_VIII_20_F20,Xbirchmanni,COAC,VIII_20,F20,etoh,25,2ml etoh,25,0,0.0033,0.0024,even lipid distribution,5
+COAC_VIII_20_F21,Xbirchmanni,COAC,VIII_20,F21,etoh,10,2ml etoh,1,0,0.0045,0.0014,even lipid distribution,3.9
+COAC_VIII_20_F21,Xbirchmanni,COAC,VIII_20,F21,etoh,10,2ml etoh,2,0,0.0044,0.0014,even lipid distribution,3.9
+COAC_VIII_20_F21,Xbirchmanni,COAC,VIII_20,F21,etoh,10,2ml etoh,3,0,0.0043,0.0014,even lipid distribution,3.9
+COAC_VIII_20_F21,Xbirchmanni,COAC,VIII_20,F21,etoh,10,2ml etoh,4,0,0.0033,0.0014,even lipid distribution,3.9
+COAC_VIII_20_F21,Xbirchmanni,COAC,VIII_20,F21,etoh,10,2ml etoh,5,0,0.0041,0.0014,even lipid distribution,3.9
+COAC_VIII_20_F21,Xbirchmanni,COAC,VIII_20,F21,etoh,10,2ml etoh,6,0,0.0042,0.0014,even lipid distribution,3.9
+COAC_VIII_20_F21,Xbirchmanni,COAC,VIII_20,F21,etoh,10,2ml etoh,7,0,0.0044,0.0014,even lipid distribution,3.9
+COAC_VIII_20_F21,Xbirchmanni,COAC,VIII_20,F21,etoh,10,2ml etoh,8,0,0.0041,0.0014,even lipid distribution,3.9
+COAC_VIII_20_F21,Xbirchmanni,COAC,VIII_20,F21,etoh,10,2ml etoh,9,0,0.0027,0.0014,even lipid distribution,3.9
+COAC_VIII_20_F21,Xbirchmanni,COAC,VIII_20,F21,etoh,10,2ml etoh,10,0,0.0031,0.0014,even lipid distribution,3.9
+COAC_VIII_20_F23,Xbirchmanni,COAC,VIII_20,F23,etoh,12,2ml etoh,1,0,0.0037,0.0013,even lipid distribution,4.4
+COAC_VIII_20_F23,Xbirchmanni,COAC,VIII_20,F23,etoh,12,2ml etoh,2,0,0.004,0.0013,even lipid distribution,4.4
+COAC_VIII_20_F23,Xbirchmanni,COAC,VIII_20,F23,etoh,12,2ml etoh,3,0,0.0039,0.0013,even lipid distribution,4.4
+COAC_VIII_20_F23,Xbirchmanni,COAC,VIII_20,F23,etoh,12,2ml etoh,4,0,0.0027,0.0013,even lipid distribution,4.4
+COAC_VIII_20_F23,Xbirchmanni,COAC,VIII_20,F23,etoh,12,2ml etoh,5,0,0.0043,0.0013,even lipid distribution,4.4
+COAC_VIII_20_F23,Xbirchmanni,COAC,VIII_20,F23,etoh,12,2ml etoh,6,0,0.0042,0.0013,even lipid distribution,4.4
+COAC_VIII_20_F23,Xbirchmanni,COAC,VIII_20,F23,etoh,12,2ml etoh,7,0,0.0041,0.0013,even lipid distribution,4.4
+COAC_VIII_20_F23,Xbirchmanni,COAC,VIII_20,F23,etoh,12,2ml etoh,8,0,0.0037,0.0013,even lipid distribution,4.4
+COAC_VIII_20_F23,Xbirchmanni,COAC,VIII_20,F23,etoh,12,2ml etoh,9,0,0.0035,0.0013,even lipid distribution,4.4
+COAC_VIII_20_F23,Xbirchmanni,COAC,VIII_20,F23,etoh,12,2ml etoh,10,0,0.0036,0.0013,even lipid distribution,4.4
+COAC_VIII_20_F23,Xbirchmanni,COAC,VIII_20,F23,etoh,12,2ml etoh,11,0,0.0039,0.0013,even lipid distribution,4.4
+COAC_VIII_20_F23,Xbirchmanni,COAC,VIII_20,F23,etoh,12,2ml etoh,12,0,0.0044,0.0013,even lipid distribution,4.4
+COAC_VIII_20_F24,Xbirchmanni,COAC,VIII_20,F24,etoh,15,2ml etoh,1,0,0.0034,0.0007,even lipid distribution,3.9
+COAC_VIII_20_F24,Xbirchmanni,COAC,VIII_20,F24,etoh,15,2ml etoh,2,0,0.0034,0.0007,even lipid distribution,3.9
+COAC_VIII_20_F24,Xbirchmanni,COAC,VIII_20,F24,etoh,15,2ml etoh,3,0,0.0011,0.0007,even lipid distribution,3.9
+COAC_VIII_20_F24,Xbirchmanni,COAC,VIII_20,F24,etoh,15,2ml etoh,4,0,0.0018,0.0007,even lipid distribution,3.9
+COAC_VIII_20_F24,Xbirchmanni,COAC,VIII_20,F24,etoh,15,2ml etoh,5,0,0.002,0.0007,even lipid distribution,3.9
+COAC_VIII_20_F24,Xbirchmanni,COAC,VIII_20,F24,etoh,15,2ml etoh,6,0,0.0031,0.0007,even lipid distribution,3.9
+COAC_VIII_20_F24,Xbirchmanni,COAC,VIII_20,F24,etoh,15,2ml etoh,7,0,0.0033,0.0007,even lipid distribution,3.9
+COAC_VIII_20_F24,Xbirchmanni,COAC,VIII_20,F24,etoh,15,2ml etoh,8,0,0.0031,0.0007,even lipid distribution,3.9
+COAC_VIII_20_F24,Xbirchmanni,COAC,VIII_20,F24,etoh,15,2ml etoh,9,0,0.0032,0.0007,even lipid distribution,3.9
+COAC_VIII_20_F24,Xbirchmanni,COAC,VIII_20,F24,etoh,15,2ml etoh,10,0,0.002,0.0007,even lipid distribution,3.9
+COAC_VIII_20_F24,Xbirchmanni,COAC,VIII_20,F24,etoh,15,2ml etoh,11,0,0.0031,0.0007,even lipid distribution,3.9
+COAC_VIII_20_F24,Xbirchmanni,COAC,VIII_20,F24,etoh,15,2ml etoh,12,0,0.0019,0.0007,even lipid distribution,3.9
+COAC_VIII_20_F24,Xbirchmanni,COAC,VIII_20,F24,etoh,15,2ml etoh,13,0,0.0025,0.0007,even lipid distribution,3.9
+COAC_VIII_20_F24,Xbirchmanni,COAC,VIII_20,F24,etoh,15,2ml etoh,14,0,0.0023,0.0007,even lipid distribution,3.9
+COAC_VIII_20_F24,Xbirchmanni,COAC,VIII_20,F24,etoh,15,2ml etoh,15,0,0.0022,0.0007,even lipid distribution,3.9
+COAC_VIII_20_F25,Xbirchmanni,COAC,VIII_20,F25,etoh,13,2ml etoh,1,0,0.001,0.0007,"even lipid distribution, but on smaller side",3.6
+COAC_VIII_20_F25,Xbirchmanni,COAC,VIII_20,F25,etoh,13,2ml etoh,2,0,0.0019,0.0007,"even lipid distribution, but on smaller side",3.6
+COAC_VIII_20_F25,Xbirchmanni,COAC,VIII_20,F25,etoh,13,2ml etoh,3,0,0.0014,0.0007,"even lipid distribution, but on smaller side",3.6
+COAC_VIII_20_F25,Xbirchmanni,COAC,VIII_20,F25,etoh,13,2ml etoh,4,0,0.0011,0.0007,"even lipid distribution, but on smaller side",3.6
+COAC_VIII_20_F25,Xbirchmanni,COAC,VIII_20,F25,etoh,13,2ml etoh,5,0,0.0015,0.0007,"even lipid distribution, but on smaller side",3.6
+COAC_VIII_20_F25,Xbirchmanni,COAC,VIII_20,F25,etoh,13,2ml etoh,6,0,0.0006,0.0007,"even lipid distribution, but on smaller side",3.6
+COAC_VIII_20_F25,Xbirchmanni,COAC,VIII_20,F25,etoh,13,2ml etoh,7,0,0.0011,0.0007,"even lipid distribution, but on smaller side",3.6
+COAC_VIII_20_F25,Xbirchmanni,COAC,VIII_20,F25,etoh,13,2ml etoh,8,0,0.0018,0.0007,"even lipid distribution, but on smaller side",3.6
+COAC_VIII_20_F25,Xbirchmanni,COAC,VIII_20,F25,etoh,13,2ml etoh,9,0,0.0011,0.0007,"even lipid distribution, but on smaller side",3.6
+COAC_VIII_20_F25,Xbirchmanni,COAC,VIII_20,F25,etoh,13,2ml etoh,10,0,0.002,0.0007,"even lipid distribution, but on smaller side",3.6
+COAC_VIII_20_F25,Xbirchmanni,COAC,VIII_20,F25,etoh,13,2ml etoh,11,0,0.0019,0.0007,"even lipid distribution, but on smaller side",3.6
+COAC_VIII_20_F25,Xbirchmanni,COAC,VIII_20,F25,etoh,13,2ml etoh,12,0,0.0009,0.0007,"even lipid distribution, but on smaller side",3.6
+COAC_VIII_20_F25,Xbirchmanni,COAC,VIII_20,F25,etoh,13,2ml etoh,13,0,0.0004,0.0007,"even lipid distribution, but on smaller side",3.6
+COAC_VIII_20_F26,Xbirchmanni,COAC,VIII_20,F26,etoh,12,2ml etoh,1,0,0.0033,0.0009,even lipid distribution,3.7
+COAC_VIII_20_F26,Xbirchmanni,COAC,VIII_20,F26,etoh,12,2ml etoh,2,0,0.00337,0.0009,even lipid distribution,3.7
+COAC_VIII_20_F26,Xbirchmanni,COAC,VIII_20,F26,etoh,12,2ml etoh,3,0,0.0033,0.0009,even lipid distribution,3.7
+COAC_VIII_20_F26,Xbirchmanni,COAC,VIII_20,F26,etoh,12,2ml etoh,4,0,0.0035,0.0009,even lipid distribution,3.7
+COAC_VIII_20_F26,Xbirchmanni,COAC,VIII_20,F26,etoh,12,2ml etoh,5,0,0.0033,0.0009,even lipid distribution,3.7
+COAC_VIII_20_F26,Xbirchmanni,COAC,VIII_20,F26,etoh,12,2ml etoh,6,0,0.0038,0.0009,even lipid distribution,3.7
+COAC_VIII_20_F26,Xbirchmanni,COAC,VIII_20,F26,etoh,12,2ml etoh,7,0,0.0031,0.0009,even lipid distribution,3.7
+COAC_VIII_20_F26,Xbirchmanni,COAC,VIII_20,F26,etoh,12,2ml etoh,8,0,0.0037,0.0009,even lipid distribution,3.7
+COAC_VIII_20_F26,Xbirchmanni,COAC,VIII_20,F26,etoh,12,2ml etoh,9,0,0.0033,0.0009,even lipid distribution,3.7
+COAC_VIII_20_F26,Xbirchmanni,COAC,VIII_20,F26,etoh,12,2ml etoh,10,0,0.0032,0.0009,even lipid distribution,3.7
+COAC_VIII_20_F26,Xbirchmanni,COAC,VIII_20,F26,etoh,12,2ml etoh,11,0,0.0007,0.0009,even lipid distribution,3.7
+COAC_VIII_20_F26,Xbirchmanni,COAC,VIII_20,F26,etoh,12,2ml etoh,12,0,0.0024,0.0009,even lipid distribution,3.7
+COAC_VIII_20_F27,Xbirchmanni,COAC,VIII_20,F27,etoh,8,2ml etoh,1,0,0.0019,0.001,"even lipid distribution, but on smaller side",3.4
+COAC_VIII_20_F27,Xbirchmanni,COAC,VIII_20,F27,etoh,8,2ml etoh,2,0,0.0011,0.001,"even lipid distribution, but on smaller side",3.4
+COAC_VIII_20_F27,Xbirchmanni,COAC,VIII_20,F27,etoh,8,2ml etoh,3,0,0.0015,0.001,"even lipid distribution, but on smaller side",3.4
+COAC_VIII_20_F27,Xbirchmanni,COAC,VIII_20,F27,etoh,8,2ml etoh,4,0,0.0011,0.001,"even lipid distribution, but on smaller side",3.4
+COAC_VIII_20_F27,Xbirchmanni,COAC,VIII_20,F27,etoh,8,2ml etoh,5,0,0.0004,0.001,"even lipid distribution, but on smaller side",3.4
+COAC_VIII_20_F27,Xbirchmanni,COAC,VIII_20,F27,etoh,8,2ml etoh,6,0,0.0011,0.001,"even lipid distribution, but on smaller side",3.4
+COAC_VIII_20_F27,Xbirchmanni,COAC,VIII_20,F27,etoh,8,2ml etoh,7,0,0.0009,0.001,"even lipid distribution, but on smaller side",3.4
+COAC_VIII_20_F27,Xbirchmanni,COAC,VIII_20,F27,etoh,8,2ml etoh,8,0,0.0008,0.001,"even lipid distribution, but on smaller side",3.4
+COAC_VIII_20_F29,Xbirchmanni,COAC,VIII_20,F29,etoh,8,2ml etoh,1,0,0.0008,0.0002,"even lipid distribution, but on smaller side",3.1
+COAC_VIII_20_F29,Xbirchmanni,COAC,VIII_20,F29,etoh,8,2ml etoh,2,0,0.0006,0.0002,"even lipid distribution, but on smaller side",3.1
+COAC_VIII_20_F29,Xbirchmanni,COAC,VIII_20,F29,etoh,8,2ml etoh,3,0,0.0024,0.0002,"even lipid distribution, but on smaller side",3.1
+COAC_VIII_20_F29,Xbirchmanni,COAC,VIII_20,F29,etoh,8,2ml etoh,4,0,0.0028,0.0002,"even lipid distribution, but on smaller side",3.1
+COAC_VIII_20_F29,Xbirchmanni,COAC,VIII_20,F29,etoh,8,2ml etoh,5,0,0.0021,0.0002,"even lipid distribution, but on smaller side",3.1
+COAC_VIII_20_F29,Xbirchmanni,COAC,VIII_20,F29,etoh,8,2ml etoh,6,0,0.0023,0.0002,"even lipid distribution, but on smaller side",3.1
+COAC_VIII_20_F29,Xbirchmanni,COAC,VIII_20,F29,etoh,8,2ml etoh,7,0,0.0029,0.0002,"even lipid distribution, but on smaller side",3.1
+COAC_VIII_20_F29,Xbirchmanni,COAC,VIII_20,F29,etoh,8,2ml etoh,8,0,0.0023,0.0002,"even lipid distribution, but on smaller side",3.1
+PTHC_II-2023_F5,Xcortezi,PTHC,II-2023,5,etoh,14,2ml etoh,10,0,0.0015,0.0004,even lipid distribution,2.6
+PTHC_II-2023_F5,Xcortezi,PTHC,II-2023,5,etoh,14,2ml etoh,11,0,0.0012,0.0004,even lipid distribution,2.6
+PTHC_II-2023_F5,Xcortezi,PTHC,II-2023,5,etoh,14,2ml etoh,12,0,0.0015,0.0004,even lipid distribution,2.6
+PTHC_II-2023_F5,Xcortezi,PTHC,II-2023,5,etoh,14,2ml etoh,13,0,0.0014,0.0004,even lipid distribution,2.6
+PTHC_II-2023_F5,Xcortezi,PTHC,II-2023,5,etoh,14,2ml etoh,14,0,0.0013,0.0004,even lipid distribution,2.6
+PTHC_II-2023_F8,Xcortezi,PTHC,II-2023,8,etoh,17,2ml etoh,1,0,0.0012,0.0006,even lipid distribution,2.7
+PTHC_II-2023_F8,Xcortezi,PTHC,II-2023,8,etoh,17,2ml etoh,2,0,0.0016,0.0006,even lipid distribution,2.7
+PTHC_II-2023_F8,Xcortezi,PTHC,II-2023,8,etoh,17,2ml etoh,3,0,0.0012,0.0006,even lipid distribution,2.7
+PTHC_II-2023_F8,Xcortezi,PTHC,II-2023,8,etoh,17,2ml etoh,4,0,0.0013,0.0006,even lipid distribution,2.7
+PTHC_II-2023_F8,Xcortezi,PTHC,II-2023,8,etoh,17,2ml etoh,5,0,0.0012,0.0006,even lipid distribution,2.7
+PTHC_II-2023_F8,Xcortezi,PTHC,II-2023,8,etoh,17,2ml etoh,6,0,0.0017,0.0006,even lipid distribution,2.7
+PTHC_II-2023_F13,Xcortezi,PTHC,II-2023,13,etoh,11,2ml etoh,1,0,0.0017,0.0005,even lipid distribution,2.4
+PTHC_II-2023_F13,Xcortezi,PTHC,II-2023,13,etoh,11,2ml etoh,2,0,0.0015,0.0005,even lipid distribution,2.4
+PTHC_II-2023_F13,Xcortezi,PTHC,II-2023,13,etoh,11,2ml etoh,3,0,0.0015,0.0005,even lipid distribution,2.4
+PTHC_II-2023_F13,Xcortezi,PTHC,II-2023,13,etoh,11,2ml etoh,4,0,0.0016,0.0005,even lipid distribution,2.4
+PTHC_II-2023_F13,Xcortezi,PTHC,II-2023,13,etoh,11,2ml etoh,5,0,0.0015,0.0005,even lipid distribution,2.4
+PTHC_II-2023_F13,Xcortezi,PTHC,II-2023,13,etoh,11,2ml etoh,6,0,0.0018,0.0005,even lipid distribution,2.4
+PTHC_II-2023_F13,Xcortezi,PTHC,II-2023,13,etoh,11,2ml etoh,7,0,0.0017,0.0005,even lipid distribution,2.4
+PTHC_II-2023_F15,Xcortezi,PTHC,II-2023,15,etoh,30,2ml etoh,16,0,0.0006,0.0009,even lipid distribution,2.6
+PTHC_II-2023_F15,Xcortezi,PTHC,II-2023,15,etoh,30,2ml etoh,17,0,0.001,0.0009,even lipid distribution,2.6
+PTHC_II-2023_F15,Xcortezi,PTHC,II-2023,15,etoh,30,2ml etoh,18,0,0.0009,0.0009,even lipid distribution,2.6
+PTHC_II-2023_F15,Xcortezi,PTHC,II-2023,15,etoh,30,2ml etoh,19,0,0.0008,0.0009,even lipid distribution,2.6
+PTHC_II-2023_F15,Xcortezi,PTHC,II-2023,15,etoh,30,2ml etoh,20,0,0.0008,0.0009,even lipid distribution,2.6
+PTHC_II-2023_F15,Xcortezi,PTHC,II-2023,15,etoh,30,2ml etoh,21,0,0.0012,0.0009,even lipid distribution,2.6
+PTHC_II-2023_F15,Xcortezi,PTHC,II-2023,15,etoh,30,2ml etoh,22,0,0.0009,0.0009,even lipid distribution,2.6
+PTHC_II-2023_F15,Xcortezi,PTHC,II-2023,15,etoh,30,2ml etoh,23,0,0.0012,0.0009,even lipid distribution,2.6
+PTHC_II-2023_F15,Xcortezi,PTHC,II-2023,15,etoh,30,2ml etoh,24,0,0.0005,0.0009,even lipid distribution,2.6
+PTHC_II-2023_F15,Xcortezi,PTHC,II-2023,15,etoh,30,2ml etoh,25,0,0.0005,0.0009,even lipid distribution,2.6
+PTHC_II-2023_F15,Xcortezi,PTHC,II-2023,15,etoh,30,2ml etoh,26,0,0.0003,0.0009,even lipid distribution,2.6
+PTHC_II-2023_F15,Xcortezi,PTHC,II-2023,15,etoh,30,2ml etoh,27,0,0.0003,0.0009,even lipid distribution,2.6
+PTHC_II-2023_F15,Xcortezi,PTHC,II-2023,15,etoh,30,2ml etoh,28,0,0.0003,0.0009,even lipid distribution,2.6
+PTHC_II-2023_F15,Xcortezi,PTHC,II-2023,15,etoh,30,2ml etoh,29,0,0.0002,0.0009,even lipid distribution,2.6
+PTHC_II-2023_F15,Xcortezi,PTHC,II-2023,15,etoh,30,2ml etoh,30,0,0.0002,0.0009,even lipid distribution,2.6
