@@ -1,4 +1,5 @@
 ##### FIGURES
+##### Recent evolution of large offspring size and post-fertilization nutrient provisioning in swordtails
 ##### Payne et al
 ##### 12/2023
 
@@ -220,7 +221,7 @@ stage0_size_violin <- ggplot(stage0_partial_residuals, aes(x=species, y=visregRe
 stage0_size_violin
 ggsave(stage0_size_violin,filename='Figures/Fig2B_COAC-CHIC-egg-size_violin.pdf',bg = "transparent",width=6,height=8.5)
 
-## Supp. Fig. 17: Plot egg size with X. cortezi
+## Supp Fig 17: Plot egg size with X. cortezi
 text_col <- "black"
 species_order <- c("Xmalinche","Xbirchmanni", "Xcortezi")
 color_list <- c(malcol,bircol,corcol)
@@ -335,9 +336,9 @@ biplot(p, x="PC1", y="PC2",
 dev.off()
 
 
-## Figure 3B: prolactin receptor expression boxplots, as well as supplementary WGCNA cluster boxplots (S8 & S9)
-# Load ovary RNAseq data pseudoaligned against X. birchmanni pseudoreference
+## Figure 3B: Prolactin receptor expression boxplots, as well as supplementary WGCNA cluster boxplots (Supp Fig S8 & S9)
 library(plotrix)
+# load ovary RNAseq data pseudoaligned against X. birchmanni pseudoreference
 ovary_data <- read.csv("Data/embryo_ovary_dge_combined_2023/ovary_xmac-gtf_dge/ovary-xmacID-combined2023_dge_lfc-shr_all.csv_with-annots.csv",header=T)
 
 # specify tissue
@@ -518,6 +519,9 @@ ggsave(gene_list_heatmap,filename='Figures/FigX_acyl-CoA_heatmap.pdf',height=6,w
 ggsave(gene_list_heatmap,filename='Figures/FigX_vasc-paths_heatmap.pdf',height=6,width=9,bg = "transparent")
 
 
+## Figure 3D: Immunostains of prolactin in late-pregnancy ovaries
+
+
 ## Figure 4A: Fat content comparison between CHIC and COAC in February and September collections
 library(ggpubr)
 nonpreg_females <- read.csv("Data/II-2023_IX-2023_nonpreg-females_lipid-extraction.csv",header=T)
@@ -628,11 +632,13 @@ dm_fry_food_dep_plot
 ggsave(dm_fry_food_dep_plot,filename='Figures/Fig4B_food-deprivation_dry-mass-boxplot_black-text.pdf',height=8.5,width=8.5,bg = "transparent")
 
 
+
 ##### SUPPLEMENTARY FIGURES
 
-## Supp. Fig. S1: Image of measurements for standard length and head width
+## Supp Fig S1: Image of measurements for standard length and head width
 
-## Supp. Fig. S2A: 5 Xipho species newborn fry head width
+
+## Supp Fig S2A: 5 Xipho species newborn fry head width
 fry_size_data <- read.table("Data/newborn_fry_size_data.csv",header=T,sep=',')
 xipho_sp_size <- subset(fry_size_data, species_site %in% c("XbirCOAC","XmalCHIC","XcorPTHC","XpygPTHC","XvarCOAC"))
 xipho_sp_hw_summed <- as.data.frame(
@@ -721,8 +727,18 @@ ggsave(hw,filename='Figures/SuppFig_Xipho-Xmal-Xbirch-hybrid-fry_head-width.pdf'
 pairwise.wilcox.test(mal_bir_hyb_size_summed$hw_mm_mean, mal_bir_hyb_size_summed$species,p.adjust.method = "BH")
 
 
-## Supp. Fig. S6: Relationship of mother ancestry proportion and mitotype
-## with embryo and ovary dry weights in hybrids from natural hybrid population Calnali Low
+## Supp Fig S3: Brood size comparison between species
+
+
+## Supp Fig S4: Adult lab-reared female size comparison between species
+
+
+## Supp Fig S5: Embryo developmental profiles with raw data
+## Code can be found under Figure 2A
+
+
+## Supp Fig S6: Relationship of mother ancestry proportion and mitotype
+# with embryo and ovary dry weights in hybrids from natural hybrid population Calnali Low
 combined_embryo_data <- read.table("Data/all-pops_combined_embryo_datasets.csv",header=T,sep=',')
 CALL_embryo_data <- subset(combined_embryo_data,population=="CALL")
 CALL_mother_hi <- read.table("Data/CALL_mother_hybrid-index_mitotype.csv",header=T,sep=',')
@@ -733,7 +749,7 @@ CALL_embryo_data <- subset(CALL_embryo_data,stage!="-" & stage!="0" & stage!="10
 # remove pure parent data
 CALL_embryo_data_nomal <- subset(CALL_embryo_data,mother_hi<0.9 & mother_hi>0.1 )
 
-## Relationship between embryo dry weight and mother hybrid index
+## Supp Fig S6A - Relationship between embryo dry weight and mother hybrid index
 # model fit
 model_all<-lm(embryo_dry_weight_g~mother_hi*stage+brood_size,data=CALL_embryo_data_nomal)
 selectedMod <- step(model_all) # embryo_dry_weight_g ~ mother_hi + stage + mother_hi:stage + brood_ID
@@ -762,7 +778,7 @@ dev.copy(pdf,"Figures/FigSX_CALL_embryo-size_mother-hybrid-index.pdf",bg="transp
 dev.off()
 cor(CALL_hi_mlm_vr$res$visregRes,CALL_hi_mlm_vr$res$mother_hi,method="pearson") # 0.9877804
 
-## Relationship between embryo dry weight and mother mitotype
+## Supp Fig S6B - Relationship between embryo dry weight and mother mitotype
 # model fit
 model_all<-lm(embryo_dry_weight_g~mitotype*stage+brood_size,data=CALL_embryo_data_nomal)
 selectedMod <- step(model_all) # embryo_dry_weight_g ~ mitotype + stage + mitotype:stage + brood_size
@@ -806,45 +822,8 @@ CALL_mito_plot <-
 CALL_mito_plot
 ggsave(CALL_mito_plot,filename='Figures/FigSX_CALL_embryo-size_mitotype.pdf',height=8,width=8,bg = "transparent")
 
-## Relationship between ovary dry weight and mother hybrid index
-# model fit
-CALL_ovary_weight_unique <- as.data.frame(
-  CALL_embryo_data_nomal %>%
-    group_by(brood_ID,stage) %>%
-    reframe(ovarian_tissue_dry_weight_g = first(ovarian_tissue_dry_weight_g),brood_size=first(brood_size),mother_hi=first(mother_hi),mitotype=first(mitotype)))
-# model fit: mother hybrid index
-CALL_hi_ovary_lm_fit <- lm(ovarian_tissue_dry_weight_g ~ mother_hi*stage + brood_size, CALL_ovary_weight_unique)
-selectedMod <- step(CALL_hi_ovary_lm_fit) # ovarian_tissue_dry_weight_g ~ mother_hi + stage + mother_hi:stage + brood_size
-# evaluate significance with likelihood ratio test (anova) on full and reduced model
-CALL_hi_ovary_lm_fit <- lm(ovarian_tissue_dry_weight_g ~ mother_hi + stage + mother_hi:stage + brood_size, CALL_ovary_weight_unique)
-summary(CALL_hi_ovary_lm_fit)
-CALL_hi_ovary_lm_fit_reduced <- lm(ovarian_tissue_dry_weight_g ~ stage + brood_size, CALL_ovary_weight_unique)
-anova(CALL_hi_ovary_lm_fit,CALL_hi_ovary_lm_fit_reduced)
-# 2     75 0.0016711 -5 -0.00028619 2.8931 0.01971 *
 
-# plot mother hi and ovary dry weight
-CALL_hi_ovary_lm_vr <- visreg(CALL_hi_ovary_lm_fit,"mother_hi")
-plot(visregRes ~ mother_hi,CALL_hi_ovary_lm_vr$res,xlab="mother ancestry proportion",ylab="partial residuals of ovary dry weight (g)", col=hybrid_col,pch=20,cex.lab=1.8,cex.axis=1.5)
-abline(lm(CALL_hi_ovary_lm_vr$res$visregRes~CALL_hi_ovary_lm_vr$res$mother_hi), col="purple",lwd=4)
-
-## Relationship between ovary dry weight and mother mitotype
-# model fit
-CALL_mito_ovary_lm_fit <- lm(ovarian_tissue_dry_weight_g ~ mitotype*stage + brood_size, CALL_ovary_weight_unique)
-selectedMod <- step(CALL_mito_ovary_lm_fit) # ovarian_tissue_dry_weight_g ~ stage + brood_size
-summary(CALL_mito_ovary_lm_fit) # mitotypemalinche          1.210e-03  2.620e-03   0.462  0.64561
-CALL_mito_ovary_lm_fit <- lm(ovarian_tissue_dry_weight_g ~ mitotype + stage + brood_size, CALL_ovary_weight_unique)
-CALL_mito_ovary_lm_fit_reduced <- lm(ovarian_tissue_dry_weight_g ~ stage + brood_size, CALL_ovary_weight_unique)
-anova(CALL_mito_ovary_lm_fit,CALL_mito_ovary_lm_fit_reduced)
-# 2     75 0.0016711 -1 -6.2071e-07 0.0275 0.8687
-
-## correlation between mother hybrid index and mitotype
-temp <- CALL_embryo_data
-temp$mito_num <- ifelse(temp$mitotype=="birchmanni",0,1)
-temp <- subset(temp,!is.na(mother_hi) & !is.na(mito_num))
-cor(temp$mother_hi,temp$mito_num,method="spearman") # spearman rho=0.69
-
-
-## Supp. Fig. S7: Allele-specific expression of X. malinche ovaries from F1 cross
+## Supp Fig S7: Allele-specific expression of X. malinche ovaries from F1 cross
 error.bar <- function(x, y, upper, lower=upper, length=0.1,...){
   if(length(x) != length(y) | length(y) !=length(lower) | length(lower) != length(upper))
     stop("vectors must be same length")
@@ -872,13 +851,119 @@ points(1:2,c(mean(prop_xmal_indiv1),mean(prop_xmal_indiv2)),col="cornflowerblue"
 error.bar(c(1:2),c(mean(prop_xmal_indiv1),mean(prop_xmal_indiv2)),c(2*std.error(prop_xmal_indiv1),2*std.error(prop_xmal_indiv2)),lwd=2,col="cornflowerblue")
 
 
+## Supp Fig S8: Artery development genes from WGCNA cluster associated with late-pregnancy X. malinche ovaries
+## Code can be found under Figure 3B
+
+
+## Supp Fig S9: Acyl- and acetyl-CoA genes from WGCNA cluster associated with late-pregnancy X. malinche ovaries
+## Code can be found under Figure 3B
+
+
+## Supp Fig S10: Heatmap of WGCNA module-trait correlations matrix
+## Generated in WGCNA analysis, see ovary_WGCNA_xmac-IDs_combined2023.R
+
+
+## Supp Fig S11: CHIC and ACUA temperature data
+## Adapted from Payne et al 2022 temperature plot
+library(ggplot2)
+hobo_data <- read.csv("Data/HOBO_CHIC_ACUA_for_Payne-et-al-2021.csv")
+datetime <- as.POSIXct(strptime(hobo_data$Datetime_GMT.06.00_CHIC_01, "%m/%d/%y %H:%M", tz = "CST6CDT"))
+malcol <- "#00BFC4"
+bircol <- "#F8766D"
+text_col <- "black"
+temp_plot <- ggplot() + theme_minimal() +
+  theme(
+    axis.text=element_text(color=text_col,size=22),
+    text=element_text(color=text_col,size=22)
+  ) +
+  geom_point(data = hobo_data, aes(x = datetime, y = CHIC_01_C), colour=adjustcolor(malcol,alpha.f=0.2), size = 0.9) +
+  geom_smooth(data = hobo_data, aes(x = datetime, y = CHIC_01_C), fill=malcol,colour=malcol,linewidth=1) +
+  geom_point(data = hobo_data, aes(x = datetime, y = ACUA_01.16.06.17), colour=adjustcolor(bircol,alpha.f=0.2), size = 0.9) +
+  geom_smooth(data = hobo_data, aes(x = datetime, y = ACUA_01.16.06.17), fill=bircol,colour=bircol,linewidth=1) +
+  scale_x_datetime(date_breaks = "2 months", date_minor_breaks = "1 month", date_labels="%b") +
+  scale_y_continuous(name="temperature (\u00B0C)", limits=c(10, 30)) +
+  xlab("year-month-day-time (GMT-6)")
+temp_plot
+ggsave(temp_plot,filename="Figures/HOBO_CHIC-2020_ACUA-2016_combined-plot.pdf",width=12,height=8.5)
+
+
+## Supp Fig S12 - Pregnancy rates in wild X. malinche and X. birchmanni populations
+# load pregnancy rate data
+pregnancy_data <- read.csv("Data/pregnancy_rate_CHIC_COAC_collections.csv",header=T)
+
+# set colors
+preg_col <- "saddle brown"
+nonpreg_yolk_col    <- "goldenrod"
+nonpreg_nonyolk_col <- "wheat"
+color_list <- c(preg_col,nonpreg_yolk_col,nonpreg_nonyolk_col)
+
+# reorder pregnancy status
+status_order <- c("pregnant","nonpregnant_yolked","nonpregnant_nonyolked")
+
+## split into two barplots, one for X. malinche and one for X. birchmanni
+## unfortunately, was not able to stitch the two plots together with
+## facet or ggarrange, something weird with creating two barplots at the same time?
+## stitched manually
+# Xbir plot
+pregnancy_data_xbir <- subset(pregnancy_data, species=="Xbirchmanni")
+collection_order <- c("COAC_II-23", "COAC_V-22", "COAC_VIII-20", "COAC_IX-22")
+Xbir_preg_rate_plot <-
+  ggplot(pregnancy_data_xbir, aes(x = factor(collection,levels=collection_order), y = number_of_females, fill = factor(pregnancy_status, levels=status_order))) +
+  geom_bar(position = "fill", stat = "identity") +
+  scale_fill_manual(values=color_list) +
+  scale_y_continuous(labels = scales::percent_format()) +
+  theme_minimal() +
+  theme(
+    legend.title = element_blank(),
+    axis.ticks = element_line(colour = text_col, size = 0.2),
+    panel.grid.major = element_line(colour = "grey", size = 0.2),
+    panel.grid.minor = element_blank(),
+    axis.text=element_text(colour=text_col, size=22),
+    text=element_text(colour=text_col, size=26),
+    plot.background = element_rect(fill = "transparent", color = NA),
+    rect = element_rect(fill = "transparent"),
+    panel.background = element_rect(fill = "transparent"),
+    panel.border = element_rect(colour = text_col, fill=NA)
+  ) +
+  scale_x_discrete(labels = c("February", "May", "August", "November")) +
+  xlab("X. birchmanni") +
+  ylab("percentage of females collected")
+Xbir_preg_rate_plot
+ggsave(Xbir_preg_rate_plot,filename='Figures/SuppFigS12_Xbir_pregnancy-rates.pdf',bg = "transparent",width=11,height=8.5)
+
+# Xmal plot
+pregnancy_data_xmal <- subset(pregnancy_data, species=="Xmalinche")
+collection_order <- c("CHIC_II-23", "CHIC_V-22", "CHIC_VIII-20", "CHIC_IX-22")
+Xmal_preg_rate_plot <-
+  ggplot(pregnancy_data_xmal, aes(x = factor(collection,levels=collection_order), y = number_of_females, fill = factor(pregnancy_status, levels=status_order))) +
+  geom_bar(position = "fill", stat = "identity") +
+  scale_fill_manual(values=color_list) +
+  scale_y_continuous(labels = scales::percent_format()) +
+  theme_minimal() +
+  theme(
+    legend.title = element_blank(),
+    axis.ticks = element_line(colour = text_col, size = 0.2),
+    panel.grid.major = element_line(colour = "grey", size = 0.2),
+    panel.grid.minor = element_blank(),
+    axis.text=element_text(colour=text_col, size=22),
+    text=element_text(colour=text_col, size=26),
+    plot.background = element_rect(fill = "transparent", color = NA),
+    rect = element_rect(fill = "transparent"),
+    panel.background = element_rect(fill = "transparent"),
+    panel.border = element_rect(colour = text_col, fill=NA)
+  ) +
+  scale_x_discrete(labels = c("February", "May", "August", "November")) +
+  xlab("X. malinche") +
+  ylab("percentage of females collected")
+Xmal_preg_rate_plot
+ggsave(Xmal_preg_rate_plot,filename='Figures/SuppFigS12_Xmal_pregnancy-rates.pdf',bg = "transparent",width=11,height=8.5)
 
 
 ## Supp Fig S13A - Food deprivation fry experiment - standard length (cm)
 ## chose to plot partial residuals of standard lengths, instead of lengths normalized
 ## by average initial lengths, because it better shows that Xmal and Xbir fry achieve
 ## roughly the same size after 3 days, despite starting much smaller, and shows that
-## xbir gain less in no food conditions
+## Xbir gain less in no food conditions
 fry_initial_std_lengths <- read.csv("Data/X-23_fry_starvation_initial_standard_lengths.csv")
 # get average pre-trial standard length per brood, add to dataframe
 fry_initial_std_lengths_avg <- as.data.frame(
@@ -895,10 +980,6 @@ step(lm(standard_length_mm ~ condition+species+avg_initial_std_length_mm+brood_n
 
 # Stats: Compare raw means, accounting for covariates
 # ANOVA - posthoc Tukey
-# no difference between Xmal v Xbir
-# no difference between Xmal control v starved
-# sig difference (decrease) between Xbir control v starved
-#$`pairwise differences of condition`
 #$`pairwise differences of condition`
 #1                           estimate     SE df t.ratio p.value
 #Xbir_control - Xbir_starved   0.1130 0.0325 50   3.481  0.0056
@@ -910,10 +991,11 @@ step(lm(standard_length_mm ~ condition+species+avg_initial_std_length_mm+brood_n
 std_length_fit <- lme(standard_length_mm ~ condition, random=~1|brood_no,data=fry_fat_content)
 emmeans(std_length_fit, list(pairwise ~ condition), adjust = "tukey")
 
-# calculate partial residuals
+# calculate partial residuals of standard length
 std_length_fit <- lmer(standard_length_mm ~ condition+(1|brood_no),data=fry_fat_content)
 std_length_partial_residuals <- visreg(std_length_fit, "condition",plot=F)$res
-# Paper plot: partial residuals of standard length
+
+# plot
 text_col <- "black"
 color_list <- c(coaccol,coaccol,chiccol,chiccol)
 condition_order <- c("Xmal_control","Xmal_starved","Xbir_control","Xbir_starved")
@@ -1034,149 +1116,10 @@ fc_fry_food_dep_plot
 ggsave(fc_fry_food_dep_plot,filename='Figures/FigSX_food-deprivation_fat-content-boxplot_black-text.pdf',height=8.5,width=8.5,bg = "transparent")
 
 
+## Supp Fig S14: Photo of premature birth phenotype
 
 
-## Supp. Fig. XX: CHIC and ACUA temperature data
-## Adapted from Payne et al 2022 temperature plot
-library(ggplot2)
-hobo_data <- read.csv("Data/HOBO_CHIC_ACUA_for_Payne-et-al-2021.csv")
-datetime <- as.POSIXct(strptime(hobo_data$Datetime_GMT.06.00_CHIC_01, "%m/%d/%y %H:%M", tz = "CST6CDT"))
-malcol <- "#00BFC4"
-bircol <- "#F8766D"
-text_col <- "black"
-temp_plot <- ggplot() + theme_minimal() +
-  theme(
-    axis.text=element_text(color=text_col,size=22),
-    text=element_text(color=text_col,size=22)
-#    axis.title=element_text(color=text_col,size=14),
-#    axis.text.x = element_text(colour = malcol)
-  ) +
-  geom_point(data = hobo_data, aes(x = datetime, y = CHIC_01_C), colour=adjustcolor(malcol,alpha.f=0.2), size = 0.9) +
-  geom_smooth(data = hobo_data, aes(x = datetime, y = CHIC_01_C), fill=malcol,colour=malcol,linewidth=1) +
-  geom_point(data = hobo_data, aes(x = datetime, y = ACUA_01.16.06.17), colour=adjustcolor(bircol,alpha.f=0.2), size = 0.9) +
-  geom_smooth(data = hobo_data, aes(x = datetime, y = ACUA_01.16.06.17), fill=bircol,colour=bircol,linewidth=1) +
-  scale_x_datetime(date_breaks = "2 months", date_minor_breaks = "1 month", date_labels="%b") +
-  scale_y_continuous(name="temperature (\u00B0C)", limits=c(10, 30)) +
-  xlab("year-month-day-time (GMT-6)")
-temp_plot
-ggsave(temp_plot,filename="Figures/HOBO_CHIC-2020_ACUA-2016_combined-plot.pdf",width=12,height=8.5)
-
-
-## Supp. Fig. XX: Relationship between ovary weight and total embryo weight (partial residuals) in COAC and CHIC mothers
-library(visreg)
-combined_embryo_data <- read.table("Data/all-pops_combined_embryo_datasets.csv",header=T,sep=',')
-# subset the dataset by COAC and CHIC populations, and filter out unused stages (2 and 5)
-coac_chic_embryo_data <- subset(combined_embryo_data,(population=="COAC" | population=="CHIC") & stage!=0 & stage!=2 & stage!=5 & stage!="?")
-coac_chic_embryo_data$ovarian_tissue_dry_weight_g <- as.numeric(coac_chic_embryo_data$ovarian_tissue_dry_weight_g)
-coac_chic_embryo_data$stage <- as.numeric(coac_chic_embryo_data$stage)
-# create new data frame with dry weights of embryos avged over their brood
-library(dplyr)
-coac_chic_embryo_data_summed <- as.data.frame(
-  coac_chic_embryo_data %>%
-  group_by(brood_ID) %>%
-  reframe(embryo_dry_weight_g_mean = mean(embryo_dry_weight_g,na.rm=T),avg_stage=mean(stage,na.rm=T),ovarian_tissue_dry_weight_g=mean(ovarian_tissue_dry_weight_g,na.rm=T),brood_size=mean(brood_size,na.rm=T),mother_std_length=mean(mother_std_length,na.rm=T),population=first(population),collection=first(collection)))
-
-coac_chic_embryo_data_fit <- lm(embryo_dry_weight_g_mean ~ ovarian_tissue_dry_weight_g+avg_stage+brood_size+mother_std_length+population+collection,coac_chic_embryo_data_summed)
-step(coac_chic_embryo_data_fit)
-summary(coac_chic_embryo_data_fit)
-ovary_vs_embryo_prplot <- visreg(coac_chic_embryo_data_fit, "ovarian_tissue_dry_weight_g", by="population",gg=T,overlay=T) + theme_bw() +
-  theme(
-    axis.ticks = element_line(colour = "black", size = 0.2),
-    #panel.grid.major = element_line(colour = "white", size = 0.2),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    axis.text=element_text(colour="black", size=28),
-    text=element_text(colour="black", size=30),
-    plot.background = element_rect(fill = "transparent", color = NA),
-    rect = element_rect(fill = "transparent"),
-    panel.background = element_rect(fill = "transparent"),
-    panel.border = element_rect(colour = "black", fill=NA)
-  ) +
-  ylim(0.0015,0.005) +
-  ylab("average embryo dry weight (g)")
-ovary_vs_embryo_prplot
-
-library(nlme)
-coac_chic_embryo_data_fit <- lm(ovarian_tissue_dry_weight_g ~ stage*population+brood_size+mother_std_length+collection,coac_chic_embryo_data)
-step(coac_chic_embryo_data_fit)
-coac_chic_ovary_data_fit <- lme(ovarian_tissue_dry_weight_g ~ stage*population, random=~1|brood_ID, data=coac_chic_embryo_data,na.action=na.exclude)
-anova(coac_chic_ovary_data_fit)
-visreg(coac_chic_ovary_data_fit,"population",gg=T,overlay=T)
-
-
-## Supp. Fig. XX: Relationship between brood size and embryo size
-## will be similar to the above - need to account for stage and brood_ID
-library(visreg)
-combined_embryo_data <- read.table("Data/all-pops_combined_embryo_datasets.csv",header=T,sep=',')
-# subset the dataset by COAC and CHIC populations, and filter out unused stages (2 and 5)
-coac_chic_embryo_data <- subset(combined_embryo_data,(population=="COAC" | population=="CHIC") & stage!=0 & stage!=2 & stage!=5 & stage!="?")
-coac_chic_embryo_data$ovarian_tissue_dry_weight_g <- as.numeric(coac_chic_embryo_data$ovarian_tissue_dry_weight_g)
-coac_chic_embryo_data$stage <- as.numeric(coac_chic_embryo_data$stage)
-# create new data frame with dry weights of embryos avged over their brood
-library(dplyr)
-coac_chic_embryo_data_summed <- as.data.frame(
-  coac_chic_embryo_data %>%
-    group_by(brood_ID) %>%
-    reframe(embryo_dry_weight_g_mean = mean(embryo_dry_weight_g,na.rm=T),avg_stage=mean(stage,na.rm=T),ovarian_tissue_dry_weight_g=mean(ovarian_tissue_dry_weight_g,na.rm=T),brood_size=mean(brood_size,na.rm=T),mother_std_length=mean(mother_std_length,na.rm=T),population=first(population),collection=first(collection)))
-
-coac_chic_embryo_data_fit <- lm(embryo_dry_weight_g_mean ~ brood_size+ovarian_tissue_dry_weight_g+avg_stage+mother_std_length+population+collection,coac_chic_embryo_data_summed)
-summary(coac_chic_embryo_data_fit)
-ovary_vs_embryo_prplot <- visreg(coac_chic_embryo_data_fit, "brood_size", by="population",gg=T,overlay=T) + theme_bw() +
-  theme(
-    axis.ticks = element_line(colour = "black", size = 0.2),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    axis.text=element_text(colour="black", size=28),
-    text=element_text(colour="black", size=30),
-    plot.background = element_rect(fill = "transparent", color = NA),
-    rect = element_rect(fill = "transparent"),
-    panel.background = element_rect(fill = "transparent"),
-    panel.border = element_rect(colour = "black", fill=NA)
-  ) +
-  ylim(0.0015,0.005) +
-  ylab("average embryo dry weight (g)")
-ovary_vs_embryo_prplot
-
-
-## Supp. Fig. XX: Xmalinche (CHIC) and Xbirchmanni (COAC) ovary size partial residual plots
-## XX There's no difference - come back to this with full COAC dataset
-library(visreg)
-combined_embryo_data <- read.table("Data/all-pops_combined_embryo_datasets.csv",header=T,sep=',')
-# subset the dataset by Xbir and Xmal populations, and filter out unused stages (2 and 5)
-xmal_xbir_combined_embryo_data <- subset(combined_embryo_data,(species=="Xbirchmanni" | species=="Xmalinche") & stage!=0 & stage!=2 & stage!=5 & stage!="?" & stage!="NA")
-# split by early vs late stage (use cutoff observed in dev size profiles -->  early: <20 late: >=20)
-xmal_xbir_combined_embryo_data$stage_category <- ifelse(xmal_xbir_combined_embryo_data$stage < 20, "early", "late")
-# create CHIC partial residuals plot
-chic_coac_subset <- subset(xmal_xbir_combined_embryo_data,(population=="CHIC" | population=="COAC") & embryo_ID=="1")
-# choose model
-full_model <- lm(ovarian_tissue_dry_weight_g~population+stage+brood_size+mother_std_length+collection, data=chic_coac_subset)
-selectedMod <- step(full_model) # ovarian_tissue_dry_weight_g ~ brood_size + mother_std_length
-ovary_chic_coac_fit <- lm(ovarian_tissue_dry_weight_g ~ population + brood_size + mother_std_length, data=chic_coac_subset)
-summary(ovary_chic_coac_fit)
-malcol <- "#00BFC4"
-bircol <- "#F8766D"
-ovary_chic_coac_prplot <-
-  visreg(ovary_chic_coac_fit, "population", gg=T, fill.par=list(col=c(malcol,bircol,malcol,bircol),fill=NA,lwd=1.5), line.par=list(col=c(bircol,malcol),size=1.5), overlay=TRUE, partial=F,rug=F)  + theme_bw() +
-  scale_fill_manual(values=c(malcol,bircol)) +
-  theme(
-    axis.ticks = element_line(colour = "black", size = 0.2),
-    #panel.grid.major = element_line(colour = "white", size = 0.2),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    axis.text=element_text(colour="black", size=28),
-    text=element_text(colour="black", size=30),
-    plot.background = element_rect(fill = "transparent", color = NA),
-    rect = element_rect(fill = "transparent"),
-    panel.background = element_rect(fill = "transparent"),
-    panel.border = element_rect(colour = "black", fill=NA)
-  ) +
-  ylim(0.001,0.004) +
-  ylab("ovary dry weight (g)")
-ovary_chic_coac_prplot
-ggsave(ovary_chic_coac_prplot,filename='Figures/CHIC_partial-residuals_dev-profile_all-stages_black-text.pdf',height=8.5,width=10.5,bg = "transparent")
-
-
-## Supp. Fig. S15: Within and between X. malinche lab population crosses [TETIxTETI (wild), CHICxCHIC (lab), TETIxCHIC (lab)]
+## Supp Fig S15: Within and between X. malinche lab population crosses [TETIxTETI (wild), CHICxCHIC (lab), TETIxCHIC (lab)]
 tetixchic_data <- read.csv("Data/III-2023_TETI2_TETIxCHIC_CHICxCHIC_embryo-dry-weights.csv",header=T,sep=",")
 # we only have stage 25 and stage 35 TETIxCHIC embryos, will need to use those stages
 table(subset(tetixchic_data,population=="TETIxCHIC")$stage)
@@ -1252,7 +1195,8 @@ biplot(p, x="PC1", y="PC2",
 dev.off()
 
 
-## Supp Fig S17: See Fig 2B section
+## Supp Fig S17: Stage 0 egg size comparison between X. malinche, X. birchmanni, and X. cortezi
+## Code can be found under Figure 2B
 
 
 ## Supp Fig S18: Fry CTmin comparison
@@ -1272,6 +1216,7 @@ summary(ctmin_species_fit)
 # calculate partial residuals
 ctmin_partial_residuals <- visreg(ctmin_species_fit, "species",plot=F)$res
 
+# plot
 malcol <- "#00BFC4"
 bircol <- "#F8766D"
 color_list <- c(bircol,malcol)
@@ -1292,35 +1237,7 @@ ctmin_species <- ggplot(ctmin_data, aes(x=species, y=CTmin_C, fill=species)) +
     panel.border = element_rect(colour = "black", fill=NA)
   ) +
   scale_x_discrete(labels = c('Xbir','Xmal')) +
-  #ggtitle("CTmin of newborn Xiphophorus fry") +
   xlab("species") +
   ylab("CTmin (\u00B0C)")
 ctmin_species
 ggsave(ctmin_species,filename='Figures/FigSX_CTmin_newborn-Xmal-Xbirch.pdf',bg = "transparent",width=8.5,height=8.5)
-
-
-
-## dropped ##
-
-## Figure X: Periphyton sampled from Xmalinche (CAPAC) and Xbirchmanni (PEZM) sites
-library("dplyr")
-pdf("Figures/Fig4A_EPA_periphyton_data_white-text.pdf",width=8.5,height=8.5)
-epa_algae_data<-read.csv(file="Data/EPA_periphyton_capac_pezm.txt",sep="\t",head=TRUE)
-epa_algae_proportions <- data.frame(epa_algae_data[,1:5],(epa_algae_data[,6:12]/epa_algae_data[,5]))
-epa_algae_proportions[is.na(epa_algae_proportions)] <- 0
-#epa_algae_proportions <- subset(epa_algae_proportions, !is.na(X1))
-epa_algae_proportions <- epa_algae_proportions %>% rowwise() %>% mutate(sum = sum(across(c(X0.5,X1,X2,X3,X4,X5)), na.rm = T))
-bir<-subset(epa_algae_proportions,site=="PEZM")$sum
-mal<-subset(epa_algae_proportions,site=="CAPA")$sum
-
-#boxplot(cbind(bir,mal),names=c("Xbir","Xmal"),ylab="abundance of periphyton per transect (>0.5mm)",border=c(bircol,malcol),pch=20,ylim=c(0,1.1), col=NA, col.axis=text_col, col.lab = text_col, cex.axis = 1.5, cex.lab = 2)
-text_col="black"
-boxplot(cbind(bir,mal),names=c("Xbir","Xmal"),ylab="periphyton density per sample",border=c(bircol,malcol),pch=20,ylim=c(0,1.1), col=NA, col.axis=text_col, col.lab = text_col, cex.axis = 2, cex.lab = 2)
-noise=runif(length(bir),-0.2,0.2)
-points(rep(1,length(bir))+noise,bir,col=bircol,pch=20,cex=3)
-noise=runif(length(mal),-0.2,0.2)
-points(rep(2,length(mal))+noise,mal,col=malcol,pch=20,cex=3)
-box(col=text_col)
-
-dev.off()
-summary(aov(epa_algae_proportions$sum~epa_algae_proportions$site))
