@@ -65,25 +65,11 @@ combined_embryo_data <- read.table("Data/all-pops_combined_embryo_datasets.csv",
 
 ##  Supp Table S5 - Statistical comparisons of mean embryo size between species at each stage
 combined_embryo_data <- read.table("Data/all-pops_combined_embryo_datasets.csv",header=T,sep=',')
-combined_subset <- subset(combined_embryo_data,(popcoll=="CHIC_V-2022" | popcoll=="CHIC_VIII_20" | popcoll=="COAC_VIII_20" | popcoll=="COAC_II-2023" | popcoll=="COAC_IX-2022" | popcoll=="PTHC_II-2023") & stage!="0" & stage!="2" & stage!="5" & stage!="?" & stage!="-")
-# average embryo size for embryos of the same stage within a brood
-combined_subset_summed <- as.data.frame(
-  combined_subset %>%
-    group_by(brood_ID,species,population,collection,stage) %>%
-    reframe(embryo_dry_weight_g_mean = mean(embryo_dry_weight_g,na.rm=T),brood_size=mean(brood_size,na.rm=T),mother_std_length=first(mother_std_length)))## pairwise comparisons with linear model + Tukey
-# choose model
-combined_full_model <- lm(embryo_dry_weight_g_mean~species+stage+collection+brood_size+mother_std_length,data=combined_subset_summed)
-step(combined_full_model) # embryo_dry_weight_g ~ species + stage + collection + mother_std_length
-
-# compare means between species by stage
-for(stg in c("10","15","20","25","30","35","40","45","50")){
-  print(stg)
-  coac_chic_subset <- subset(combined_subset_summed,(species=="Xmalinche" | species=="Xbirchmanni") & !is.na(stage) & stage==stg)
-  # chosen model: embryo_dry_weight_g_mean ~ species + collection + mother_std_length
-  coac_chic_stage_lm <- lm(embryo_dry_weight_g_mean ~ species + collection + mother_std_length,data=coac_chic_subset)
-  # emmeans pairwise comparison with Tukey
-  print(emmeans(coac_chic_stage_lm,pairwise~species)$contrasts)
-}
+combined_subset <- subset(combined_embryo_data,(popcoll=="CHIC_V-2022" | popcoll=="CHIC_VIII_20" | popcoll=="COAC_VIII_20" | popcoll=="COAC_II-2023" | popcoll=="COAC_IX-2022" | popcoll=="COAC_X-2023") & stage!="0" & stage!="2" & stage!="5" & stage!="?" & stage!="-")
+# chosen fit
+combined_fit <- lmer(embryo_dry_weight_g~species+stage+species:stage+season+mother_std_length+(1|brood_ID),data=combined_subset, REML=T)
+# ANOVA and Tukey-test to compare species by stage
+emmeans(combined_fit, list(pairwise ~ species | stage), adjust = "tukey")
 
 
 ##  Supp Table S6 - Raw stage 0 egg size data from wild collections
@@ -102,20 +88,8 @@ CALL_embryo_data <- subset(CALL_embryo_data,stage!="-" & stage!="0" & stage!="10
 CALL_embryo_data_nomal <- subset(CALL_embryo_data,mother_hi<0.9 & mother_hi>0.1 )
 
 
-## Supp Table S8 - Matrotrophy Index partial residuals (see Supp. Materials S3 section below for calculations and bootstraps)
-combined_embryo_data <- read.table("Data/all-pops_combined_embryo_datasets.csv",header=T,sep=',')
-combined_subset <- subset(combined_embryo_data,(popcoll=="CHIC_V-2022" | popcoll=="CHIC_VIII_20" | popcoll=="COAC_VIII_20" | popcoll=="COAC_II-2023" | popcoll=="COAC_IX-2022" | popcoll=="PTHC_II-2023") & stage!="0" & stage!="2" & stage!="5" & stage!="?" & stage!="-")
-# average embryo size for embryos of the same stage within a brood
-combined_subset_summed <- as.data.frame(
-  combined_subset %>%
-    group_by(brood_ID,species,population,collection,stage) %>%
-    reframe(embryo_dry_weight_g_mean = mean(embryo_dry_weight_g,na.rm=T),brood_size=mean(brood_size,na.rm=T),mother_std_length=first(mother_std_length)))
-# choose model
-combined_full_model <- lm(embryo_dry_weight_g_mean~species+stage+collection+brood_size+mother_std_length,data=combined_subset_summed)
-step(combined_full_model) # embryo_dry_weight_g ~ species + stage + collection + mother_std_length
-combined_fit <- lm(embryo_dry_weight_g_mean ~ stage + species + collection + mother_std_length,data=combined_subset_summed)
-# calculate partial residuals
-combined_stage_partial_residuals <- visreg(combined_fit, "stage",by="species",plot=F)$res
+## Supp Table S8 - Matrotrophy Index partial residuals
+## See Supp. Materials S3 section below for partial residual, MI, and bootstrap calculations)
 
 
 ## Supp Table S9 - Embryo dry weights of multifactorial lab crosses between X. malinche and X. birchmanni
@@ -126,24 +100,29 @@ roof_chic_coac_f1 <- read.csv("Data/IV-2023_roof-tank_CHIC-COAC-F1_embryo-weight
 roof_chic_coac_f1 <- read.csv("Data/IV-2023_roof-tank_CHIC-COAC-F1_embryo-weights.csv",header=T,sep=",")
 roof_chic_coac_f1$stage <- as.factor(roof_chic_coac_f1$stage)
 # drop early stages (have <=2 samples)
-roof_chic_coac_f1_subset <- subset(roof_chic_coac_f1,stage!="0" & stage!="5" & stage!="10" & stage!="15" )
+roof_chic_coac_f1_subset <- subset(roof_chic_coac_f1,stage!="0" & stage!="5" & stage!="10" & stage!="15" & stage!="20" & stage!="25")
 # remove one outlier - likely erroneous data recording
 roof_chic_coac_f1_subset <- subset(roof_chic_coac_f1_subset,embryo_dry_weight_g < 0.008)
+
 # choose model
-roof_chic_coac_f1_full_model <- lm(embryo_dry_weight_g~species+stage+brood_size+mother_std_length+brood_ID,data=roof_chic_coac_f1_subset)
-step(roof_chic_coac_f1_full_model) # embryo_dry_weight_g_mean ~ stage + brood_ID
-lab_cross_fit <- lm(embryo_dry_weight_g ~ species + stage + brood_ID, data=roof_chic_coac_f1_subset)
+step(lm(embryo_dry_weight_g~species*stage+brood_size+mother_std_length,roof_chic_coac_f1_subset)) # embryo_dry_weight_g ~ species + stage + brood_size + mother_std_length
+lab_cross_fit <- lmer(embryo_dry_weight_g~species+stage+brood_size+mother_std_length+(1|brood_ID),data=roof_chic_coac_f1_subset, REML=T)
+# the above model is singular because brood_ID and maternal standard length are perfectly correlated (R^2=1)
+summary(lm(mother_std_length~brood_ID,roof_chic_coac_f1_subset))
+# importantly, the visreg partial residuals are exactly the same whether we use a mixed linear model with brood_ID or
+# a simple linear model without it
+# therefore, we drop brood_ID as a random effect and use a simple linear model instead
+lab_cross_fit <- lm(embryo_dry_weight_g~species+stage+brood_size+mother_std_length,data=roof_chic_coac_f1_subset)
+
 # Stats: compare means with ANOVA and Tukey
-res <- summary(pairs(emmeans(lab_cross_fit, "species")))
-res
-res$p.value
+emmeans(lab_cross_fit, pairwise ~ species, adjust = "tukey")
 # contrast                     estimate          SE df t.ratio p.value
-# birxbir - birxmal_F1     0.000411 0.000671 141   0.613  0.9278
-# birxbir - malxbir_F1    -0.001626 0.000216 141  -7.529  <.0001
-# birxbir - malxmal       -0.002578 0.000349 141  -7.376  <.0001
-# birxmal_F1 - malxbir_F1 -0.002037 0.000709 141  -2.872  0.0241
-# birxmal_F1 - malxmal    -0.002989 0.000495 141  -6.038  <.0001
-# malxbir_F1 - malxmal    -0.000952 0.000369 141  -2.579  0.0527
+# birxbir - birxmal_F1     0.000667 0.000712 112   0.936  0.7855
+# birxbir - malxbir_F1    -0.000847 0.000639 112  -1.325  0.5491
+# birxbir - malxmal       -0.001723 0.000426 112  -4.048  0.0005
+# birxmal_F1 - malxbir_F1 -0.001514 0.001151 112  -1.315  0.5553
+# birxmal_F1 - malxmal    -0.002390 0.000890 112  -2.684  0.0411
+# malxbir_F1 - malxmal    -0.000876 0.000366 112  -2.393  0.0844
 
 
 ## Supp Table S11 - Embryo size data from within and between population crosses within X. malinche
@@ -154,23 +133,30 @@ tetixchic_data <- read.csv("Data/III-2023_TETI2_TETIxCHIC_CHICxCHIC_embryo-dry-w
 tetixchic_data <- read.csv("Data/III-2023_TETI2_TETIxCHIC_CHICxCHIC_embryo-dry-weights.csv",header=T,sep=",")
 # we only have stage 25 and stage 35 TETIxCHIC embryos, will need to use those stages
 table(subset(tetixchic_data,population=="TETIxCHIC")$stage)
-tetixchic_data <- subset(tetixchic_data, stage=="25" | stage=="35")
+tetixchic_data <- subset(tetixchic_data, stage=="25" | stage=="30" | stage=="35")
 tetixchic_data$embryo_dry_weight_g <- as.numeric(tetixchic_data$embryo_dry_weight_g)
-# average within brood/stage
-tetixchic_data_avg <- as.data.frame(
-  tetixchic_data %>%
-    group_by(brood_ID,stage,population,mother_origin,brood_size,mother_std_length) %>%
-    reframe(embryo_dry_weight_g_mean = mean(embryo_dry_weight_g,na.rm=T)))
+
 # choose model
-tetixchic_full <- lm(embryo_dry_weight_g_mean~population+stage+brood_size+mother_std_length+mother_origin, data=tetixchic_data_avg)
-step(tetixchic_full) # embryo_dry_weight_g ~ population + stage + mother_std_length
-## stats: ANOVA and Tukey
-tetixchic_fit <- lm(embryo_dry_weight_g_mean ~ population + stage + mother_std_length,data=tetixchic_data_avg)
+tetixchic_full <- lm(embryo_dry_weight_g~population+stage+brood_size+mother_std_length+mother_origin, data=tetixchic_data)
+step(tetixchic_full) # embryo_dry_weight_g ~ population + stage + brood_size + mother_std_length
+
+# stats: ANOVA and Tukey
+tetixchic_fit <- lmer(embryo_dry_weight_g ~ population + stage + brood_size + mother_std_length + (1|brood_ID),data=tetixchic_data, REML=T)
 summary(tetixchic_fit)
-emmeans(tetixchic_fit, list(pairwise ~ population), adjust = "tukey")
-#CHICxCHIC - TETI2      0.001120 0.000452 11   2.477  0.0729
-#CHICxCHIC - TETIxCHIC  0.000825 0.000585 11   1.409  0.3700
-#TETI2 - TETIxCHIC     -0.000295 0.000378 11  -0.782  0.7215
+emmeans(tetixchic_fit, list(pairwise ~ population | stage), adjust = "tukey")
+# 1                      estimate       SE   df t.ratio p.value
+# CHICxCHIC - TETI2      0.001680 0.000647 10.5   2.599  0.0612
+# CHICxCHIC - TETIxCHIC  0.001103 0.000799 11.4   1.380  0.3827
+# TETI2 - TETIxCHIC     -0.000577 0.000595 12.1  -0.970  0.6085
+
+# get within cross averages
+tetixchic_data_summed <- as.data.frame(
+  tetixchic_data %>%
+    group_by(brood_ID,population) %>%
+    reframe(embryo_dry_weight_g_mean = mean(embryo_dry_weight_g,na.rm=T)))
+mean(subset(tetixchic_data_summed,population=="CHICxCHIC")$embryo_dry_weight_g) # 0.0060
+mean(subset(tetixchic_data_summed,population=="TETIxCHIC")$embryo_dry_weight_g) # 0.0043
+mean(subset(tetixchic_data_summed,population=="TETI2")$embryo_dry_weight_g) # 0.0042
 
 
 ## Supp Table S13 - RNAseq metadata
@@ -187,7 +173,7 @@ ovary_dge <- read.csv("Data/embryo_ovary_dge_combined_2023/ovary_xmac-gtf_dge/ov
 
 
 ## Supp Table S16 - Gene Ontology biological pathways enriched in differentially expressed genes between X. malinche and X. birchmanni ovaries
-## See XXX
+## See ovary-GO-analysis_xmac-IDs_2023.R
 
 ## Supp Table S17 - Significance of relationship between WGCNA co-expressed gene cluster ovary expression profile and species/stage
 ## See ovary_WGCNA_xmac-IDs_combined2023.R to run WGCNA analysis
@@ -195,7 +181,7 @@ ovary_wgcna_module_pvals <- read.csv("Data/embryo_ovary_dge_combined_2023/wgcna/
 
 
 ## Supp Table S18 - Enriched GO biological pathways in the WGCNA cluster 'darkorange2'
-## See XXX
+## See ovary-GO-analysis-WGCNA_xmac-IDs_2023.R
 
 
 ## Supp Table S19 - Critical thermal minimum (CTmin) of newborn fry
@@ -308,36 +294,107 @@ pregnancy_data <- read.csv("Data/pregnancy_rate_CHIC_COAC_collections.csv",heade
 nb_fry_data <- read.csv("Data/newborn_fry_size_data.csv")
 nb_fry_data$born_year <- as.character(nb_fry_data$born_year)
 subset_nb_fry_data <- subset(nb_fry_data, species_site=="XbirCOAC" | site=="CHIC" | species=="Xmal_xbir_F2" | species=="Xmal_xbir_F1")
+# add season as variable
+subset_nb_fry_data$season <- "warm" # IV-X
+subset_nb_fry_data$season[subset_nb_fry_data$born_month=="XI"] <- "cold" # XI-III
+subset_nb_fry_data$season[subset_nb_fry_data$born_month=="XII"] <- "cold" # XI-III
+subset_nb_fry_data$season[subset_nb_fry_data$born_month=="I"] <- "cold" # XI-III
+subset_nb_fry_data$season[subset_nb_fry_data$born_month=="II"] <- "cold" # XI-III
+subset_nb_fry_data$season[subset_nb_fry_data$born_month=="III"] <- "cold" # XI-III
 
 # choose model
-model_all<-lm(sl_mm~species+collection+born_month+born_year,data=subset_nb_fry_data)
-selectedMod <- step(model_all) # sl_mm~species+collection
+model_all<-lm(sl_mm~species+season,data=subset_nb_fry_data)
+selectedMod <- step(model_all) # sl_mm~species+season
 summary(model_all)
-subset_nb_size_fit <- lmer(sl_mm ~ species+collection+(1|brood_ID),subset_nb_fry_data)
+subset_nb_size_fit <- lmer(sl_mm ~ species+season+(1|brood_ID),subset_nb_fry_data)
 
 # calculate partial residuals
 nb_size_residuals <- visreg(subset_nb_size_fit, "species",plot=F)$res
-write.csv(nb_size_residuals,"Data/newborn_standard-length_Xbir-Xmal-F1-F2_partial-residuals_aug2023.csv")
+write.csv(nb_size_residuals,"Data/newborn_standard-length_Xbir-Xmal-F1-F2_partial-residuals_april2024.csv")
 
 
 
 #### Additional Supp Materials calculations and statistics
+
+## Supp Materials S1: Life history traits
+combined_embryo_data <- read.table("Data/all-pops_combined_embryo_datasets.csv",header=T,sep=',')
+combined_subset <- subset(combined_embryo_data,(popcoll=="CHIC_V-2022" | popcoll=="CHIC_VIII_20" | popcoll=="COAC_VIII_20" | popcoll=="COAC_II-2023" | popcoll=="COAC_IX-2022" | popcoll=="COAC_X-2023") & stage!="0" & stage!="2" & stage!="5" & stage!="?" & stage!="-")
+# average embryo size within brood
+combined_subset_summed <- as.data.frame(
+  combined_subset %>%
+    group_by(brood_ID,species,population,season,collection) %>%
+    reframe(embryo_dry_weight_g_mean = mean(embryo_dry_weight_g,na.rm=T),brood_size=mean(brood_size,na.rm=T),mother_std_length=first(mother_std_length)))
+
+# effect of mother standard length on average embryo weight within brood
+step(lm(embryo_dry_weight_g_mean~species+season+brood_size+mother_std_length,data=combined_subset_summed)) # embryo_dry_weight_g_mean ~ species + season + mother_std_length
+anova(lm(embryo_dry_weight_g_mean ~ species + season + mother_std_length,combined_subset_summed))
+#                    Df     Sum Sq    Mean Sq F value    Pr(>F)
+# species            1 1.4169e-05 1.4169e-05 43.9352 2.269e-09 ***
+# season             1 4.4797e-06 4.4797e-06 13.8908 0.0003343 ***
+# mother_std_length  1 2.1559e-06 2.1559e-06  6.6852 0.0112925 *
+
+# relationship between brood size and mother standard length
+step(lm(brood_size~mother_std_length+species+season,data=combined_subset_summed)) # brood_size ~ mother_std_length + season
+anova(lm(brood_size ~ mother_std_length + species + season,combined_subset_summed))
+#                    Df Sum Sq Mean Sq  F value  Pr(>F)
+# mother_std_length  1 3347.6  3347.6 95.3841 6.381e-16 ***
+# species            1  163.2   163.2  4.6510   0.03362 *
+# season             1   90.2    90.2  2.5698   0.11231
+
+# mean brood sizes by species
+mean(subset(combined_subset_summed,species=="Xbirchmanni")$brood_size) # 13.15
+mean(subset(combined_subset_summed,species=="Xmalinche")$brood_size) # 17.18
+
+# range of mother standard lengths, by population
+mother_lengths <- as.data.frame(
+  combined_subset %>%
+    group_by(population) %>%
+    reframe(min_mother_length = min(mother_std_length,na.rm=T),max_mother_length = max(mother_std_length,na.rm=T),min_brood_size=min(brood_size,na.rm=T),max_brood_size=max(brood_size,na.rm=T)))
+mother_lengths
+
+# number of pregnant mothers per population and per collection
+dim(subset(combined_subset_summed,species=="Xbirchmanni" & !is.na(embryo_dry_weight_g_mean))) # 59
+table(subset(combined_subset_summed,species=="Xbirchmanni" & !is.na(embryo_dry_weight_g_mean))$collection)
+dim(subset(combined_subset_summed,species=="Xmalinche")) # 38
+table(subset(combined_subset_summed,species=="Xmalinche" & !is.na(embryo_dry_weight_g_mean))$collection)
+
+# number of pregnant + nonpregnant mothers per population and per collection
+combined_embryo_data <- read.table("Data/all-pops_combined_embryo_datasets.csv",header=T,sep=',')
+combined_subset <- subset(combined_embryo_data,(popcoll=="CHIC_V-2022" | popcoll=="CHIC_VIII_20" | popcoll=="COAC_VIII_20" | popcoll=="COAC_II-2023" | popcoll=="COAC_IX-2022" | popcoll=="COAC_X-2023" | popcoll=="PTHC_II-2023"))
+combined_subset_summed <- as.data.frame(
+  combined_subset %>%
+    group_by(brood_ID,species,population,season,collection) %>%
+    reframe(embryo_dry_weight_g_mean = mean(embryo_dry_weight_g,na.rm=T),brood_size=mean(brood_size,na.rm=T),mother_std_length=first(mother_std_length)))
+dim(subset(combined_subset_summed,species=="Xbirchmanni")) # 110
+table(subset(combined_subset_summed,species=="Xbirchmanni")$collection)
+dim(subset(combined_subset_summed,species=="Xmalinche")) # 49
+table(subset(combined_subset_summed,species=="Xmalinche")$collection)
+dim(subset(combined_subset_summed,species=="Xcortezi")) # 19 (only pregnant)
+
+
 
 ## Supp Materials S2: Heritability of standard length calculation
 # prepare partial residuals to account for covariates in trait values
 nb_fry_data <- read.csv("Data/newborn_fry_size_data.csv")
 nb_fry_data$born_year <- as.character(nb_fry_data$born_year)
 subset_nb_fry_data <- subset(nb_fry_data, species_site=="XbirCOAC" | site=="CHIC" | species=="Xmal_xbir_F2" | species=="Xmal_xbir_F1")
+# add season as variable
+subset_nb_fry_data$season <- "warm" # IV-X
+subset_nb_fry_data$season[subset_nb_fry_data$born_month=="XI"] <- "cold" # XI-III
+subset_nb_fry_data$season[subset_nb_fry_data$born_month=="XII"] <- "cold" # XI-III
+subset_nb_fry_data$season[subset_nb_fry_data$born_month=="I"] <- "cold" # XI-III
+subset_nb_fry_data$season[subset_nb_fry_data$born_month=="II"] <- "cold" # XI-III
+subset_nb_fry_data$season[subset_nb_fry_data$born_month=="III"] <- "cold" # XI-III
 
 # choose model
-model_all<-lm(sl_mm~species+collection+born_month+born_year,data=subset_nb_fry_data)
-selectedMod <- step(model_all) # sl_mm~species+collection
+model_all<-lm(sl_mm~species+season,data=subset_nb_fry_data)
+selectedMod <- step(model_all) # sl_mm~species+season
 summary(model_all)
-subset_nb_size_fit <- lmer(sl_mm ~ species+collection+(1|brood_ID),subset_nb_fry_data)
+subset_nb_size_fit <- lmer(sl_mm ~ species+season+(1|brood_ID),subset_nb_fry_data)
 
 # calculate partial residuals
 nb_size_residuals <- visreg(subset_nb_size_fit, "species",plot=F)$res
-write.csv(nb_size_residuals,"Data/newborn_standard-length_Xbir-Xmal-F1-F2_partial-residuals_aug2023.csv")
+write.csv(nb_size_residuals,"Data/newborn_standard-length_Xbir-Xmal-F1-F2_partial-residuals_april2024.csv")
 
 ## subset data by species
 coac_fry <- subset(nb_size_residuals, species=="Xbir") # 479
@@ -357,24 +414,24 @@ chic_n <- length(chic_fry$visregRes)
 
 ## calculate variance between the means of the populations
 # between parent population variance
-between_var_sl_par <- var(c(coac_sl_mean,chic_sl_mean)) # 0.379264
+between_var_sl_par <- var(c(coac_sl_mean,chic_sl_mean)) # 0.3604126
 
 ## calculate within-population variance in size of parent, F1, and F2 fry
-var_sl_coac <- var(coac_fry$visregRes) # 0.2047061
-var_sl_chic <- var(chic_fry$visregRes) # 0.2222235
-var_sl_f1 <- var(f1_fry$visregRes)     # 0.6866626
-var_sl_f2 <- var(f2_fry$visregRes)     # 0.6179587
-## within-F2 variance = 0.6179587
+var_sl_coac <- var(coac_fry$visregRes) # 0.2035312
+var_sl_chic <- var(chic_fry$visregRes) # 0.2255541
+var_sl_f1 <- var(f1_fry$visregRes)     # 0.6902981
+var_sl_f2 <- var(f2_fry$visregRes)     # 0.6065563
+## within-F2 variance = 0.6065563
 
 ## calculate broad-sense heritability H^2 with F1 fry size data
 # calculate environmental variance with Wright's weighted average of within-strain variance
 var_sl_env <- var_sl_coac/4 + var_sl_chic/4 + var_sl_f1/2
-## environmental variance = 0.4500637
+## environmental variance = 0.4524204
 
 # Calculate H^2 = (var_F2 - var_enviroment)/var_F2
 h2 <- (var_sl_f2 - var_sl_env) / var_sl_f2
 h2
-## h^2 = 0.2716928
+## h^2 = 0.2541165
 
 
 ## Supp Materials S3: Matrotrophy Index calculations and bootstraps
