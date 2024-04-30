@@ -1,13 +1,14 @@
 ##### FIGURES
 ##### Recent evolution of large offspring size and post-fertilization nutrient provisioning in swordtails
 ##### Payne et al
-##### 12/2023
+##### 04/2024
 
 ## load required libraries
 library(ggplot2)
 library(visreg)
 library(dplyr)
 library(emmeans)
+library(lme4)
 
 ## set global color variables
 malcol <- "#00BFC4"
@@ -99,18 +100,68 @@ sl
 ggsave(sl,filename='Figures/Fig1B_Xipho-Xmal-Xbirch-f1-f2-CALL-fry_std-length.pdf',bg = "transparent",width=8.5,height=8.5)
 
 
-## Figure 2A: Xmalinche (CHIC) and Xbirchmanni (COAC) embryo size over development partial residual plots
+## Fig 2A: Comparison of Xmalinche (CHIC) and Xbirchmanni (COAC) embryo size at stage 0 and stage 50 (Matrotrophy Index)
 combined_embryo_data <- read.table("Data/all-pops_combined_embryo_datasets.csv",header=T,sep=',')
-combined_subset <- subset(combined_embryo_data,(popcoll=="CHIC_V-2022" | popcoll=="CHIC_VIII_20" | popcoll=="COAC_VIII_20" | popcoll=="COAC_II-2023" | popcoll=="COAC_IX-2022" | popcoll=="PTHC_II-2023") & stage!="0" & stage!="2" & stage!="5" & stage!="?" & stage!="-")
-# average embryo size for embryos of the same stage within a brood
-combined_subset_summed <- as.data.frame(
-  combined_subset %>%
-    group_by(brood_ID,species,population,collection,stage) %>%
-    reframe(embryo_dry_weight_g_mean = mean(embryo_dry_weight_g,na.rm=T),brood_size=mean(brood_size,na.rm=T),mother_std_length=first(mother_std_length)))
+# subset Xmalinche and Xbirchmanni collections from 2020-2023
+combined_subset <- subset(combined_embryo_data,(popcoll=="CHIC_V-2022" | popcoll=="CHIC_VIII_20" | popcoll=="COAC_VIII_20" | popcoll=="COAC_II-2023" | popcoll=="COAC_IX-2022" | popcoll=="COAC_X-2023") & stage!="0" & stage!="2" & stage!="5" & stage!="?" & stage!="-")
+
 # choose model
-combined_full_model <- lm(embryo_dry_weight_g_mean~species+stage+collection+brood_size+mother_std_length,data=combined_subset_summed)
-step(combined_full_model) # embryo_dry_weight_g ~ species + stage + collection + mother_std_length
-combined_fit <- lm(embryo_dry_weight_g_mean ~ stage + species + collection + mother_std_length,data=combined_subset_summed)
+step(lm(embryo_dry_weight_g~species*stage+brood_size+season+mother_std_length,combined_subset)) # embryo_dry_weight_g ~ species + stage + species:stage + season + mother_std_length
+
+# check difference between season vs collection in model with likelihood ratio test
+# difference between season vs collection model is not sig: p=0.2354
+combined_full_model <- lmer(embryo_dry_weight_g~species*stage+collection+mother_std_length+(1|brood_ID),data=combined_subset, REML=F)
+combined_reduced_model <- lmer(embryo_dry_weight_g~species*stage+season+mother_std_length+(1|brood_ID),data=combined_subset, REML=F)
+anova(combined_reduced_model,combined_full_model)
+
+# chosen fit
+combined_fit <- lmer(embryo_dry_weight_g~species+stage+species:stage+season+mother_std_length+(1|brood_ID),data=combined_subset, REML=T)
+summary(combined_fit)
+
+# calculate partial residuals
+combined_stage_partial_residuals <- visreg(combined_fit, "stage",by="species",plot=F)$res
+# reorder levels
+combined_stage_partial_residuals$species <- factor(combined_stage_partial_residuals$species, levels = c("Xmalinche","Xbirchmanni","Xcortezi"))
+
+# subset stage 10 and 50
+combined_stage_partial_residuals <- subset(combined_stage_partial_residuals,stage=="10" | stage=="50")
+
+# plot developmental profile: partial residuals of embryo size by stage, split by species
+color_list <- c(malcol,bircol,corcol)
+text_col = "black"
+embryo_dev_profiles <- ggplot(combined_stage_partial_residuals, aes(x=stage, y=visregRes, fill=species, color=species)) +
+  geom_jitter(aes(col=species),alpha=0.6,width=0.1, cex=0.7) +
+  scale_color_manual(values=color_list,breaks=c('Xmalinche', 'Xbirchmanni'),labels=c('Xmal', 'Xbir')) +
+  stat_summary(fun.data = mean_se, width=0.7, size=0.8, geom = "crossbar", fill=NA) +
+  theme_minimal() +
+  theme(
+    legend.position=c(0.97,1.03),
+    legend.title=element_blank(),
+    axis.ticks = element_line(colour = text_col, size = 0.2),
+    panel.grid.major = element_line(colour = "grey", size = 0.1),
+    panel.grid.minor = element_blank(),
+    axis.text=element_text(colour=text_col, size=22),
+    text=element_text(colour=text_col, size=26),
+    plot.background = element_rect(fill = "transparent", color = NA),
+    rect = element_rect(fill = "transparent"),
+    panel.background = element_rect(fill = "transparent"),
+    panel.border = element_rect(colour = text_col, fill=NA)
+  ) +
+  ylim(0.002,0.005) +
+  xlab("stage") +
+  ylab("partial residuals of embryo dry weight (g)")
+embryo_dev_profiles
+ggsave(embryo_dev_profiles,filename='Figures/Fig2A_partial-residuals_stage10_stage50_Xmal-Xbir_black-text_mean-se.pdf',width=6,height=8.5,bg = "transparent")
+
+
+## Figure 2B (and S5A): Xmalinche (CHIC) and Xbirchmanni (COAC) embryo size over development partial residual plots
+combined_embryo_data <- read.table("Data/all-pops_combined_embryo_datasets.csv",header=T,sep=',')
+combined_subset <- subset(combined_embryo_data,(popcoll=="CHIC_V-2022" | popcoll=="CHIC_VIII_20" | popcoll=="COAC_VIII_20" | popcoll=="COAC_II-2023" | popcoll=="COAC_IX-2022" | popcoll=="COAC_X-2023") & stage!="0" & stage!="2" & stage!="5" & stage!="?" & stage!="-")
+
+# chosen fit (from Fig 2A)
+combined_fit <- lmer(embryo_dry_weight_g~species+stage+species:stage+season+mother_std_length+(1|brood_ID),data=combined_subset, REML=T)
+summary(combined_fit)
+
 # calculate partial residuals
 combined_stage_partial_residuals <- visreg(combined_fit, "stage",by="species",plot=F)$res
 # reorder levels
@@ -118,10 +169,11 @@ combined_stage_partial_residuals$species <- factor(combined_stage_partial_residu
 # plot developmental profile
 color_list <- c(malcol,bircol,corcol)
 text_col = "black"
-combined_stage_partial_residuals <- subset(combined_stage_partial_residuals,species!="Xcortezi")
+
+# plot partial residuals of embryo size by stage, split by species
 embryo_dev_profiles <- ggplot(combined_stage_partial_residuals, aes(x=stage, y=visregRes, fill=species, color=species)) +
   geom_jitter(aes(col=species),alpha=0.6,width=0.1, cex=0.7) +
-  scale_color_manual(values=color_list,breaks=c('Xmalinche', 'Xbirchmanni', 'Xcortezi'),labels=c('Xmal', 'Xbir', 'Xcor')) +
+  scale_color_manual(values=color_list,breaks=c('Xmalinche', 'Xbirchmanni'),labels=c('Xmal', 'Xbir')) +
   stat_summary(fun.data = mean_se, width=0.7, size=0.8, geom = "crossbar", fill=NA) +
   theme_minimal() +
   theme(
@@ -137,17 +189,17 @@ embryo_dev_profiles <- ggplot(combined_stage_partial_residuals, aes(x=stage, y=v
     panel.background = element_rect(fill = "transparent"),
     panel.border = element_rect(colour = text_col, fill=NA)
   ) +
-  ylim(0.0018,0.0051) +
+  ylim(0.002,0.005) +
+  #ylim(0.0001,0.0059) +
   xlab("stage") +
   ylab("partial residuals of embryo dry weight (g)")
 embryo_dev_profiles
-ggsave(embryo_dev_profiles,filename='Figures/Fig2A_partial-residuals_dev-profile_all-stages_Xmal-Xbir_black-text_mean-se.pdf',height=8.5,width=13,bg = "transparent")
+ggsave(embryo_dev_profiles,filename='Figures/Fig2B_partial-residuals_dev-profile_all-stages_Xmal-Xbir_black-text_mean-se_yaxis0.000-0.006.pdf',height=8.5,width=13,bg = "transparent")
 
-## Supp Fig S5: Developmental profiles with raw data
-combined_subset_summed_xmal_xbir <- subset(combined_subset_summed,species!="Xcortezi")
-raw_embryo_dev_profiles <- ggplot(combined_subset_summed_xmal_xbir, aes(x=stage, y=embryo_dry_weight_g_mean, fill=species, color=species)) +
+## Supp Fig S5B: Developmental profiles with raw data
+raw_embryo_dev_profiles <- ggplot(combined_subset, aes(x=stage, y=embryo_dry_weight_g, fill=species, color=species)) +
   geom_jitter(aes(col=species),alpha=0.6,width=0.1, cex=0.7) +
-  scale_color_manual(values=color_list,breaks=c('Xmalinche', 'Xbirchmanni', 'Xcortezi'),labels=c('Xmal', 'Xbir', 'Xcor')) +
+  scale_color_manual(values=color_list,breaks=c('Xmalinche', 'Xbirchmanni'),labels=c('Xmal', 'Xbir')) +
   stat_summary(fun.data = mean_se, width=0.7, size=0.8, geom = "crossbar", fill=NA) +
   theme_minimal() +
   theme(
@@ -163,38 +215,38 @@ raw_embryo_dev_profiles <- ggplot(combined_subset_summed_xmal_xbir, aes(x=stage,
     panel.background = element_rect(fill = "transparent"),
     panel.border = element_rect(colour = text_col, fill=NA)
   ) +
-  ylim(0.0018,0.0051) +
+  ylim(0.0001,0.0059) +
   xlab("stage") +
   ylab("embryo dry weight (g)")
 raw_embryo_dev_profiles
-ggsave(raw_embryo_dev_profiles,filename='Figures/FigSX_raw_dev-profile_all-stages_Xmal-Xbir_black-text_mean-se.pdf',height=8.5,width=10.5,bg = "transparent")
+ggsave(raw_embryo_dev_profiles,filename='Figures/FigSX_raw_dev-profile_all-stages_Xmal-Xbir_black-text_mean-se_yaxis0.000-0.006.pdf',height=8.5,width=13,bg = "transparent")
 
 
-## Figure 2B: Comparison of stage 0 dry weight from CHIC, COAC, and PTHC
+## Figure 2C: Comparison of egg stage 0 dry weight for X. malinche (CHIC) and X. birchmanni (COAC)
 stage0_data <- read.table("Data/CHIC_COAC_PTHC_fully-yolked-stage0_dry-weights_mother-length.csv",header=T,sep=',')
 stage0_data$population[stage0_data$population=="CHIC-DOWN"] <- "CHIC"
 stage0_data$population[stage0_data$population=="CHIC-UP"] <- "CHIC"
-# average egg size within a brood
-stage0_data_summed <- as.data.frame(
-  stage0_data %>%
-    group_by(brood_ID,species,population,collection) %>%
-    reframe(embryo_dry_weight_g_mean = mean(embryo_dry_weight_g,na.rm=T),brood_size=mean(brood_size,na.rm=T),mother_std_length=first(mother_std_length)))
+# no X. cortezi (PTHC)
+stage0_data <- subset(stage0_data,population!="PTHC")
+
 # choose model
-stage0_fit <- lm(embryo_dry_weight_g_mean~species+collection+population:collection+brood_size+mother_std_length,stage0_data_summed)
-step(stage0_fit) # brood_size + mother_std_length
-# Statistical comparison of means
-stage0_fit_lm <- lm(embryo_dry_weight_g_mean~species+brood_size+mother_std_length,stage0_data_summed)
-# compare estimated marginal means (EMMs), adjusted pairwise comparisons with Tukey post-hoc test
-emmeans(stage0_fit_lm,"species")
-# contrast                 estimate       SE df t.ratio p.value
-# Xbirchmanni - Xcortezi   7.51e-04 0.000640 48   1.173  0.4746
-# Xbirchmanni - Xmalinche -7.02e-05 0.000421 48  -0.167  0.9848
-# Xcortezi - Xmalinche    -8.22e-04 0.000924 48  -0.889  0.6495
+step(lm(embryo_dry_weight_g~species+brood_size+season+mother_std_length,combined_subset)) # embryo_dry_weight_g ~ species + season + mother_std_length
+
+# fit mixed linear model
+stage0_fit_lm <- lmer(embryo_dry_weight_g~species+season+mother_std_length+(1|brood_ID),data=stage0_data, REML=T)
+
+# statistical comparison of means (ANOVA/)
+emmeans(stage0_fit_lm,pairwise ~ "species", adjust="tukey") # p-value=0.18
+anova(stage0_fit_lm)
+#                      Sum Sq    Mean Sq NumDF  DenDF F value Pr(>F)
+# species           9.0403e-07 9.0403e-07     1 45.927  1.8277 0.1830
+# season            1.0300e-09 1.0300e-09     1 44.724  0.0021 0.9637
+# mother_std_length 3.0954e-07 3.0954e-07     1 45.319  0.6258 0.4330
 
 # calculate partial residuals accounting for covariates
 stage0_partial_residuals <- visreg(stage0_fit_lm, "species",plot=F)$res
 
-# plot without X. cortezi
+# plot violins with overlayed mean+/-SE
 stage0_size_violin <- ggplot(stage0_partial_residuals, aes(x=species, y=visregRes, col=species, fill=species)) + theme_bw() +
   scale_color_manual(values=color_list,breaks=c("Xmalinche","Xbirchmanni")) +
   scale_fill_manual(values=color_list,breaks=c("Xmalinche","Xbirchmanni")) +
@@ -219,9 +271,27 @@ stage0_size_violin <- ggplot(stage0_partial_residuals, aes(x=species, y=visregRe
   ylab("partial residuals of yolked egg dry weight (g)") +
   scale_x_discrete(limits=c("Xmalinche","Xbirchmanni"),labels=c("Xmal","Xbir"))
 stage0_size_violin
-ggsave(stage0_size_violin,filename='Figures/Fig2B_COAC-CHIC-egg-size_violin.pdf',bg = "transparent",width=6,height=8.5)
+ggsave(stage0_size_violin,filename='Figures/Fig2C_COAC-CHIC-egg-size_violin.pdf',bg = "transparent",width=6,height=8.5)
 
-## Supp Fig 17: Plot egg size with X. cortezi
+## Supp Fig 17: Plot egg dry weight with X. cortezi (PTHC)
+stage0_data <- read.table("Data/CHIC_COAC_PTHC_fully-yolked-stage0_dry-weights_mother-length.csv",header=T,sep=',')
+stage0_data$population[stage0_data$population=="CHIC-DOWN"] <- "CHIC"
+stage0_data$population[stage0_data$population=="CHIC-UP"] <- "CHIC"
+# fit mixed linear model
+stage0_fit_lm <- lmer(embryo_dry_weight_g~species+season+mother_std_length+(1|brood_ID),data=stage0_data, REML=T)
+
+# statistical comparison of means
+# compare estimated marginal means (EMMs), adjusted pairwise comparisons with Tukey post-hoc test
+emmeans(stage0_fit_lm,pairwise ~ "species", adjust = "tukey")
+# contrast                 estimate       SE   df t.ratio p.value
+# Xbirchmanni - Xcortezi   0.001271 0.000594 46.3   2.139  0.0931
+# Xbirchmanni - Xmalinche -0.000484 0.000346 47.7  -1.398  0.3501
+# Xcortezi - Xmalinche    -0.001755 0.000763 46.2  -2.300  0.0658
+
+# calculate partial residuals accounting for covariates
+stage0_partial_residuals <- visreg(stage0_fit_lm, "species",plot=F)$res
+
+# plot violins with overlayed mean+/-SE
 text_col <- "black"
 species_order <- c("Xmalinche","Xbirchmanni", "Xcortezi")
 color_list <- c(malcol,bircol,corcol)
@@ -250,31 +320,36 @@ stage0_size_violin <- ggplot(stage0_partial_residuals, aes(x=species, y=visregRe
   ylab("partial residuals of yolked egg dry weight (g)") +
   scale_x_discrete(limits=c("Xmalinche","Xbirchmanni","Xcortezi"),labels=c("Xmal","Xbir","Xcor"))
 stage0_size_violin
-ggsave(stage0_size_violin,filename='Figures/Fig2B_COAC-CHIC-PTHC-egg-size_violin.pdf',bg = "transparent",width=6,height=8.5)
+ggsave(stage0_size_violin,filename='Figures/FigSX_COAC-CHIC-PTHC-egg-size_violin.pdf',bg = "transparent",width=6,height=8.5)
 
 
-## Figure 2C: Partial residual plot of embryo size for lab-reared Xmalinche, Xbirchmanni, and F1s of both cross directions from roof tanks
+## Figure 2D: Partial residual plot of embryo size for lab-reared Xmalinche, Xbirchmanni, and F1s of both cross directions from roof tanks
 roof_chic_coac_f1 <- read.csv("Data/IV-2023_roof-tank_CHIC-COAC-F1_embryo-weights.csv",header=T,sep=",")
 roof_chic_coac_f1$stage <- as.factor(roof_chic_coac_f1$stage)
 # drop early stages (have <=2 samples)
-roof_chic_coac_f1_subset <- subset(roof_chic_coac_f1,stage!="0" & stage!="5" & stage!="10" & stage!="15" )
+roof_chic_coac_f1_subset <- subset(roof_chic_coac_f1,stage!="0" & stage!="5" & stage!="10" & stage!="15" & stage!="20" & stage!="25")
 # remove one outlier - likely erroneous data recording
 roof_chic_coac_f1_subset <- subset(roof_chic_coac_f1_subset,embryo_dry_weight_g < 0.008)
+
 # choose model
-roof_chic_coac_f1_full_model <- lm(embryo_dry_weight_g~species+stage+brood_size+mother_std_length+brood_ID,data=roof_chic_coac_f1_subset)
-step(roof_chic_coac_f1_full_model) # embryo_dry_weight_g_mean ~ stage + brood_ID
-lab_cross_fit <- lm(embryo_dry_weight_g ~ species + stage + brood_ID, data=roof_chic_coac_f1_subset)
+step(lm(embryo_dry_weight_g~species*stage+brood_size+mother_std_length,roof_chic_coac_f1_subset)) # embryo_dry_weight_g ~ species + stage + brood_size + mother_std_length
+lab_cross_fit <- lmer(embryo_dry_weight_g~species+stage+brood_size+mother_std_length+(1|brood_ID),data=roof_chic_coac_f1_subset, REML=T)
+# the above model is singular because brood_ID and maternal standard length are perfectly correlated (R^2=1)
+summary(lm(mother_std_length~brood_ID,roof_chic_coac_f1_subset))
+# importantly, the visreg partial residuals are exactly the same whether we use a mixed linear model with brood_ID or
+# a simple linear model without it
+# therefore, we drop brood_ID as a random effect and use a simple linear model instead
+lab_cross_fit <- lm(embryo_dry_weight_g~species+stage+brood_size+mother_std_length,data=roof_chic_coac_f1_subset)
+
 # Stats: compare means with ANOVA and Tukey
-res <- summary(pairs(emmeans(lab_cross_fit, "species")))
-res
-res$p.value
+emmeans(lab_cross_fit, pairwise ~ species, adjust = "tukey")
 # contrast                     estimate          SE df t.ratio p.value
-# birxbir - birxmal_F1     0.000411 0.000671 141   0.613  0.9278
-# birxbir - malxbir_F1    -0.001626 0.000216 141  -7.529  <.0001
-# birxbir - malxmal       -0.002578 0.000349 141  -7.376  <.0001
-# birxmal_F1 - malxbir_F1 -0.002037 0.000709 141  -2.872  0.0241
-# birxmal_F1 - malxmal    -0.002989 0.000495 141  -6.038  <.0001
-# malxbir_F1 - malxmal    -0.000952 0.000369 141  -2.579  0.0527
+# birxbir - birxmal_F1     0.000667 0.000712 112   0.936  0.7855
+# birxbir - malxbir_F1    -0.000847 0.000639 112  -1.325  0.5491
+# birxbir - malxmal       -0.001723 0.000426 112  -4.048  0.0005
+# birxmal_F1 - malxbir_F1 -0.001514 0.001151 112  -1.315  0.5553
+# birxmal_F1 - malxmal    -0.002390 0.000890 112  -2.684  0.0411
+# malxbir_F1 - malxmal    -0.000876 0.000366 112  -2.393  0.0844
 
 # save the stage partial residuals
 lab_cross_partial_residuals <- visreg(lab_cross_fit, "species",plot=F)$res
@@ -304,7 +379,7 @@ lab_cross_embryo_size <- ggplot(lab_cross_partial_residuals, aes(x=species, y=vi
   xlab("lab cross") +
   ylab("partial residuals of embryo dry weight (g)")
 lab_cross_embryo_size
-ggsave(lab_cross_embryo_size,filename='Figures/Fig2C_lab-cross_xmal-xbir-f1_embryo-size_partial-residuals_black-text.pdf',height=8.5,width=8.5,bg = "transparent")
+ggsave(lab_cross_embryo_size,filename='Figures/Fig2D_lab-cross_xmal-xbir-f1_embryo-size_partial-residuals_black-text.pdf',height=8,width=8,bg = "transparent")
 
 
 ## Figure 2D: Histology
@@ -728,12 +803,46 @@ pairwise.wilcox.test(mal_bir_hyb_size_summed$hw_mm_mean, mal_bir_hyb_size_summed
 
 
 ## Supp Fig S3: Brood size comparison between species
+combined_embryo_data <- read.table("Data/all-pops_combined_embryo_datasets.csv",header=T,sep=',')
+combined_subset <- subset(combined_embryo_data,(popcoll=="CHIC_V-2022" | popcoll=="CHIC_VIII_20" | popcoll=="COAC_VIII_20" | popcoll=="COAC_II-2023" | popcoll=="COAC_IX-2022" | popcoll=="COAC_X-2023") & stage!="0" & stage!="2" & stage!="5" & stage!="?" & stage!="-")
+# average embryo size within brood
+combined_subset_summed <- as.data.frame(
+  combined_subset %>%
+    group_by(brood_ID,species,population,season) %>%
+    reframe(embryo_dry_weight_g_mean = mean(embryo_dry_weight_g,na.rm=T),brood_size=mean(brood_size,na.rm=T),mother_std_length=first(mother_std_length)))
+# plot brood size by species
+color_list <- c(bircol,malcol)
+brood_size_plot <- ggplot(combined_subset_summed, aes(x=species, y=brood_size, fill=species, color=species)) +
+  scale_color_manual(values=color_list) +
+  scale_fill_manual(values=color_list) +
+  geom_jitter(alpha=0.6,width=0.1, cex=0.7) +
+  stat_summary(fun.data = mean_se, width=0.4, size=0.8, geom = "crossbar", fill=NA) +
+  geom_violin(color=NA, alpha=0.2, trim=FALSE) +
+  theme_minimal() +
+  theme(
+    legend.position="none",
+    legend.title=element_blank(),
+    axis.ticks = element_line(colour = text_col, size = 0.2),
+    panel.grid.major = element_line(colour = "grey", size = 0.1),
+    panel.grid.minor = element_blank(),
+    axis.text=element_text(colour=text_col, size=22),
+    text=element_text(colour=text_col, size=26),
+    plot.background = element_rect(fill = "transparent", color = NA),
+    rect = element_rect(fill = "transparent"),
+    panel.background = element_rect(fill = "transparent"),
+    panel.border = element_rect(colour = text_col, fill=NA)
+  ) +
+  ylim(0,50) +
+  xlab("species") +
+  ylab("embryos per brood")
+brood_size_plot
+ggsave(brood_size_plot,filename='Figures/FigS3_brood-size-by-species_violin.pdf',height=8.5,width=8.5,bg = "transparent")
 
 
 ## Supp Fig S4: Adult lab-reared female size comparison between species
 
 
-## Supp Fig S5: Embryo developmental profiles with raw data
+## Supp Fig S5A & S5B: Embryo developmental profiles with raw data
 ## Code can be found under Figure 2A
 
 
@@ -1123,23 +1232,14 @@ ggsave(fc_fry_food_dep_plot,filename='Figures/FigSX_food-deprivation_fat-content
 tetixchic_data <- read.csv("Data/III-2023_TETI2_TETIxCHIC_CHICxCHIC_embryo-dry-weights.csv",header=T,sep=",")
 # we only have stage 25 and stage 35 TETIxCHIC embryos, will need to use those stages
 table(subset(tetixchic_data,population=="TETIxCHIC")$stage)
-tetixchic_data <- subset(tetixchic_data, stage=="25" | stage=="35")
+tetixchic_data <- subset(tetixchic_data, stage=="25" | stage=="30" | stage=="35")
 tetixchic_data$embryo_dry_weight_g <- as.numeric(tetixchic_data$embryo_dry_weight_g)
-# average within brood/stage
-tetixchic_data_avg <- as.data.frame(
-  tetixchic_data %>%
-    group_by(brood_ID,stage,population,mother_origin,brood_size,mother_std_length) %>%
-    reframe(embryo_dry_weight_g_mean = mean(embryo_dry_weight_g,na.rm=T)))
-# model selection
-tetixchic_full <- lm(embryo_dry_weight_g_mean~population+stage+brood_size+mother_std_length+mother_origin, data=tetixchic_data_avg)
-step(tetixchic_full) # embryo_dry_weight_g ~ population + stage + mother_std_length
-## stats: ANOVA and Tukey
-tetixchic_fit <- lm(embryo_dry_weight_g_mean ~ population + stage + mother_std_length,data=tetixchic_data_avg)
-summary(tetixchic_fit)
-emmeans(tetixchic_fit, list(pairwise ~ population), adjust = "tukey")
-#CHICxCHIC - TETI2      0.001120 0.000452 11   2.477  0.0729
-#CHICxCHIC - TETIxCHIC  0.000825 0.000585 11   1.409  0.3700
-#TETI2 - TETIxCHIC     -0.000295 0.000378 11  -0.782  0.7215
+
+# choose model
+tetixchic_full <- lm(embryo_dry_weight_g~population+stage+brood_size+mother_std_length+mother_origin, data=tetixchic_data)
+step(tetixchic_full) # embryo_dry_weight_g ~ population + stage + brood_size + mother_std_length
+# chosen fit
+tetixchic_fit <- lmer(embryo_dry_weight_g ~ population + stage + brood_size + mother_std_length + (1|brood_ID),data=tetixchic_data, REML=T)
 
 # pull partial residuals, accounting for covariates
 tetixchic_partial_residuals <- visreg(tetixchic_fit, "population",plot=F)$res
