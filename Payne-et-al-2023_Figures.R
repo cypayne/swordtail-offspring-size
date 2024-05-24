@@ -351,6 +351,21 @@ emmeans(lab_cross_fit, pairwise ~ species, adjust = "tukey")
 # birxmal_F1 - malxmal    -0.002390 0.000890 112  -2.684  0.0411
 # malxbir_F1 - malxmal    -0.000876 0.000366 112  -2.393  0.0844
 
+# report average raw dry weights
+# first average by broodID
+lab_cross_size_avg <- as.data.frame(
+  roof_chic_coac_f1_subset %>%
+    group_by(brood_ID,species) %>%
+    reframe(embryo_dry_weight_g_mean = mean(embryo_dry_weight_g,na.rm=T)))
+lab_cross_size_avg <- na.omit(lab_cross_size_avg)
+# then average by species
+lab_cross_size_avg %>% group_by(species) %>% reframe(embryo_dry_weight_g_mean = mean(embryo_dry_weight_g_mean,na.rm=T))
+# species    embryo_dry_weight_g_mean
+# birxbir                     0.00388 <- 2 broods
+# birxmal_F1                  0.0015  <- 1 brood
+# malxbir_F1                  0.00543 <- 2 broods
+# malxmal                     0.00606 <- 2 broods
+
 # save the stage partial residuals
 lab_cross_partial_residuals <- visreg(lab_cross_fit, "species",plot=F)$res
 #write.csv(lab_cross_partial_residuals,"Data/lab_cross_xmal-xbir-F1_species_partial_residuals.csv")

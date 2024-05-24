@@ -333,6 +333,11 @@ anova(lm(embryo_dry_weight_g_mean ~ species + season + mother_std_length,combine
 # season             1 4.4797e-06 4.4797e-06 13.8908 0.0003343 ***
 # mother_std_length  1 2.1559e-06 2.1559e-06  6.6852 0.0112925 *
 
+# check whether there is a significant interaction between species and mother standard length
+# there is not (p=0.65), and species:mother_std_length is dropped from the model
+step(lm(embryo_dry_weight_g_mean~species+season+brood_size+mother_std_length+species:mother_std_length,data=combined_subset_summed)) # embryo_dry_weight_g_mean ~ species + season + mother_std_length
+anova(lm(embryo_dry_weight_g_mean ~ species + season + mother_std_length + species:mother_std_length,combined_subset_summed))
+
 # relationship between brood size and mother standard length
 step(lm(brood_size~mother_std_length+species+season,data=combined_subset_summed)) # brood_size ~ mother_std_length + season
 anova(lm(brood_size ~ mother_std_length + species + season,combined_subset_summed))
@@ -437,174 +442,168 @@ h2
 ## Supp Materials S3: Matrotrophy Index calculations and bootstraps
 ## calculate matrotrophy index
 combined_embryo_data <- read.table("Data/all-pops_combined_embryo_datasets.csv",header=T,sep=',')
+combined_subset <- subset(combined_embryo_data,(popcoll=="CHIC_V-2022" | popcoll=="CHIC_VIII_20" | popcoll=="COAC_VIII_20" | popcoll=="COAC_II-2023" | popcoll=="COAC_IX-2022" | popcoll=="COAC_X-2023" | popcoll=="PTHC_II-2023") & stage!="0" & stage!="2" & stage!="5" & stage!="?" & stage!="-")
 
 ## Xbirchmanni MI
-coac_subset <- subset(combined_embryo_data,stage!="0" & population=="COAC" & (popcoll=="COAC_II-2023" | popcoll=="COAC_IX-2022" | popcoll=="COAC_VIII_20"))
+coac_subset <- subset(combined_subset, population=="COAC")
+
+# summarize all COAC mothers
+coac_uniq_IDs <- na.omit(as.data.frame(coac_subset %>%group_by(brood_ID) %>% reframe(collection = first(collection))))
+table(coac_uniq_IDs$collection)
+
 # average embryo size by stage within brood
 coac_stage_size_avged <- as.data.frame(
   coac_subset %>%
-    group_by(brood_ID,stage,collection) %>%
+    group_by(brood_ID,stage,season) %>%
     reframe(embryo_dry_weight_g_mean = mean(embryo_dry_weight_g,na.rm=T),mother_std_length=mean(mother_std_length,na.rm=T)))
 coac_stage_size_avged <- na.omit(coac_stage_size_avged)
+coac_stage_size_avged
 
-# summarize all COAC mothers
-coac_uniq_IDs <- na.omit(as.data.frame(subset(combined_embryo_data,(popcoll=="COAC_II-2023" | popcoll=="COAC_IX-2022" | popcoll=="COAC_VIII_20")) %>%group_by(brood_ID) %>% reframe(collection = first(collection))))
-table(coac_uniq_IDs$collection)
+# Xbir MI with raw values, with embryo dry weight averaged within broods
+coac_stage10 <- subset(coac_stage_size_avged,stage=="10") # 4 broods
+coac_stage10_mean <- mean(coac_stage10$embryo_dry_weight_g_mean) # 0.0037875
+coac_stage50 <- subset(coac_stage_size_avged, stage=="50") # 3 broods
+coac_stage50_mean <- mean(coac_stage50$embryo_dry_weight_g_mean) # 0.002487908
+coac_stage50_mean/coac_stage10_mean # 0.6568735
+# output the raw averages used for this calculation
+coac_raw_table <- subset(coac_stage_size_avged,stage=="10" | stage=="50")
+write.csv(coac_raw_table,"Data/MI-calculation_COAC_raw-avg-values_stage-10-50.csv")
 
-# Xbir MI with raw values
-coac_fit <- lm(embryo_dry_weight_g_mean~collection+stage+mother_std_length,data=coac_stage_size_avged)
-step(coac_fit) # embryo_dry_weight_g_mean~collection+stage+mother_std_length
-coac_stage10 <- subset(coac_stage_size_avged,stage=="10") # 3
-coac_stage10_mean <- mean(coac_stage10$embryo_dry_weight_g_mean)
-coac_stage45 <- subset(coac_stage_size_avged,stage=="45") # 10
-coac_stage45_mean <- mean(coac_stage45$embryo_dry_weight_g_mean)
-coac_stage50 <- subset(coac_stage_size_avged, stage=="50") # only 1
-coac_stage50_mean <- mean(coac_stage50$embryo_dry_weight_g_mean)
-coac_stage50_45 <- subset(coac_stage_size_avged,stage=="45" | stage=="50")
-coac_stage50_45_mean <- mean(coac_stage50_45$embryo_dry_weight_g_mean)
-coac_stage45_mean/coac_stage10_mean # 0.7727921
-coac_stage50_mean/coac_stage10_mean # 0.593617
-coac_stage50_45_mean/coac_stage10_mean # 0.7548746
-coac_raw_table <- subset(coac_stage_size_avged,stage=="10" | stage=="45" | stage=="50")
-write.csv(coac_raw_table,"Data/MI-calculation_COAC_raw-values_stage-10-45-50.csv")
-
-# Xbir MI with partial residuals
-coac_fit <- lm(embryo_dry_weight_g_mean~collection+stage+mother_std_length,data=coac_stage_size_avged)
-step(coac_fit) # embryo_dry_weight_g_mean~collection+stage+mother_std_length
-coac_stage_partial_residuals <- visreg(coac_fit, "stage",plot=F)$res
-coac_stage10 <- subset(coac_stage_partial_residuals,stage=="10")
+# Xbir MI with partial residuals, with embryo dry weight averaged within broods *
+# calculate partial residuals
+coac_fit <- lm(embryo_dry_weight_g_mean~stage+season+mother_std_length,data=coac_stage_size_avged)
+coac_avg_pr <- visreg(coac_fit, "stage",plot=F)$res
+coac_stage10 <- subset(coac_avg_pr,stage=="10")
 coac_stage10_mean <- mean(coac_stage10$visregRes)
-coac_stage45 <- subset(coac_stage_partial_residuals,stage=="45")
-coac_stage45_mean <- mean(coac_stage45$visregRes)
-coac_stage50 <- subset(coac_stage_partial_residuals, stage=="50")
-coac_stage50_mean <- mean(coac_stage50$visregRes) # only 1
-coac_stage50_45 <- subset(coac_stage_partial_residuals,stage=="45" | stage=="50")
-coac_stage50_45_mean <- mean(coac_stage50_45$visregRes)
-coac_stage45_mean/coac_stage10_mean # 0.689198
-coac_stage50_mean/coac_stage10_mean # 0.6510765
-coac_stage50_45_mean/coac_stage10_mean # 0.6853859
-coac_pr_table <- subset(coac_stage_partial_residuals,stage=="10" | stage=="45" | stage=="50")
-write.csv(coac_pr_table,"Data/MI-calculation_COAC_partial-residuals_stage-10-45-50.csv")
+coac_stage50 <- subset(coac_avg_pr, stage=="50")
+coac_stage50_mean <- mean(coac_stage50$visregRes)
+coac_stage50_mean/coac_stage10_mean # 0.6588837
+# output table
+coac_pr_table <- subset(coac_avg_pr,stage=="10" | stage=="50")
+coac_pr_table$species <- "Xbirchmanni"
+write.csv(coac_pr_table,"Data/MI-calculation_COAC_partial-residuals-avg_stage-10-50.csv")
+
+# Xbir MI with partial residuals, with brood ID as mixed effect instead of averaging within brood
+# calculate partial residuals
+coac_fit <- lmer(embryo_dry_weight_g~stage+season+mother_std_length+(1|brood_ID),data=coac_subset, REML=T)
+coac_pr <- visreg(coac_fit, "stage", plot=F)$res
+# calculate MI
+coac_stage10 <- subset(coac_pr,stage=="10")
+coac_stage10_mean <- mean(coac_stage10$visregRes)
+coac_stage50 <- subset(coac_pr, stage=="50")
+coac_stage50_mean <- mean(coac_stage50$visregRes)
+coac_stage50_mean/coac_stage10_mean # 0.7240099
+
 
 ## Xmalinche MI
-chic_subset <- subset(combined_embryo_data,stage!="0" & population=="CHIC" & (popcoll=="CHIC_V-2022" | popcoll=="CHIC_VIII_20"))
+chic_subset <- subset(combined_subset, population=="CHIC")
+
+# summarize all CHIC mothers
+chic_uniq_IDs <- na.omit(as.data.frame(chic_subset %>%group_by(brood_ID) %>% reframe(collection = first(collection))))
+table(chic_uniq_IDs$collection)
+
 # average embryo size by stage within brood
 chic_stage_size_avged <- as.data.frame(
   chic_subset %>%
-    group_by(brood_ID,stage,collection) %>%
+    group_by(brood_ID,stage,season) %>%
     reframe(embryo_dry_weight_g_mean = mean(embryo_dry_weight_g,na.rm=T),mother_std_length=mean(mother_std_length,na.rm=T)))
 chic_stage_size_avged <- na.omit(chic_stage_size_avged)
 chic_stage_size_avged
+# note: only one season for X. malinche collections (warm)
 
-# summarize all CHIC mothers
-chic_uniq_IDs <- na.omit(as.data.frame(subset(combined_embryo_data,(popcoll=="CHIC_V-2022" | popcoll=="CHIC_VIII_20")) %>%group_by(brood_ID) %>% reframe(collection = first(collection))))
-table(chic_uniq_IDs$collection)
-
-# Xmal MI with raw values
-chic_stage10 <- subset(chic_stage_size_avged,stage=="10") # 8
-chic_stage10_mean <- mean(chic_stage10$embryo_dry_weight_g_mean)
-chic_stage45 <- subset(chic_stage_size_avged,stage=="45") # 6
-chic_stage45_mean <- mean(chic_stage45$embryo_dry_weight_g_mean)
-chic_stage50 <- subset(chic_stage_size_avged,stage=="50") # 7
-chic_stage50_mean <- mean(chic_stage50$embryo_dry_weight_g_mean)
-chic_stage50_45 <- subset(chic_stage_size_avged,stage=="45" | stage=="50")
-chic_stage50_45_mean <- mean(chic_stage50_45$embryo_dry_weight_g_mean)
-chic_stage45_mean/chic_stage10_mean # 0.8494234
+# Xmal MI with raw values, with embryo dry weight averaged within broods
+chic_stage10 <- subset(chic_stage_size_avged,stage=="10") # 8 broods
+chic_stage10_mean <- mean(chic_stage10$embryo_dry_weight_g_mean) # 0.004010417
+chic_stage50 <- subset(chic_stage_size_avged,stage=="50") # 7 broods
+chic_stage50_mean <- mean(chic_stage50$embryo_dry_weight_g_mean) # 0.003810819
 chic_stage50_mean/chic_stage10_mean # 0.9502302
-chic_stage50_45_mean/chic_stage10_mean # 0.903704
-chic_raw_table <- subset(chic_stage_size_avged,stage=="10" | stage=="45" | stage=="50")
-write.csv(chic_raw_table,"Data/MI-calculation_CHIC_raw-values_stage-10-45-50.csv")
+# output table
+chic_raw_table <- subset(chic_stage_size_avged,stage=="10" | stage=="50")
+write.csv(chic_raw_table,"Data/MI-calculation_CHIC_raw-avg-values_stage-10-50.csv")
 
-# Xmal MI with partial residuals
-chic_fit <- lm(embryo_dry_weight_g_mean~collection+stage+mother_std_length,data=chic_stage_size_avged)
-step(chic_fit) # embryo_dry_weight_g_mean ~ collection + mother_std_length, kept stage for downstream steps
-chic_stage_partial_residuals <- visreg(chic_fit, "stage",plot=F)$res
-chic_stage10 <- subset(chic_stage_partial_residuals,stage=="10")
+# Xmal MI with partial residuals, with embryo dry weight averaged within broods *
+# calculate partial residuals
+chic_fit <- lm(embryo_dry_weight_g_mean~stage+mother_std_length,data=chic_stage_size_avged)
+chic_avg_pr <- visreg(chic_fit, "stage",plot=F)$res
+# calculate MI
+chic_stage10 <- subset(chic_avg_pr,stage=="10")
 chic_stage10_mean <- mean(chic_stage10$visregRes)
-chic_stage45 <- subset(chic_stage_partial_residuals,stage=="45")
-chic_stage45_mean <- mean(chic_stage45$visregRes)
-chic_stage50 <- subset(chic_stage_partial_residuals,stage=="50")
+chic_stage50 <- subset(chic_avg_pr,stage=="50")
 chic_stage50_mean <- mean(chic_stage50$visregRes)
-chic_stage50_45 <- subset(chic_stage_partial_residuals,stage=="45" | stage=="50")
-chic_stage50_45_mean <- mean(chic_stage50_45$visregRes)
-chic_stage45_mean/chic_stage10_mean # 0.8945757
-chic_stage50_mean/chic_stage10_mean # 0.9902006
-chic_stage50_45_mean/chic_stage10_mean # 0.946066
-chic_pr_table <- subset(chic_stage_partial_residuals,stage=="10" | stage=="45" | stage=="50")
-write.csv(chic_pr_table,"Data/MI-calculation_CHIC_partial-residuals_stage-10-45-50.csv")
+chic_stage50_mean/chic_stage10_mean # 0.9836957
+# output table
+chic_pr_table <- subset(chic_stage_partial_residuals,stage=="10" | stage=="50")
+chic_pr_table$species <- "Xmalinche"
+write.csv(chic_pr_table,"Data/MI-calculation_CHIC_partial-residuals-avg_stage-10-50.csv")
+
+# Xmal MI with partial residuals, with brood ID as mixed effect instead of averaging within brood
+# calculate partial residuals
+chic_fit <- lmer(embryo_dry_weight_g~stage+mother_std_length+(1|brood_ID),data=chic_subset, REML=T)
+chic_pr <- visreg(chic_fit, "stage", plot=F)$res
+# calculate MI
+chic_stage10 <- subset(chic_pr,stage=="10")
+chic_stage10_mean <- mean(chic_stage10$visregRes)
+chic_stage50 <- subset(chic_pr,stage=="50")
+chic_stage50_mean <- mean(chic_stage50$visregRes)
+chic_stage50_mean/chic_stage10_mean # 0.9439981
+
 
 ## Xcortezi MI
-pthc_subset <- subset(combined_embryo_data,stage!="0" & population=="PTHC" & popcoll=="PTHC_II-2023")
+pthc_subset <- subset(combined_subset, population=="PTHC")
+
 # average embryo size by stage within brood
 pthc_stage_size_avged <- as.data.frame(
   pthc_subset %>%
-    group_by(brood_ID,stage,collection) %>%
+    group_by(brood_ID,stage,season) %>%
     reframe(embryo_dry_weight_g_mean = mean(embryo_dry_weight_g,na.rm=T),mother_std_length=mean(mother_std_length,na.rm=T)))
 pthc_stage_size_avged
 
-# Xcor MI with raw values
-pthc_stage10 <- subset(pthc_stage_size_avged,stage=="10") # 3
+# Xcor MI with raw values, with embryo dry weight averaged within broods
+pthc_stage10 <- subset(pthc_stage_size_avged,stage=="10") # 3 broods
 pthc_stage10_mean <- mean(pthc_stage10$embryo_dry_weight_g_mean)
-pthc_stage45 <- subset(pthc_stage_size_avged,stage=="45") # 4
-pthc_stage45_mean <- mean(pthc_stage45$embryo_dry_weight_g_mean)
-pthc_stage50 <- subset(pthc_stage_size_avged, stage=="50") # 1
+pthc_stage50 <- subset(pthc_stage_size_avged, stage=="50") # 1 brood
 pthc_stage50_mean <- mean(pthc_stage50$embryo_dry_weight_g_mean)
-pthc_stage50_45 <- subset(pthc_stage_size_avged,stage=="45" | stage=="50")
-pthc_stage50_45_mean <- mean(pthc_stage50_45$embryo_dry_weight_g_mean)
-pthc_stage45_mean/pthc_stage10_mean # 1.000686
 pthc_stage50_mean/pthc_stage10_mean # 0.7242604
+pthc_stage50_45 <- subset(pthc_stage_size_avged,stage=="45" | stage=="50") # 5 broods
+pthc_stage50_45_mean <- mean(pthc_stage50_45$embryo_dry_weight_g_mean)
 pthc_stage50_45_mean/pthc_stage10_mean # 0.9484674
+# output table
 pthc_raw_table <- subset(pthc_stage_size_avged,stage=="10" | stage=="45" | stage=="50")
-write.csv(pthc_raw_table,"Data/MI-calculation_PTHC_raw-values_stage-10-45-50.csv")
+write.csv(pthc_raw_table,"Data/MI-calculation_PTHC_raw-avg-values_stage-10-45-50.csv")
 
 # Xcor MI with partial residuals
 pthc_fit <- lm(embryo_dry_weight_g_mean~stage+mother_std_length,data=pthc_stage_size_avged)
-step(pthc_fit) # embryo_dry_weight_g_mean ~ mother_std_length, kept stage for downstream steps
-pthc_stage_partial_residuals <- visreg(pthc_fit, "stage",plot=F)$res
-pthc_stage10 <- subset(pthc_stage_partial_residuals,stage=="10")
+pthc_avg_pr <- visreg(pthc_fit, "stage",plot=F)$res
+# calculate MI
+pthc_stage10 <- subset(pthc_avg_pr,stage=="10") # 3 broods
 pthc_stage10_mean <- mean(pthc_stage10$visregRes)
-pthc_stage45 <- subset(pthc_stage_partial_residuals,stage=="45")
-pthc_stage45_mean <- mean(pthc_stage45$visregRes)
-pthc_stage50 <- subset(pthc_stage_partial_residuals, stage=="50")
+pthc_stage50 <- subset(pthc_avg_pr, stage=="50") # 1 brood
 pthc_stage50_mean <- mean(pthc_stage50$visregRes)
-pthc_stage50_45 <- subset(pthc_stage_partial_residuals,stage=="45" | stage=="50")
-pthc_stage50_45_mean <- mean(pthc_stage50_45$visregRes)
-pthc_stage45_mean/pthc_stage10_mean # 1.000686
 pthc_stage50_mean/pthc_stage10_mean # 0.6995778
+pthc_stage50_45 <- subset(pthc_avg_pr,stage=="45" | stage=="50") # 5 broods
+pthc_stage50_45_mean <- mean(pthc_stage50_45$visregRes)
 pthc_stage50_45_mean/pthc_stage10_mean # 0.9404641
+# output table
 pthc_pr_table <- subset(pthc_stage_partial_residuals,stage=="10" | stage=="45" | stage=="50")
-write.csv(pthc_pr_table,"Data/MI-calculation_PTHC_partial-residuals_stage-10-45-50.csv")
+write.csv(pthc_pr_table,"Data/MI-calculation_PTHC_partial-residuals-avg_stage-10-45-50.csv")
+
 
 ## Boostrap MI using raw embryo sizes
 # average embryos at the same stage in the same brood, and filter out unused stages (0-5)
-combined_subset <- subset(combined_embryo_data,(popcoll=="CHIC_V-2022" | popcoll=="CHIC_VIII_20" | popcoll=="COAC_VIII_20" | popcoll=="COAC_II-2023" | popcoll=="COAC_IX-2022") & stage!="0" & stage!="2" & stage!="5" & stage!="?" & stage!="-" & !is.na(embryo_dry_weight_g))
+combined_subset <- subset(combined_embryo_data,(popcoll=="CHIC_V-2022" | popcoll=="CHIC_VIII_20" | popcoll=="COAC_VIII_20" | popcoll=="COAC_II-2023" | popcoll=="COAC_IX-2022" | popcoll=="COAC_X-2023") & stage!="0" & stage!="2" & stage!="5" & stage!="?" & stage!="-")
 combined_subset_avg <- as.data.frame(
   combined_subset %>%
-    group_by(brood_ID,species,stage) %>%
+    group_by(brood_ID,species,population,stage) %>%
     reframe(embryo_dry_weight_g_mean = mean(embryo_dry_weight_g,na.rm=T), popcoll=first(popcoll)))
 combined_subset_avg
 
-# Bootstrap MI for CHIC Xmal population, by post-2020 collections
-chic_subset_avg <- subset(combined_subset_avg,popcoll=="CHIC_V-2022" | popcoll=="CHIC_VIII_20")
+# Bootstrap MI for CHIC Xmal population
+chic_subset_avg <- subset(combined_subset_avg,population=="CHIC")
 table(chic_subset_avg$stage)
-chic_avg_stage10 <- subset(chic_subset_avg,stage==10)
-chic_avg_stage45 <- subset(chic_subset_avg,stage==45)
-chic_mi_bootstrap <- c()
-for(i in 1:100) {
-  resample_stage10 <- sample(chic_avg_stage10$embryo_dry_weight_g_mean, replace = TRUE)
-  mean_stage10 <- mean(resample_stage10)
-  resample_stage45 <- sample(chic_avg_stage45$embryo_dry_weight_g_mean, replace = TRUE)
-  mean_stage45 <- mean(resample_stage45)
-  chic_mi <- mean_stage45/mean_stage10
-  chic_mi_bootstrap <- c(chic_mi_bootstrap,chic_mi)
-}
-mean(chic_mi_bootstrap) # 0.8581601
-t.test(chic_mi_bootstrap,conf.level = 0.95) #  0.8419940 0.8743262
-
 chic_avg_stage10 <- subset(chic_subset_avg,stage==10)
 chic_avg_stage50 <- subset(chic_subset_avg,stage==50)
 chic_mi_bootstrap <- c()
-for(i in 1:100) {
+for(i in 1:1000) {
   resample_stage10 <- sample(chic_avg_stage10$embryo_dry_weight_g_mean, replace = TRUE)
   mean_stage10 <- mean(resample_stage10)
   resample_stage50 <- sample(chic_avg_stage50$embryo_dry_weight_g_mean, replace = TRUE)
@@ -612,25 +611,25 @@ for(i in 1:100) {
   chic_mi <- mean_stage50/mean_stage10
   chic_mi_bootstrap <- c(chic_mi_bootstrap,chic_mi)
 }
-mean(chic_mi_bootstrap) # 0.947186
-t.test(chic_mi_bootstrap,conf.level = 0.95) #  0.9293548 0.9650173
+mean(chic_mi_bootstrap) # 0.9599878
+t.test(chic_mi_bootstrap,conf.level = 0.95) #  0.9547505 0.9652250
 
 # Bootstrap MI for COAC Xbir population, by post-2020 collections
-coac_subset_avg <- subset(combined_subset_avg,popcoll=="COAC_VIII_20" | popcoll=="COAC_II-2023" | popcoll=="COAC_IX-2022")
+coac_subset_avg <- subset(combined_subset_avg,population=="COAC")
 table(coac_subset_avg$stage)
 coac_avg_stage10 <- subset(coac_subset_avg,stage==10)
-coac_avg_stage45 <- subset(coac_subset_avg,stage==45)
+coac_avg_stage50 <- subset(coac_subset_avg,stage==50)
 coac_mi_bootstrap <- c()
-for(i in 1:100) {
+for(i in 1:1000) {
   resample_stage10 <- sample(coac_avg_stage10$embryo_dry_weight_g_mean, replace = TRUE)
   mean_stage10 <- mean(resample_stage10)
-  resample_stage45 <- sample(coac_avg_stage45$embryo_dry_weight_g_mean, replace = TRUE)
-  mean_stage45 <- mean(resample_stage45)
-  coac_mi <- mean_stage45/mean_stage10
+  resample_stage50 <- sample(coac_avg_stage50$embryo_dry_weight_g_mean, replace = TRUE)
+  mean_stage50 <- mean(resample_stage50)
+  coac_mi <- mean_stage50/mean_stage10
   coac_mi_bootstrap <- c(coac_mi_bootstrap,coac_mi)
 }
-mean(coac_mi_bootstrap) # 0.7735786
-t.test(coac_mi_bootstrap,conf.level = 0.95) # 0.7668770 0.7802803
+mean(coac_mi_bootstrap) # 0.658127
+t.test(coac_mi_bootstrap,conf.level = 0.95) # 0.6565315 0.6597226
 
 
 ## Supp Materials S4: Relationship between ovary dry weight and mother hybrid index / mitotype
