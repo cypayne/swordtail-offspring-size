@@ -1,7 +1,7 @@
 ##### FIGURES
 ##### Recent evolution of large offspring size and post-fertilization nutrient provisioning in swordtails
-##### Payne et al
-##### 04/2024
+##### Payne et al 2025
+##### 07/2025
 
 ## load required libraries
 library(ggplot2)
@@ -19,21 +19,38 @@ malxbir_f1col <- "#8f31de"
 malxbir_f2col <- "#BD2FFF"
 hybrid_col <- "#E162FF"
 
-
 ## Figure 1A: 5 species Xiphophorus fry standard length
+## See Figure S2A for head width comparison
 fry_size_data <- read.table("Data/newborn_fry_size_data.csv",header=T,sep=',')
+# subset species of interest and remove samples with missing data
 xipho_sp_size <- subset(fry_size_data, species_site %in% c("XbirCOAC","XmalCHIC","XcorPTHC","XpygPTHC","XvarCOAC"))
-# average fry size within a brood
-xipho_sp_size_summed <- as.data.frame(
-  xipho_sp_size %>%
-    group_by(brood_ID) %>%
-    reframe(sl_mm_mean = mean(sl_mm,na.rm=T),species=first(species)))
-# plot raw data
+xipho_sp_size <- subset(xipho_sp_size,!is.na(sl_mm) & !is.na(hw_mm) & !is.na(species) & !is.na(brood_ID))
+
+# summarize mean and standard deviation for each species
+xipho_sp_size %>%
+  group_by(species) %>%
+  summarise_at(vars(sl_mm, hw_mm),
+               list(mean = mean, std = sd))
+
+# lmm model for each morphometric, including brood ID as a random effect
+# then make pairwise multiple comparisons between estimated marginal means
+# with paired t test and tukey adjustment
+# standard length
+lmm.sl <- lme4::lmer(sl_mm ~ species + (1 | brood_ID), data = xipho_sp_size, REML=T )
+emmeans(lmm.sl, list(pairwise ~ species), adjust = "tukey")
+# head width
+lmm.hw <- lme4::lmer(hw_mm ~ species + (1 | brood_ID), data = xipho_sp_size, REML=T )
+emmeans(lmm.hw, list(pairwise ~ species), adjust = "tukey")
+
+# calculate partial residuals
+lmm.sl.pr <- visreg(lmm.sl, "sl_mm",by="species",plot=F)$res
+
+# plot partial residuals
 species_order <- c("Xmal","Xbir","Xcor","Xpyg","Xvar")
 color_list <- c(malcol,bircol,corcol,"#FBAC87","#B3E561")
 text_col <- "black"
 xipho_sp_fry_size_plot <-
-  ggplot(xipho_sp_size_summed, aes(x=factor(species,levels=species_order), y=sl_mm_mean, fill=factor(species,levels=species_order), color=factor(species,levels=species_order))) +
+  ggplot(lmm.sl.pr, aes(x=factor(species,levels=species_order), y=visregRes, fill=factor(species,levels=species_order), color=factor(species,levels=species_order))) +
   scale_color_manual(values=color_list) +
   scale_fill_manual(values=color_list) +
   geom_jitter(alpha=0.6,width=0.1, cex=0.7) +
@@ -55,24 +72,41 @@ xipho_sp_fry_size_plot <-
   ) +
   ylim(6,15) +
   xlab("Xiphophorus species") +
-  ylab("standard length (mm)")
+  ylab("partial residuals of standard length (mm)")
 xipho_sp_fry_size_plot
 ggsave(xipho_sp_fry_size_plot,filename='Figures/Fig1A_Xipho-5species-fry-std-length.pdf',height=8.5,width=8.5,bg = "transparent")
 
 
 ## Figure 1B: Hybrid fry standard length
+## See Figure S2B for head width comparison
 fry_size_data <- read.table("Data/newborn_fry_size_data.csv",header=T,sep=',')
 mal_bir_hyb_size <- subset(fry_size_data, species_site %in% c("XbirCOAC","XmalCHIC","Xmal_xbir_F1","Xmal_xbir_F2","Xmal_xbirCALL"))
-# average fry size within a brood
-mal_bir_hyb_size_summed <- as.data.frame(
-  mal_bir_hyb_size %>%
-    group_by(brood_ID) %>%
-    reframe(sl_mm_mean = mean(sl_mm,na.rm=T),species_site=first(species_site)))
-# plot raw data
-group_order <- c('XmalCHIC','XbirCOAC','Xmal_xbir_F1','Xmal_xbir_F2','Xmal_xbirCALL')
+mal_bir_hyb_size <- subset(mal_bir_hyb_size, !is.na(sl_mm) & !is.na(hw_mm) & !is.na(species) & !is.na(brood_ID))
+
+# summarize mean and standard deviation for each species
+mal_bir_hyb_size %>%
+  group_by(species) %>%
+  summarise_at(vars(sl_mm, hw_mm),
+               list(mean = mean, std = sd))
+
+# lmm model for each morphometric, including brood ID as a random effect
+# then make pairwise post hoc multiple comparisons between estimated marginal means
+# with paired t test and tukey adjustment
+# standard length
+lmm.sl <- lme4::lmer(sl_mm ~ species + (1 | brood_ID), data = mal_bir_hyb_size, REML=T )
+emmeans(lmm.sl, list(pairwise ~ species), adjust = "tukey")
+# head width
+lmm.hw <- lme4::lmer(hw_mm ~ species + (1 | brood_ID), data = mal_bir_hyb_size, REML=T )
+emmeans(lmm.hw, list(pairwise ~ species), adjust = "tukey")
+
+# calculate partial residuals
+lmm.sl.pr <- visreg(lmm.sl, "sl_mm",by="species",plot=F)$res
+
+# plot partial residuals
+group_order <- c('Xmal','Xbir','Xmal_xbir_F1','Xmal_xbir_F2','Xmal_xbir')
 color_list <- c(malcol, bircol, malxbir_f1col, malxbir_f2col, hybrid_col)
 text_col <- "black"
-sl <- ggplot(mal_bir_hyb_size_summed, aes(x=factor(species_site,levels=group_order), y=sl_mm_mean, fill=factor(species_site,levels=group_order), color=factor(species_site,levels=group_order))) +
+sl <- ggplot(lmm.sl.pr, aes(x=factor(species,levels=group_order), y=visregRes, fill=factor(species,levels=group_order), color=factor(species,levels=group_order))) +
   scale_color_manual(values=color_list) +
   scale_fill_manual(values=color_list) +
   geom_jitter(alpha=0.6,width=0.1, cex=0.7) +
@@ -95,7 +129,7 @@ sl <- ggplot(mal_bir_hyb_size_summed, aes(x=factor(species_site,levels=group_ord
   ylim(6,15) +
   scale_x_discrete(labels = c('Xmal','Xbir',expression('F'[1]),expression('F'[2]),'CALL')) +
   xlab("Xiphophorus species") +
-  ylab("standard length (mm)")
+  ylab("partial residuals of standard length (mm)")
 sl
 ggsave(sl,filename='Figures/Fig1B_Xipho-Xmal-Xbirch-f1-f2-CALL-fry_std-length.pdf',bg = "transparent",width=8.5,height=8.5)
 
@@ -105,11 +139,26 @@ combined_embryo_data <- read.table("Data/all-pops_combined_embryo_datasets.csv",
 # subset Xmalinche and Xbirchmanni collections from 2020-2023
 combined_subset <- subset(combined_embryo_data,(popcoll=="CHIC_V-2022" | popcoll=="CHIC_VIII_20" | popcoll=="COAC_VIII_20" | popcoll=="COAC_II-2023" | popcoll=="COAC_IX-2022" | popcoll=="COAC_X-2023") & stage!="0" & stage!="2" & stage!="5" & stage!="?" & stage!="-")
 
-# choose model
-step(lm(embryo_dry_weight_g~species*stage+brood_size+season+mother_std_length,combined_subset)) # embryo_dry_weight_g ~ species + stage + species:stage + season + mother_std_length
+# select best model by LRT
+# first check that brood ID should be included as a random variable
+fit_full <- lme4::lmer(embryo_dry_weight_g~species*stage+brood_size+season+collection+mother_std_length+(1|brood_ID), data = combined_subset, REML=F)
+fit_reduced <- lm(embryo_dry_weight_g~species*stage+brood_size+season+collection+mother_std_length, data = combined_subset)
+anova(fit_full,fit_reduced) # should be included, p<10^-16
+
+# include mother std length, season, collection date, brood size, and brood ID as a random effect
+combined_subset <- subset(combined_subset,!is.na(mother_std_length))
+fit_full <- lme4::lmer(embryo_dry_weight_g~species*stage+season+collection+mother_std_length+species:mother_std_length+brood_size+(1|brood_ID), data = combined_subset, REML=F)
+# removed one variable at a time
+fit_reduced <- lme4::lmer(embryo_dry_weight_g~species*stage+season+collection+mother_std_length+species:mother_std_length+(1|brood_ID), data = combined_subset, REML=F)
+anova(fit_full,fit_reduced)
+# variable                  Pr(>Chisq)
+# brood_size                0.81 [dropped]
+# mother_std_length         0.04
+# collection                0.27 [dropped]
+# species:mother_std_length  0.85 [dropped]
 
 # check difference between season vs collection in model with likelihood ratio test
-# difference between season vs collection model is not sig: p=0.2354
+# difference between season vs collection model is not significant: p=0.24
 combined_full_model <- lmer(embryo_dry_weight_g~species*stage+collection+mother_std_length+(1|brood_ID),data=combined_subset, REML=F)
 combined_reduced_model <- lmer(embryo_dry_weight_g~species*stage+season+mother_std_length+(1|brood_ID),data=combined_subset, REML=F)
 anova(combined_reduced_model,combined_full_model)
@@ -219,7 +268,7 @@ raw_embryo_dev_profiles <- ggplot(combined_subset, aes(x=stage, y=embryo_dry_wei
   xlab("stage") +
   ylab("embryo dry weight (g)")
 raw_embryo_dev_profiles
-ggsave(raw_embryo_dev_profiles,filename='Figures/FigSX_raw_dev-profile_all-stages_Xmal-Xbir_black-text_mean-se_yaxis0.000-0.006.pdf',height=8.5,width=13,bg = "transparent")
+ggsave(raw_embryo_dev_profiles,filename='Figures/FigS5B_raw_dev-profile_all-stages_Xmal-Xbir_black-text_mean-se_yaxis0.000-0.006.pdf',height=8.5,width=13,bg = "transparent")
 
 
 ## Figure 2C: Comparison of egg stage 0 dry weight for X. malinche (CHIC) and X. birchmanni (COAC)
@@ -228,14 +277,13 @@ stage0_data$population[stage0_data$population=="CHIC-DOWN"] <- "CHIC"
 stage0_data$population[stage0_data$population=="CHIC-UP"] <- "CHIC"
 # no X. cortezi (PTHC)
 stage0_data <- subset(stage0_data,population!="PTHC")
+# remove data without mother standard length measure
+stage0_data <- subset(stage0_data,!is.na(mother_std_length))
 
-# choose model
-step(lm(embryo_dry_weight_g~species+brood_size+season+mother_std_length,combined_subset)) # embryo_dry_weight_g ~ species + season + mother_std_length
+# fit mixed linear model (same as above)
+stage0_fit_lm <- lmer(embryo_dry_weight_g~species+mother_std_length+(1|brood_ID),data=stage0_data, REML=T)
 
-# fit mixed linear model
-stage0_fit_lm <- lmer(embryo_dry_weight_g~species+season+mother_std_length+(1|brood_ID),data=stage0_data, REML=T)
-
-# statistical comparison of means (ANOVA/)
+# statistical comparison of means
 emmeans(stage0_fit_lm,pairwise ~ "species", adjust="tukey") # p-value=0.18
 anova(stage0_fit_lm)
 #                      Sum Sq    Mean Sq NumDF  DenDF F value Pr(>F)
@@ -320,7 +368,7 @@ stage0_size_violin <- ggplot(stage0_partial_residuals, aes(x=species, y=visregRe
   ylab("partial residuals of yolked egg dry weight (g)") +
   scale_x_discrete(limits=c("Xmalinche","Xbirchmanni","Xcortezi"),labels=c("Xmal","Xbir","Xcor"))
 stage0_size_violin
-ggsave(stage0_size_violin,filename='Figures/FigSX_COAC-CHIC-PTHC-egg-size_violin.pdf',bg = "transparent",width=6,height=8.5)
+ggsave(stage0_size_violin,filename='Figures/FigS17_COAC-CHIC-PTHC-egg-size_violin.pdf',bg = "transparent",width=6,height=8.5)
 
 
 ## Figure 2D: Partial residual plot of embryo size for lab-reared Xmalinche, Xbirchmanni, and F1s of both cross directions from roof tanks
@@ -331,25 +379,30 @@ roof_chic_coac_f1_subset <- subset(roof_chic_coac_f1,stage!="0" & stage!="5" & s
 # remove one outlier - likely erroneous data recording
 roof_chic_coac_f1_subset <- subset(roof_chic_coac_f1_subset,embryo_dry_weight_g < 0.008)
 
-# choose model
-step(lm(embryo_dry_weight_g~species*stage+brood_size+mother_std_length,roof_chic_coac_f1_subset)) # embryo_dry_weight_g ~ species + stage + brood_size + mother_std_length
-lab_cross_fit <- lmer(embryo_dry_weight_g~species+stage+brood_size+mother_std_length+(1|brood_ID),data=roof_chic_coac_f1_subset, REML=T)
-# the above model is singular because brood_ID and maternal standard length are perfectly correlated (R^2=1)
-summary(lm(mother_std_length~brood_ID,roof_chic_coac_f1_subset))
-# importantly, the visreg partial residuals are exactly the same whether we use a mixed linear model with brood_ID or
-# a simple linear model without it
-# therefore, we drop brood_ID as a random effect and use a simple linear model instead
-lab_cross_fit <- lm(embryo_dry_weight_g~species+stage+brood_size+mother_std_length,data=roof_chic_coac_f1_subset)
+# select best model by LRT
+# include mother std length, brood size, and brood ID as a random effect
+# first evaluate whether brood_ID should be included as a random effect
+fit_full <- lme4::lmer(embryo_dry_weight_g ~ species + stage + species:stage + mother_std_length + species:mother_std_length + brood_size + (1 | brood_ID), data = roof_chic_coac_f1_subset, REML=F)
+fit_reduced <- lm(embryo_dry_weight_g ~ species + stage + species:stage + mother_std_length + species:mother_std_length + brood_size, data = roof_chic_coac_f1_subset)
+anova(fit_full,fit_reduced)
+# variable                  Pr(>Chisq)
+# (1|brood_ID)              1 [dropped]
+# since random effect is dropped, switching to linear model
+fit_full <- lm(embryo_dry_weight_g ~ species + stage + species:stage + mother_std_length + brood_size, data = roof_chic_coac_f1_subset)
+# removed one variable at a time
+fit_reduced <- lm(embryo_dry_weight_g ~ species + stage + species:stage + mother_std_length , data = roof_chic_coac_f1_subset)
+anova(fit_full,fit_reduced)
+# variable                  Pr(>Chisq)
+# stage                     0.06 [kept]
+# species:stage             0.17 [dropped]
+# mother_std_length         0.0002 [kept]
+# brood_size                1.2*10-7 [kept]
 
-# Stats: compare means with ANOVA and Tukey
+# chosen fit
+lab_cross_fit <- lm(embryo_dry_weight_g~species+stage+mother_std_length+brood_size,data=roof_chic_coac_f1_subset)
+
+# Stats: compare means with paired t-test and Tukey adjustment
 emmeans(lab_cross_fit, pairwise ~ species, adjust = "tukey")
-# contrast                     estimate          SE df t.ratio p.value
-# birxbir - birxmal_F1     0.000667 0.000712 112   0.936  0.7855
-# birxbir - malxbir_F1    -0.000847 0.000639 112  -1.325  0.5491
-# birxbir - malxmal       -0.001723 0.000426 112  -4.048  0.0005
-# birxmal_F1 - malxbir_F1 -0.001514 0.001151 112  -1.315  0.5553
-# birxmal_F1 - malxmal    -0.002390 0.000890 112  -2.684  0.0411
-# malxbir_F1 - malxmal    -0.000876 0.000366 112  -2.393  0.0844
 
 # report average raw dry weights
 # first average by broodID
@@ -370,6 +423,7 @@ lab_cross_size_avg %>% group_by(species) %>% reframe(embryo_dry_weight_g_mean = 
 lab_cross_partial_residuals <- visreg(lab_cross_fit, "species",plot=F)$res
 #write.csv(lab_cross_partial_residuals,"Data/lab_cross_xmal-xbir-F1_species_partial_residuals.csv")
 
+# plot
 color_list <- c(bircol, birxmal_f1col, malxbir_f1col, malcol)
 lab_cross_embryo_size <- ggplot(lab_cross_partial_residuals, aes(x=species, y=visregRes, fill=species, color=species)) +
   scale_color_manual(values=color_list) +
@@ -617,6 +671,11 @@ library(ggpubr)
 nonpreg_females <- read.csv("Data/II-2023_IX-2023_nonpreg-females_lipid-extraction.csv",header=T)
 fat_content_data <- subset(nonpreg_females,FC_percent >= 0 & population!="PTHC" & population!="SELV")
 fat_content_data$population <- as.factor(fat_content_data$population)
+fat_content_data$popcoll <- paste(fat_content_data$population,fat_content_data$collection, sep="_")
+
+# female_FC_fit <- lm(FC_percent~popcoll, data=fat_content_data)
+# emmeans(female_FC_fit, list(pairwise ~ popcoll), adjust = "tukey")
+# same result as with t-tests
 
 # stats - two-sided T-test
 # subset data by species and season
@@ -638,6 +697,27 @@ group_order <- c("CHIC","COAC")
 text_col="black"
 feb_fc_sub <- subset(fat_content_data,collection=="II-2023")
 sep_fc_sub <- subset(fat_content_data,collection=="IX-2022")
+fat_content_plot_feb <-
+  ggboxplot(feb_fc_sub, x="population", y="FC_percent",color="population", palette=color_list,fill=NA,lwd=1.5) +
+  geom_jitter(aes(col=population),alpha=0.4,width=0.2) +
+  theme_minimal() +
+  theme(
+    legend.position="none",
+    legend.title=element_blank(),
+    axis.ticks = element_line(colour = text_col, size = 0.2),
+    panel.grid.major = element_line(colour = "grey", size = 0.2),
+    panel.grid.minor = element_blank(),
+    axis.text=element_text(colour=text_col, size=22),
+    text=element_text(colour=text_col, size=26),
+    plot.background = element_rect(fill = "transparent", color = NA),
+    rect = element_rect(fill = "transparent"),
+    panel.background = element_rect(fill = "transparent"),
+    panel.border = element_rect(colour = text_col, fill=NA)
+  ) +
+  scale_x_discrete(labels = c('Xmal','Xbir')) +
+  xlab("February 2023") +
+  ylab("female body fat (%)")
+
 fat_content_plot_sep <-
   ggboxplot(sep_fc_sub, x="population", y="FC_percent",color="population", palette=color_list,fill=NA,lwd=1.5) +
   geom_jitter(aes(col=population),alpha=0.4,width=0.2) +
@@ -671,27 +751,26 @@ fry_fat_content <- read.csv("Data/X-23_fry_starvation_fat_content.csv")
 fry_fat_content <- subset(fry_fat_content, FC_percent >= 0 & !is.na(FC_percent) & brood_no != "1m" & brood_no != "1b")
 fry_fat_content$condition <- paste(fry_fat_content$species,fry_fat_content$treatment, sep="_")
 
-# choose model
-step(lm(dry_mass_1 ~ condition+species+treatment+brood_no,fry_fat_content)) # dry_mass_1 ~ condition + brood_no
+# select best model by LRT
+# evaluate whether brood_ID should be included as a random effect
+fit_full <- lme4::lmer(dry_mass_1 ~ condition+(1|brood_no), data = fry_fat_content, REML=F)
+fit_reduced <- lm(dry_mass_1 ~ condition,data = fry_fat_content)
+anova(fit_full,fit_reduced)
+# variable                  Pr(>Chisq)
+# (1|brood_ID)              1.4*10^-5 [kept]
 
-# stats: Compare raw means, accounting for covariates
-# ANOVA - posthoc Tukey
-# no difference between Xmal v Xbir
-# no difference between Xmal control v starved
-# sig difference (decrease) between Xbir control v starved
-# $`pairwise differences of condition`
-#                           estimate     SE df t.ratio p.value
-#Xbir_control - Xbir_starved  0.001043 0.000190 50   5.504  <.0001
-#Xbir_control - Xmal_control -0.000256 0.000393 50  -0.651  0.9148
-#Xbir_control - Xmal_starved  0.000552 0.000391 50   1.410  0.4992
-#Xbir_starved - Xmal_control -0.001300 0.000390 50  -3.335  0.0085
-#Xbir_starved - Xmal_starved -0.000492 0.000388 50  -1.269  0.5869
-#Xmal_control - Xmal_starved  0.000808 0.000160 50   5.054  <.0001
-dry_mass_fit <- lme(dry_mass_1 ~ condition, random=~1|brood_no,data=fry_fat_content)
+# Stats: Compare raw means, accounting for covariates
+dry_mass_fit <- lme4::lmer(dry_mass_1 ~ condition+(1|brood_no), data = fry_fat_content, REML=T)
 emmeans(dry_mass_fit, list(pairwise ~ condition), adjust = "tukey")
+# 1                            estimate       SE    df t.ratio p.value
+# Xbir_control - Xbir_starved  0.001043 0.000190 51.16   5.500  <.0001
+# Xbir_control - Xmal_control -0.000256 0.000394  6.27  -0.650  0.9121
+# Xbir_control - Xmal_starved  0.000552 0.000392  6.17   1.409  0.5370
+# Xbir_starved - Xmal_control -0.001300 0.000391  6.03  -3.328  0.0581
+# Xbir_starved - Xmal_starved -0.000492 0.000388  5.93  -1.267  0.6131
+# Xmal_control - Xmal_starved  0.000808 0.000160 51.35   5.047  <.0001
 
 # calculate partial residuals
-dry_mass_fit <- lmer(standard_length_cm ~ condition+(1|brood_no),data=fry_fat_content)
 dry_mass_partial_residuals <- visreg(dry_mass_fit, "condition",plot=F)$res
 
 # plot partial residuals of dry mass
@@ -717,10 +796,26 @@ dm_fry_food_dep_plot <- ggplot(dry_mass_partial_residuals, aes(x=factor(conditio
   ) +
   scale_x_discrete(labels = c("food", "no food", "food", "no food")) +
   xlab("fry treatment (3 days)") +
-  ylab("partial residuals of dry mass (g)")
+  ylab("partial residuals of dry weight (g)")
 dm_fry_food_dep_plot
 ggsave(dm_fry_food_dep_plot,filename='Figures/Fig4B_food-deprivation_dry-mass-boxplot_black-text.pdf',height=8.5,width=8.5,bg = "transparent")
 
+
+## Standard length (cm)
+fry_fat_content$standard_length_mm <- fry_fat_content$standard_length_cm*10 # convert post-trial std length cm to mm
+std_length_fit <- lme4::lmer(standard_length_mm ~ condition+(1|brood_no), data = fry_fat_content, REML=T)
+
+# Stats: Compare raw means, accounting for covariates
+# paired t-test - posthoc Tukey
+emmeans(std_length_fit, list(pairwise ~ condition), adjust = "tukey")
+# $`pairwise differences of condition`
+# 1                           estimate     SE df t.ratio p.value
+# Xbir_control - Xbir_starved    1.130 0.325 51.78   3.471  0.0057
+# Xbir_control - Xmal_control   -0.393 0.400  9.98  -0.980  0.7634
+# Xbir_control - Xmal_starved    0.280 0.396  9.86   0.707  0.8921
+# Xbir_starved - Xmal_control   -1.522 0.390  8.52  -3.901  0.0171
+# Xbir_starved - Xmal_starved   -0.850 0.385  8.39  -2.206  0.1978
+# Xmal_control - Xmal_starved    0.672 0.274 52.19   2.451  0.0800
 
 
 ##### SUPPLEMENTARY FIGURES
@@ -730,16 +825,32 @@ ggsave(dm_fry_food_dep_plot,filename='Figures/Fig4B_food-deprivation_dry-mass-bo
 
 ## Supp Fig S2A: 5 Xipho species newborn fry head width
 fry_size_data <- read.table("Data/newborn_fry_size_data.csv",header=T,sep=',')
+# subset species of interest and remove samples with missing data
 xipho_sp_size <- subset(fry_size_data, species_site %in% c("XbirCOAC","XmalCHIC","XcorPTHC","XpygPTHC","XvarCOAC"))
-xipho_sp_hw_summed <- as.data.frame(
-  xipho_sp_size %>%
-    group_by(brood_ID) %>%
-    reframe(hw_mm_mean = mean(hw_mm,na.rm=T),species=first(species)))
+xipho_sp_size <- subset(xipho_sp_size,!is.na(sl_mm) & !is.na(hw_mm) & !is.na(species) & !is.na(brood_ID))
+
+# summarize mean and standard deviation for each species
+xipho_sp_size %>%
+  group_by(species) %>%
+  summarise_at(vars(sl_mm, hw_mm),
+               list(mean = mean, std = sd))
+
+# lmm model for each morphometric, including brood ID as a random effect
+# then make pairwise post hoc multiple comparisons between estimated marginal means
+# with paired t test and tukey adjustment
+# head width
+lmm.hw <- lme4::lmer(hw_mm ~ species + (1 | brood_ID), data = xipho_sp_size, REML=T )
+emmeans(lmm.hw, list(pairwise ~ species), adjust = "tukey")
+
+# calculate partial residuals
+lmm.hw.pr <- visreg(lmm.hw, "hw_mm",by="species",plot=F)$res
+
+# plot partial residuals
 species_order <- c("Xmal","Xbir","Xcor","Xpyg","Xvar")
 color_list <- c(malcol,bircol,corcol,"#FBAC87","#B3E561")
 text_col <- "black"
 xipho_sp_fry_size_plot_hw <-
-  ggplot(xipho_sp_hw_summed, aes(x=factor(species,levels=species_order), y=hw_mm_mean, fill=factor(species,levels=species_order), color=factor(species,levels=species_order))) +
+  ggplot(lmm.hw.pr, aes(x=factor(species,levels=species_order), y=visregRes, fill=factor(species,levels=species_order), color=factor(species,levels=species_order))) +
   scale_color_manual(values=color_list) +
   scale_fill_manual(values=color_list) +
   geom_jitter(alpha=0.6,width=0.1, cex=0.7) +
@@ -759,34 +870,39 @@ xipho_sp_fry_size_plot_hw <-
     panel.background = element_rect(fill = "transparent"),
     panel.border = element_rect(colour = text_col, fill=NA)
   ) +
-  ylim(1.3,3.3) +
+  ylim(1,3) +
   xlab("Xiphophorus species") +
-  ylab("head width (mm)")
+  ylab("partial residuals of head width (mm)")
 xipho_sp_fry_size_plot_hw
-ggsave(xipho_sp_fry_size_plot_hw,filename='Figures/SuppFigS1_Xipho-5species-fry-head-width.pdf',height=8.5,width=8.5,bg = "transparent")
-
-# get summary of mean and stdev for each species
-xipho_sp_size_summed %>%
-  group_by(species) %>%
-  summarise_at(vars(hw_mm_mean),
-               list(hw_mean = mean, hw_std = sd))
-
-# pairwise comparisons using Wilcoxon rank sum exact test
-pairwise.wilcox.test(xipho_sp_size_summed$hw_mm_mean, xipho_sp_size_summed$species,p.adjust.method = "BH")
+ggsave(xipho_sp_fry_size_plot_hw,filename='Figures/FigS2A_Xipho-5species-fry-head-width.pdf',height=8.5,width=8.5,bg = "transparent")
 
 
 ## Supp. Fig. S2B: Newborn fry head width boxplot
 fry_size_data <- read.table("Data/newborn_fry_size_data.csv",header=T,sep=',')
-#mal_bir_hyb_size <- subset(fry_size_data, species_site %in% c("XbirCOAC","XmalCHIC","Xmal_xbir_F1","Xmal_xbir_F2","Xmal_xbirCALL","Xmal_xbirCAPS","Xmal_xbirPLNK"))
 mal_bir_hyb_size <- subset(fry_size_data, species_site %in% c("XbirCOAC","XmalCHIC","Xmal_xbir_F1","Xmal_xbir_F2","Xmal_xbirCALL"))
-mal_bir_hyb_hw_summed <- as.data.frame(
-  mal_bir_hyb_size %>%
-    group_by(brood_ID) %>%
-    reframe(hw_mm_mean = mean(hw_mm,na.rm=T),species_site=first(species_site)))
-group_order <- c('XmalCHIC','XbirCOAC','Xmal_xbir_F1','Xmal_xbir_F2','Xmal_xbirCALL')
+mal_bir_hyb_size <- subset(mal_bir_hyb_size, !is.na(sl_mm) & !is.na(hw_mm) & !is.na(species) & !is.na(brood_ID))
+
+# summarize mean and standard deviation for each species
+mal_bir_hyb_size %>%
+  group_by(species) %>%
+  summarise_at(vars(sl_mm, hw_mm),
+               list(mean = mean, std = sd))
+
+# lmm model for each morphometric, including brood ID as a random effect
+# then make pairwise post hoc multiple comparisons between estimated marginal means
+# with paired t test and tukey adjustment
+# head width
+lmm.hw <- lme4::lmer(hw_mm ~ species + (1 | brood_ID), data = mal_bir_hyb_size, REML=T )
+emmeans(lmm.hw, list(pairwise ~ species), adjust = "tukey")
+
+# calculate partial residuals
+lmm.hw.pr <- visreg(lmm.hw, "hw_mm",by="species",plot=F)$res
+
+# plot partial residuals
+group_order <- c('Xmal','Xbir','Xmal_xbir_F1','Xmal_xbir_F2','Xmal_xbir')
 color_list <- c(malcol, bircol, malxbir_f1col, malxbir_f2col, hybrid_col)
 text_col <- "black"
-hw <- ggplot(mal_bir_hyb_hw_summed, aes(x=factor(species_site,levels=group_order), y=hw_mm_mean, fill=factor(species_site,levels=group_order), color=factor(species_site,levels=group_order))) +
+hw <- ggplot(lmm.hw.pr, aes(x=factor(species,levels=group_order), y=visregRes, fill=factor(species,levels=group_order), color=factor(species,levels=group_order))) +
   scale_color_manual(values=color_list) +
   scale_fill_manual(values=color_list) +
   geom_jitter(alpha=0.6,width=0.1, cex=0.7) +
@@ -806,15 +922,12 @@ hw <- ggplot(mal_bir_hyb_hw_summed, aes(x=factor(species_site,levels=group_order
     panel.background = element_rect(fill = "transparent"),
     panel.border = element_rect(colour = text_col, fill=NA)
   ) +
-  ylim(1.3,3.3) +
+  ylim(1,3) +
   scale_x_discrete(labels = c('Xmal','Xbir',expression('F'[1]),expression('F'[2]),'CALL')) +
   xlab("Xiphophorus species") +
-  ylab("head width (mm)")
+  ylab("partial residuals of head width (mm)")
 hw
-ggsave(hw,filename='Figures/SuppFig_Xipho-Xmal-Xbirch-hybrid-fry_head-width.pdf',bg = "transparent",width=8.5,height=8.5)
-
-# Pairwise comparisons using Wilcoxon rank sum exact test
-pairwise.wilcox.test(mal_bir_hyb_size_summed$hw_mm_mean, mal_bir_hyb_size_summed$species,p.adjust.method = "BH")
+ggsave(hw,filename='Figures/FigS2B_Xipho-Xmal-Xbirch-hybrid-fry_head-width.pdf',bg = "transparent",width=8.5,height=8.5)
 
 
 ## Supp Fig S3: Brood size comparison between species
@@ -872,50 +985,76 @@ CALL_embryo_data$mitotype <- CALL_mother_hi$mitotype[match(CALL_embryo_data$broo
 CALL_embryo_data <- subset(CALL_embryo_data,stage!="-" & stage!="0" & stage!="10" & stage!="15")
 # remove pure parent data
 CALL_embryo_data_nomal <- subset(CALL_embryo_data,mother_hi<0.9 & mother_hi>0.1 )
-
-## Supp Fig S6A - Relationship between embryo dry weight and mother hybrid index
-# model fit
-model_all<-lm(embryo_dry_weight_g~mother_hi*stage+brood_size,data=CALL_embryo_data_nomal)
-selectedMod <- step(model_all) # embryo_dry_weight_g ~ mother_hi + stage + mother_hi:stage + brood_ID
-summary(model_all)
-
 # make new dataframe and remove NA
 CALL_embryo_data_nomal_sub <- data.frame(brood_ID=CALL_embryo_data_nomal$brood_ID,stage=CALL_embryo_data_nomal$stage,brood_size=CALL_embryo_data_nomal$brood_size,mother_hi=CALL_embryo_data_nomal$mother_hi,mitotype=CALL_embryo_data_nomal$mitotype,embryo_dry_weight_g=CALL_embryo_data_nomal$embryo_dry_weight_g)
 CALL_embryo_data_nomal_sub <- na.omit(CALL_embryo_data_nomal_sub)
 
+## Supp Fig S6A - Relationship between embryo dry weight and mother hybrid index
+# model fit
+# first check whether brood ID should be included as a random effect - it should
+fit_full <-lme4::lmer(embryo_dry_weight_g~mother_hi*stage+brood_size + (1 | brood_ID),data=CALL_embryo_data_nomal,REML=F)
+fit_reduced <-lm(embryo_dry_weight_g~mother_hi*stage+brood_size,data=CALL_embryo_data_nomal)
+anova(fit_full,fit_reduced)
+# variable                  Pr(>Chisq)
+# (1|brood_ID)              < 2.2e-16 [kept]
+
+# then check which covariates should be included as random effects
+fit_full <-lme4::lmer(embryo_dry_weight_g~mother_hi*stage+brood_size + (1 | brood_ID),data=CALL_embryo_data_nomal_sub,REML=F)
+fit_reduced <- lme4::lmer(embryo_dry_weight_g~mother_hi+stage+mother_hi:stage+ (1 | brood_ID),data=CALL_embryo_data_nomal_sub,REML=F)
+anova(fit_full,fit_reduced)
+# variable                  Pr(>Chisq)
+# brood_size                0.98 [dropped]
+# stage                     7.019e-05 [kept]
+# mother_hi:stage           0.005064 [kept]
+# embryo_dry_weight_g ~ mother_hi + stage + mother_hi:stage + (1|brood_ID)
+
 # evaluate significance with likelihood ratio test (anova) on full and reduced model
-CALL_hi_mlm_fit<-lme(embryo_dry_weight_g~mother_hi+stage+mother_hi:stage+brood_size,random=~1|brood_ID,data=CALL_embryo_data_nomal_sub)
-CALL_hi_mlm_fit_reduced<-lme(embryo_dry_weight_g~stage,random=~1|brood_ID,data=CALL_embryo_data_nomal_sub)
-anova(CALL_hi_mlm_fit,CALL_hi_mlm_fit_reduced)
-# Model df       AIC       BIC   logLik   Test  L.Ratio p-value
-# CALL_hi_mlm_fit             1 13 -10892.05 -10829.55 5459.026
-# CALL_hi_mlm_fit_reduced     2  7 -10965.66 -10931.96 5489.829 1 vs 2 61.60707  <.0001
+fit_full <-lme4::lmer(embryo_dry_weight_g~mother_hi+stage+mother_hi:stage+(1 | brood_ID),data=CALL_embryo_data_nomal_sub,REML=F)
+fit_reduced <- lme4::lmer(embryo_dry_weight_g~stage+(1 | brood_ID),data=CALL_embryo_data_nomal_sub,REML=F)
+anova(fit_full,fit_reduced)
+# fit_reduced: embryo_dry_weight_g ~ stage + (1 | brood_ID)
+# fit_full: embryo_dry_weight_g ~ mother_hi + stage + mother_hi:stage + (1 | brood_ID)
+# npar    AIC    BIC logLik deviance  Chisq Df Pr(>Chisq)
+# fit_reduced    7 -11050 -11016 5531.9   -11064
+# fit_full      12 -11058 -11000 5540.9   -11082 17.899  5   0.003075 **
+
 
 # use lmer to fit mixed linear model for visreg
-CALL_hi_mlm_fit<-lmer(embryo_dry_weight_g~mother_hi+stage+mother_hi:stage+brood_size+(1|brood_ID),data=CALL_embryo_data_nomal_sub)
+CALL_hi_mlm_fit <- lme4::lmer(embryo_dry_weight_g~mother_hi+stage+mother_hi:stage+(1|brood_ID),data=CALL_embryo_data_nomal_sub)
 
 # plot mother hi and embryo dry weight
 CALL_hi_mlm_vr <- visreg(CALL_hi_mlm_fit,"mother_hi")
 plot(visregRes ~ mother_hi,CALL_hi_mlm_vr$res,xlab="mother ancestry proportion",ylab="partial residuals of embryo dry weight (g)", col=hybrid_col,pch=20,cex.lab=1.8,cex.axis=1.5)
 abline(lm(CALL_hi_mlm_vr$res$visregRes~CALL_hi_mlm_vr$res$mother_hi), col="purple",lwd=4)
-dev.copy(pdf,"Figures/FigSX_CALL_embryo-size_mother-hybrid-index.pdf",bg="transparent",width=8,height=8)
+dev.copy(pdf,"Figures/FigS6A_CALL_embryo-size_mother-hybrid-index.pdf",bg="transparent",width=8,height=8)
 dev.off()
-cor(CALL_hi_mlm_vr$res$visregRes,CALL_hi_mlm_vr$res$mother_hi,method="pearson") # 0.9877804
+cor(CALL_hi_mlm_vr$res$visregRes,CALL_hi_mlm_vr$res$mother_hi,method="pearson") # 0.3696321
 
 ## Supp Fig S6B - Relationship between embryo dry weight and mother mitotype
 # model fit
-model_all<-lm(embryo_dry_weight_g~mitotype*stage+brood_size,data=CALL_embryo_data_nomal)
-selectedMod <- step(model_all) # embryo_dry_weight_g ~ mitotype + stage + mitotype:stage + brood_size
-summary(model_all)
+# determine which covariates to keep
+CALL_mito_mlm_fit <- lme4::lmer(embryo_dry_weight_g ~ mitotype + stage + mitotype:stage + brood_size + (1|brood_ID),data=CALL_embryo_data_nomal_sub,REML=F)
+CALL_mito_mlm_fit_reduced <- lme4::lmer(embryo_dry_weight_g ~ stage + brood_size + (1|brood_ID),data=CALL_embryo_data_nomal_sub,REML=F)
+anova(CALL_mito_mlm_fit,CALL_mito_mlm_fit_reduced)
+# variable                  Pr(>Chisq)
+# mitotype:stage            0.001319 [kept]
+# stage+mitotype:stage      0.0009888 [kept]
+# mitotype+mitotype:stage   5.029e-12 [kept]
+# brood_size                0.976 [dropped]
+# embryo_dry_weight_g ~ mitotype + stage + (1|brood_ID)
 
 # evaluate significance with likelihood ratio test (anova) on full and reduced model
-CALL_mito_mlm_fit <- lme(embryo_dry_weight_g ~ mitotype + stage + brood_size,random=~1|brood_ID,data=CALL_embryo_data_nomal_sub)
-CALL_mito_mlm_fit_reduced <- lme(embryo_dry_weight_g ~ stage + brood_size,random=~1|brood_ID,data=CALL_embryo_data_nomal_sub)
+CALL_mito_mlm_fit <- lme4::lmer(embryo_dry_weight_g ~ mitotype + stage + mitotype:stage + (1|brood_ID),data=CALL_embryo_data_nomal_sub,REML=F)
+CALL_mito_mlm_fit_reduced <- lme4::lmer(embryo_dry_weight_g ~ stage + (1|brood_ID),data=CALL_embryo_data_nomal_sub,REML=F)
 anova(CALL_mito_mlm_fit,CALL_mito_mlm_fit_reduced)
-# CALL_mito_mlm_fit_reduced     2  8 -10943.09 -10904.58 5479.546 1 vs 2 11.81378   6e-04
+# CALL_mito_mlm_fit_reduced: embryo_dry_weight_g ~ stage + (1 | brood_ID)
+# CALL_mito_mlm_fit: embryo_dry_weight_g ~ mitotype + stage + (1 | brood_ID)
+# npar    AIC    BIC logLik deviance  Chisq Df Pr(>Chisq)
+# CALL_mito_mlm_fit_reduced    7 -11050 -11016 5531.9   -11064
+# CALL_mito_mlm_fit           11 -11060 -11007 5541.2   -11082 18.642  4  0.0009239 ***
 
 # use lmer to fit mixed linear model for visreg
-CALL_mito_mlm_fit<-lmer(embryo_dry_weight_g~mitotype+stage+brood_size+(1|brood_ID),data=CALL_embryo_data_nomal_sub)
+CALL_mito_mlm_fit <- lme4::lmer(embryo_dry_weight_g~mitotype+stage+mitotype:stage+(1|brood_ID),data=CALL_embryo_data_nomal_sub)
 
 # plot mitotype and embryo dry weight
 CALL_mito_mlm_vr <- visreg(CALL_mito_mlm_fit,"mitotype")
@@ -944,7 +1083,7 @@ CALL_mito_plot <-
   xlab("mitotype") +
   ylab("partial residuals of embryo dry weight (g)")
 CALL_mito_plot
-ggsave(CALL_mito_plot,filename='Figures/FigSX_CALL_embryo-size_mitotype.pdf',height=8,width=8,bg = "transparent")
+ggsave(CALL_mito_plot,filename='Figures/FigS6B_CALL_embryo-size_mitotype.pdf',height=8,width=8,bg = "transparent")
 
 
 ## Supp Fig S7: Allele-specific expression of X. malinche ovaries from F1 cross
@@ -1008,7 +1147,7 @@ temp_plot <- ggplot() + theme_minimal() +
   scale_y_continuous(name="temperature (\u00B0C)", limits=c(10, 30)) +
   xlab("year-month-day-time (GMT-6)")
 temp_plot
-ggsave(temp_plot,filename="Figures/HOBO_CHIC-2020_ACUA-2016_combined-plot.pdf",width=12,height=8.5)
+ggsave(temp_plot,filename="Figures/FigS11_HOBO_CHIC-2020_ACUA-2016_combined-plot.pdf",width=12,height=8.5)
 
 
 ## Supp Fig S12 - Pregnancy rates in wild X. malinche and X. birchmanni populations
@@ -1084,10 +1223,9 @@ ggsave(Xmal_preg_rate_plot,filename='Figures/SuppFigS12_Xmal_pregnancy-rates.pdf
 
 
 ## Supp Fig S13A - Food deprivation fry experiment - standard length (cm)
-## chose to plot partial residuals of standard lengths, instead of lengths normalized
-## by average initial lengths, because it better shows that Xmal and Xbir fry achieve
-## roughly the same size after 3 days, despite starting much smaller, and shows that
-## Xbir gain less in no food conditions
+## plot of partial residuals of standard lengths
+## shows that Xmal and Xbir fry achieve roughly the same size after 3 days,
+## despite starting much smaller, and shows that Xbir gain less in no food conditions
 fry_initial_std_lengths <- read.csv("Data/X-23_fry_starvation_initial_standard_lengths.csv")
 # get average pre-trial standard length per brood, add to dataframe
 fry_initial_std_lengths_avg <- as.data.frame(
@@ -1098,25 +1236,22 @@ fry_fat_content <- merge(fry_fat_content,fry_initial_std_lengths_avg,by="brood_n
 # convert std length cm to mm
 fry_fat_content$standard_length_mm <- fry_fat_content$standard_length_cm*10
 
-# choose model
-step(lm(standard_length_mm ~ condition+species+avg_initial_std_length_mm+brood_no,fry_fat_content))
-#standard_length_mm ~ condition + brood_no
+# fit model
+std_length_fit <- lme4::lmer(standard_length_mm ~ condition+(1|brood_no), data = fry_fat_content, REML=T)
 
 # Stats: Compare raw means, accounting for covariates
-# ANOVA - posthoc Tukey
-#$`pairwise differences of condition`
-#1                           estimate     SE df t.ratio p.value
-#Xbir_control - Xbir_starved   0.1130 0.0325 50   3.481  0.0056
-#Xbir_control - Xmal_control  -0.0393 0.0397 50  -0.989  0.7562
-#Xbir_control - Xmal_starved   0.0280 0.0393 50   0.712  0.8920
-#Xbir_starved - Xmal_control  -0.1522 0.0384 50  -3.963  0.0013
-#Xbir_starved - Xmal_starved  -0.0850 0.0380 50  -2.237  0.1274
-#Xmal_control - Xmal_starved   0.0672 0.0273 50   2.462  0.0786
-std_length_fit <- lme(standard_length_mm ~ condition, random=~1|brood_no,data=fry_fat_content)
+# paired t-test - posthoc Tukey
 emmeans(std_length_fit, list(pairwise ~ condition), adjust = "tukey")
+# $`pairwise differences of condition`
+# 1                           estimate     SE df t.ratio p.value
+# Xbir_control - Xbir_starved    1.130 0.325 51.78   3.471  0.0057
+# Xbir_control - Xmal_control   -0.393 0.400  9.98  -0.980  0.7634
+# Xbir_control - Xmal_starved    0.280 0.396  9.86   0.707  0.8921
+# Xbir_starved - Xmal_control   -1.522 0.390  8.52  -3.901  0.0171
+# Xbir_starved - Xmal_starved   -0.850 0.385  8.39  -2.206  0.1978
+# Xmal_control - Xmal_starved    0.672 0.274 52.19   2.451  0.0800
 
 # calculate partial residuals of standard length
-std_length_fit <- lmer(standard_length_mm ~ condition+(1|brood_no),data=fry_fat_content)
 std_length_partial_residuals <- visreg(std_length_fit, "condition",plot=F)$res
 
 # plot
@@ -1145,14 +1280,16 @@ sl_fry_food_dep_plot <- ggplot(std_length_partial_residuals, aes(x=factor(condit
   xlab("fry treatment (3 days)") +
   ylab("partial residuals of standard length (mm)")
 sl_fry_food_dep_plot
-ggsave(sl_fry_food_dep_plot,filename='Figures/FigSX_food-deprivation_standard-length-boxplot_black-text.pdf',height=8.5,width=8.5,bg = "transparent")
+ggsave(sl_fry_food_dep_plot,filename='Figures/FigS13A_food-deprivation_standard-length-boxplot_black-text.pdf',height=8.5,width=8.5,bg = "transparent")
 
 ## Supp Fig S13A: plot partial residuals of initial standard lengths
 fry_initial_std_lengths <- subset(fry_initial_std_lengths,brood_no!="1m" & brood_no!="1b")
 fry_initial_std_lengths$standard_length_mm <- fry_initial_std_lengths$standard_length_cm*10
-initial_length_fit <- lmer(standard_length_mm ~ species+(1|brood_no),data=fry_initial_std_lengths)
+initial_length_fit <- lme4::lmer(standard_length_mm ~ species+(1|brood_no),data=fry_initial_std_lengths, REML=T)
+
 # calculate partial residuals
 initial_length_partial_residuals <- visreg(initial_length_fit, "species",plot=F)$res
+
 # plot
 text_col <- "black"
 color_list <- c(coaccol,chiccol)
@@ -1178,7 +1315,7 @@ initial_sl_fry_food_dep_plot <- ggplot(initial_length_partial_residuals, aes(x=f
   xlab("species") +
   ylab("partial residuals of standard length (mm)")
 initial_sl_fry_food_dep_plot
-ggsave(initial_sl_fry_food_dep_plot,filename='Figures/FigSX_food-deprivation_initial-standard-length-boxplot_black-text.pdf',height=8.5,width=5,bg = "transparent")
+ggsave(initial_sl_fry_food_dep_plot,filename='Figures/FigS13A_food-deprivation_initial-standard-length-boxplot_black-text.pdf',height=8.5,width=5,bg = "transparent")
 
 
 ## Supp Fig S13B: Food deprivation fry experiment - fat content (total %)
@@ -1187,14 +1324,14 @@ fry_fat_content <- read.csv("Data/X-23_fry_starvation_fat_content.csv")
 fry_fat_content <- subset(fry_fat_content, FC_percent >= 0 & !is.na(FC_percent) & brood_no != "1m" & brood_no != "1b")
 fry_fat_content$condition <- paste(fry_fat_content$species,fry_fat_content$treatment, sep="_")
 
-## stats: ANOVA and Tukey
+## stats: paired t-test and Tukey adjustment
 library(nlme)
 library(emmeans)
 fry_fat_fit <- lme(FC_percent ~ condition, random=~1|brood_no,data=fry_fat_content)
 summary(fry_fat_fit)
 emmeans(fry_fat_fit, list(pairwise ~ condition), adjust = "tukey")
 # Stats: Compare raw means, accounting for covariates
-# ANOVA - posthoc Tukey
+# paired t-test - posthoc Tukey
 # $`pairwise differences of condition`
 #                           estimate   SE df t.ratio p.value
 #Xbir_control - Xbir_starved    6.492 1.39 50   4.658  0.0001
@@ -1250,15 +1387,32 @@ table(subset(tetixchic_data,population=="TETIxCHIC")$stage)
 tetixchic_data <- subset(tetixchic_data, stage=="25" | stage=="30" | stage=="35")
 tetixchic_data$embryo_dry_weight_g <- as.numeric(tetixchic_data$embryo_dry_weight_g)
 
-# choose model
-tetixchic_full <- lm(embryo_dry_weight_g~population+stage+brood_size+mother_std_length+mother_origin, data=tetixchic_data)
-step(tetixchic_full) # embryo_dry_weight_g ~ population + stage + brood_size + mother_std_length
-# chosen fit
-tetixchic_fit <- lmer(embryo_dry_weight_g ~ population + stage + brood_size + mother_std_length + (1|brood_ID),data=tetixchic_data, REML=T)
+# select best model by LRT
+# include mother std length, mother origin brood size, and brood ID as a random effect
+# first evaluate whether brood_ID should be included as a random effect
+fit_full <- lme4::lmer(embryo_dry_weight_g ~ population + stage + population:stage + mother_std_length + mother_origin + brood_size + (1 | brood_ID), data = tetixchic_data, REML=F)
+fit_reduced <- lm(embryo_dry_weight_g ~ population + stage + population:stage + mother_std_length + mother_origin + brood_size, data = tetixchic_data)
+anova(fit_full,fit_reduced)
+# variable                  Pr(>Chisq)
+# (1|brood_ID)              0.04 [kept]
+# keeping mixed linear model with brood_ID as random effect
+fit_full <- lme4::lmer(embryo_dry_weight_g ~ population + stage + population:stage + mother_std_length + mother_origin + brood_size + (1 | brood_ID), data = tetixchic_data, REML=F)
+fit_reduced <- lme4::lmer(embryo_dry_weight_g ~ population + stage + population:stage + mother_std_length + mother_origin +  (1 | brood_ID), data = tetixchic_data, REML=F)
+anova(fit_full,fit_reduced)
+# variable                  Pr(>Chisq)
+# stage                     0.21  [dropped]
+# population:stage          0.09  [dropped]
+# mother_std_length         0.25  [dropped]
+# mother_origin             NA    [dropped]
+# brood_size                0.97  [dropped]
 
-# pull partial residuals, accounting for covariates
+# chosen fit
+tetixchic_fit <- lmer(embryo_dry_weight_g ~ population + (1|brood_ID),data=tetixchic_data, REML=T)
+
+# calculate partial residuals
 tetixchic_partial_residuals <- visreg(tetixchic_fit, "population",plot=F)$res
 
+# plot partial residuals
 text_col <- "black"
 color_list <- c("#797EF6","#45b6fe",chiccol)
 group_order <- c("TETI2","TETIxCHIC","CHICxCHIC")
@@ -1283,9 +1437,9 @@ tetixchic_embryo_size_plot <- ggplot(tetixchic_partial_residuals, aes(x=factor(p
   ) +
   scale_x_discrete(labels = c("TETIxTETI", "TETIxCHIC", "CHICxCHIC")) +
   xlab("population") +
-  ylab("partial residuals of embryo dry mass (g)")
+  ylab("partial residuals of embryo dry weight (g)")
 tetixchic_embryo_size_plot
-ggsave(tetixchic_embryo_size_plot,filename='Figures/FigSX_TETIxCHIC-Xmal-intraspecific-embryo-sizes_black-text.pdf',height=8.5,width=8.5,bg = "transparent")
+ggsave(tetixchic_embryo_size_plot,filename='Figures/FigS15_TETIxCHIC-Xmal-intraspecific-embryo-sizes_black-text.pdf',height=8.5,width=8.5,bg = "transparent")
 
 
 ## Supp Fig S16: PCA plot of embryo RNAseq samples
@@ -1317,17 +1471,29 @@ dev.off()
 ## Supp Fig S18: Fry CTmin comparison
 ctmin_data <- read.csv("Data/CTmin_Xmal_Xbirch_newborn_trial_data.csv",header=T)
 ctmin_data$CTmin_trial <- as.factor(ctmin_data$CTmin_trial)
-# choose model
-ctmin_species_full <- lm(CTmin_C~species+CTmin_trial+start_temp_C+born_on_date,ctmin_data)
-step(ctmin_species_full)
-ctmin_species_fit <- lm(CTmin_C ~ species + start_temp_C + born_on_date,ctmin_data) # CTmin_C ~ species + start_temp_C + born_on_date
-summary(ctmin_species_fit)
-#              Estimate Std. Error t value Pr(>|t|)
-# speciesXmal              1.1992     0.3574   3.355  0.00216 **
-# start_temp_C            -8.7418     6.2718  -1.394  0.17361
-# born_on_date19-XIII-22   2.0563     1.6749   1.228  0.22910
-# born_on_date25-XIII-22   2.4202     1.3300   1.820  0.07879 .
+ctmin_data$born_date_ID <- paste0(ctmin_data$species,ctmin_data$born_on_date)
 
+# choose model with LRT
+ctmin_species_full <- lme4::lmer(CTmin_C~species+CTmin_trial+start_temp_C+(1|born_date_ID),ctmin_data,REML=F)
+ctmin_species_reduced <- lm(CTmin_C ~ species+CTmin_trial+start_temp_C,ctmin_data)
+anova(ctmin_species_full,ctmin_species_reduced)
+# born_date_ID as random effect p-value 1 [dropped]
+# choose other covariates
+ctmin_species_full <- lm(CTmin_C ~ species+CTmin_trial+start_temp_C,ctmin_data)
+ctmin_species_reduced <- lm(CTmin_C ~ species+CTmin_trial,ctmin_data)
+anova(ctmin_species_full,ctmin_species_reduced)
+# start_temp_C      0.1736 [dropped]
+# CTmin_trial       0.02932 [kept]
+
+# evaluate significance of species effect with LRT
+ctmin_species_full <- lm(CTmin_C ~ species+CTmin_trial,ctmin_data)
+ctmin_species_reduced <- lm(CTmin_C ~ CTmin_trial,ctmin_data)
+anova(ctmin_species_full,ctmin_species_reduced)
+# Res.Df    RSS Df Sum of Sq      F   Pr(>F)
+# 1     31 22.626
+# 2     32 29.506 -1   -6.8801 9.4266 0.004422 **
+
+ctmin_species_fit <- lm(CTmin_C ~ species+CTmin_trial,ctmin_data)
 # calculate partial residuals
 ctmin_partial_residuals <- visreg(ctmin_species_fit, "species",plot=F)$res
 
@@ -1355,4 +1521,4 @@ ctmin_species <- ggplot(ctmin_data, aes(x=species, y=CTmin_C, fill=species)) +
   xlab("species") +
   ylab("CTmin (\u00B0C)")
 ctmin_species
-ggsave(ctmin_species,filename='Figures/FigSX_CTmin_newborn-Xmal-Xbirch.pdf',bg = "transparent",width=8.5,height=8.5)
+ggsave(ctmin_species,filename='Figures/FigS18_CTmin_newborn-Xmal-Xbirch.pdf',bg = "transparent",width=8.5,height=8.5)

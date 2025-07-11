@@ -1,7 +1,10 @@
 ##### SUPPLEMENTARY TABLES (& MATERIALS)
 ##### Recent evolution of large offspring size and post-fertilization nutrient provisioning in swordtails
-##### Payne et al
-##### 12/2023
+##### Payne et al 2025
+##### 07/2025
+
+library(lme4)
+library(emmeans)
 
 ## Supp Table S1 - Raw fry size data
 fry_size_data <- read.table("Data/newborn_fry_size_data.csv",header=T,sep=',')
@@ -10,50 +13,46 @@ fry_size_data <- read.table("Data/newborn_fry_size_data.csv",header=T,sep=',')
 ## Supp Table S2 - Compare standard length and head width means for
 ## A. Five Xiphophorus species
 fry_size_data <- read.table("Data/newborn_fry_size_data.csv",header=T,sep=',')
+# subset species of interest and remove samples with missing data
 xipho_sp_size <- subset(fry_size_data, species_site %in% c("XbirCOAC","XmalCHIC","XcorPTHC","XpygPTHC","XvarCOAC"))
-# average fry size within a brood
-xipho_sp_size_summed <- as.data.frame(
-  xipho_sp_size %>%
-    group_by(brood_ID) %>%
-    reframe(sl_mm_mean = mean(sl_mm,na.rm=T),species=first(species)))
+xipho_sp_size <- subset(xipho_sp_size,!is.na(sl_mm) & !is.na(hw_mm) & !is.na(species) & !is.na(brood_ID))
 
 # summarize mean and standard deviation for each species
-xipho_sp_size_summed %>%
+xipho_sp_size %>%
   group_by(species) %>%
-  summarise_at(vars(sl_mm_mean),
-               list(sl_mean = mean, sl_std = sd))
-#   species sl_mean sl_std
-# 1 Xbir       9.90  0.785
-# 2 Xcor       8.37  0.551
-# 3 Xmal      10.8   1.13
-# 4 Xpyg       8.31  0.569
-# 5 Xvar       7.35  0.549
+  summarise_at(vars(sl_mm, hw_mm),
+               list(mean = mean, std = sd))
 
-# Pairwise comparisons using Wilcoxon rank sum exact test
-pairwise.wilcox.test(xipho_sp_size_summed$sl_mm_mean, xipho_sp_size_summed$species,p.adjust.method = "BH")
-#      Xbir    Xcor    Xmal   Xpyg
-# Xcor 2.1e-07 -       -       -
-# Xmal 0.00043 2.1e-07 -       -
-# Xpyg 0.00078 0.94505 0.00043 -
-# Xvar 0.00466 0.07576 0.00466 0.29630
-# P value adjustment method: BH
+# lmm model for each morphometric, including brood ID as a random effect
+# then make pairwise post hoc multiple comparisons between estimated marginal means
+# with paired t test and tukey adjustment
+# standard length
+lmm.sl <- lme4::lmer(sl_mm ~ species + (1 | brood_ID), data = xipho_sp_size, REML=T )
+emmeans(lmm.sl, list(pairwise ~ species), adjust = "tukey")
+# head width
+lmm.hw <- lme4::lmer(hw_mm ~ species + (1 | brood_ID), data = xipho_sp_size, REML=T )
+emmeans(lmm.hw, list(pairwise ~ species), adjust = "tukey")
 
 ## B. Xmal, Xbir, F1, F2, and natural hybrids
 fry_size_data <- read.table("Data/newborn_fry_size_data.csv",header=T,sep=',')
 mal_bir_hyb_size <- subset(fry_size_data, species_site %in% c("XbirCOAC","XmalCHIC","Xmal_xbir_F1","Xmal_xbir_F2","Xmal_xbirCALL"))
-# average fry size within a brood
-mal_bir_hyb_size_summed <- as.data.frame(
-  mal_bir_hyb_size %>%
-    group_by(brood_ID) %>%
-    reframe(sl_mm_mean = mean(sl_mm,na.rm=T),species_site=first(species_site)))
-# Pairwise comparisons using Wilcoxon rank sum exact test
-pairwise.wilcox.test(mal_bir_hyb_size_summed$sl_mm_mean, mal_bir_hyb_size_summed$species,p.adjust.method = "BH")
-#              XbirCOAC Xmal_xbir_F1 Xmal_xbir_F2 Xmal_xbirCALL
-# Xmal_xbir_F1  0.0109   -            -            -
-# Xmal_xbir_F2  0.0281   0.3071       -            -
-# Xmal_xbirCALL 0.1909   0.1909       0.3393       -
-# XmalCHIC      0.0014   0.3071       0.3480       0.3393
-# P value adjustment method: BH
+mal_bir_hyb_size <- subset(mal_bir_hyb_size, !is.na(sl_mm) & !is.na(hw_mm) & !is.na(species) & !is.na(brood_ID))
+
+# summarize mean and standard deviation for each species
+mal_bir_hyb_size %>%
+  group_by(species) %>%
+  summarise_at(vars(sl_mm, hw_mm),
+               list(mean = mean, std = sd))
+
+# lmm model for each morphometric, including brood ID as a random effect
+# then make pairwise post hoc multiple comparisons between estimated marginal means
+# with paired t test and tukey adjustment
+# standard length
+lmm.sl <- lme4::lmer(sl_mm ~ species + (1 | brood_ID), data = mal_bir_hyb_size, REML=T )
+emmeans(lmm.sl, list(pairwise ~ species), adjust = "tukey")
+# head width
+lmm.hw <- lme4::lmer(hw_mm ~ species + (1 | brood_ID), data = mal_bir_hyb_size, REML=T )
+emmeans(lmm.hw, list(pairwise ~ species), adjust = "tukey")
 
 
 ## Supp Table S3 - Morphological stage descriptions
@@ -66,9 +65,23 @@ combined_embryo_data <- read.table("Data/all-pops_combined_embryo_datasets.csv",
 ##  Supp Table S5 - Statistical comparisons of mean embryo size between species at each stage
 combined_embryo_data <- read.table("Data/all-pops_combined_embryo_datasets.csv",header=T,sep=',')
 combined_subset <- subset(combined_embryo_data,(popcoll=="CHIC_V-2022" | popcoll=="CHIC_VIII_20" | popcoll=="COAC_VIII_20" | popcoll=="COAC_II-2023" | popcoll=="COAC_IX-2022" | popcoll=="COAC_X-2023") & stage!="0" & stage!="2" & stage!="5" & stage!="?" & stage!="-")
+
+# select best model by LRT
+# include mother std length, season, collection date, and brood ID as a random effect
+combined_subset <- subset(combined_subset,!is.na(mother_std_length))
+fit_full <- lme4::lmer(embryo_dry_weight_g ~ species + stage + species:stage + mother_std_length + species:mother_std_length + season + collection + brood_size + (1 | brood_ID), data = combined_subset, REML=F)
+# removed one variable at a time
+fit_reduced <- lme4::lmer(embryo_dry_weight_g ~ species + stage + species:stage + mother_std_length + species:mother_std_length + season + collection + brood_size + (1 | brood_ID), data = combined_subset, REML=F)
+anova(fit_full,fit_reduced)
+# variable                  Pr(>Chisq)
+# brood_size                0.81      [dropped]
+# collection                0.27      [dropped]
+# mother_std_length         0.04
+# species:mother_std_length 0.85      [dropped]
+
 # chosen fit
-combined_fit <- lmer(embryo_dry_weight_g~species+stage+species:stage+season+mother_std_length+(1|brood_ID),data=combined_subset, REML=T)
-# ANOVA and Tukey-test to compare species by stage
+combined_fit <- lme4::lmer(embryo_dry_weight_g ~ species + stage + species:stage + mother_std_length + season + (1|brood_ID),data=combined_subset, REML=T)
+# emmeans paired t-test and Tukey post-hoc adjustment  to compare species by stage
 emmeans(combined_fit, list(pairwise ~ species | stage), adjust = "tukey")
 
 
@@ -100,19 +113,31 @@ roof_chic_coac_f1 <- read.csv("Data/IV-2023_roof-tank_CHIC-COAC-F1_embryo-weight
 roof_chic_coac_f1 <- read.csv("Data/IV-2023_roof-tank_CHIC-COAC-F1_embryo-weights.csv",header=T,sep=",")
 roof_chic_coac_f1$stage <- as.factor(roof_chic_coac_f1$stage)
 # drop early stages (have <=2 samples)
-roof_chic_coac_f1_subset <- subset(roof_chic_coac_f1,stage!="0" & stage!="5" & stage!="10" & stage!="15" & stage!="20" & stage!="25")
+roof_chic_coac_f1_subset <- subset(roof_chic_coac_f1,stage!="0" & stage!="5" & stage!="10" & stage!="15" & stage!="20" & stage != "25")
 # remove one outlier - likely erroneous data recording
 roof_chic_coac_f1_subset <- subset(roof_chic_coac_f1_subset,embryo_dry_weight_g < 0.008)
 
-# choose model
-step(lm(embryo_dry_weight_g~species*stage+brood_size+mother_std_length,roof_chic_coac_f1_subset)) # embryo_dry_weight_g ~ species + stage + brood_size + mother_std_length
-lab_cross_fit <- lmer(embryo_dry_weight_g~species+stage+brood_size+mother_std_length+(1|brood_ID),data=roof_chic_coac_f1_subset, REML=T)
-# the above model is singular because brood_ID and maternal standard length are perfectly correlated (R^2=1)
-summary(lm(mother_std_length~brood_ID,roof_chic_coac_f1_subset))
-# importantly, the visreg partial residuals are exactly the same whether we use a mixed linear model with brood_ID or
-# a simple linear model without it
-# therefore, we drop brood_ID as a random effect and use a simple linear model instead
-lab_cross_fit <- lm(embryo_dry_weight_g~species+stage+brood_size+mother_std_length,data=roof_chic_coac_f1_subset)
+# select best model by LRT
+# include mother std length, brood size, and brood ID as a random effect
+# first evaluate whether brood_ID should be included as a random effect
+fit_full <- lme4::lmer(embryo_dry_weight_g ~ species + stage + species:stage + mother_std_length + species:mother_std_length + brood_size + (1 | brood_ID), data = roof_chic_coac_f1_subset, REML=F)
+fit_reduced <- lm(embryo_dry_weight_g ~ species + stage + species:stage + mother_std_length + species:mother_std_length + brood_size, data = roof_chic_coac_f1_subset)
+anova(fit_full,fit_reduced)
+# variable                  Pr(>Chisq)
+# (1|brood_ID)              1 [dropped]
+# since random effect is dropped, switching to linear model
+fit_full <- lm(embryo_dry_weight_g ~ species + stage + species:stage + mother_std_length + brood_size, data = roof_chic_coac_f1_subset)
+# removed one variable at a time
+fit_reduced <- lm(embryo_dry_weight_g ~ species + stage + species:stage + mother_std_length + brood_size, data = roof_chic_coac_f1_subset)
+anova(fit_full,fit_reduced)
+# variable                  Pr(>Chisq)
+# stage                     0.06 [kept]
+# species:stage             0.17 [dropped]
+# mother_std_length         0.0002
+# brood_size                1.2*10-7
+
+# chosen fit
+lab_cross_fit <- lm(embryo_dry_weight_g~species+stage+mother_std_length+brood_size,data=roof_chic_coac_f1_subset)
 
 # Stats: compare means with ANOVA and Tukey
 emmeans(lab_cross_fit, pairwise ~ species, adjust = "tukey")
@@ -136,18 +161,34 @@ table(subset(tetixchic_data,population=="TETIxCHIC")$stage)
 tetixchic_data <- subset(tetixchic_data, stage=="25" | stage=="30" | stage=="35")
 tetixchic_data$embryo_dry_weight_g <- as.numeric(tetixchic_data$embryo_dry_weight_g)
 
-# choose model
-tetixchic_full <- lm(embryo_dry_weight_g~population+stage+brood_size+mother_std_length+mother_origin, data=tetixchic_data)
-step(tetixchic_full) # embryo_dry_weight_g ~ population + stage + brood_size + mother_std_length
+# select best model by LRT
+# include mother std length, mother origin brood size, and brood ID as a random effect
+# first evaluate whether brood_ID should be included as a random effect
+fit_full <- lme4::lmer(embryo_dry_weight_g ~ population + stage + population:stage + mother_std_length + mother_origin + brood_size + (1 | brood_ID), data = tetixchic_data, REML=F)
+fit_reduced <- lm(embryo_dry_weight_g ~ population + stage + population:stage + mother_std_length + mother_origin + brood_size, data = tetixchic_data)
+anova(fit_full,fit_reduced)
+# variable                  Pr(>Chisq)
+# (1|brood_ID)              0.04 [kept]
+# keeping mixed linear model with brood_ID as random effect
+fit_full <- lme4::lmer(embryo_dry_weight_g ~ population + stage + population:stage + mother_std_length + mother_origin + brood_size + (1 | brood_ID), data = tetixchic_data, REML=F)
+fit_reduced <- lme4::lmer(embryo_dry_weight_g ~ population + stage + population:stage + mother_std_length + mother_origin +  (1 | brood_ID), data = tetixchic_data, REML=F)
+anova(fit_full,fit_reduced)
+# variable                  Pr(>Chisq)
+# stage                     0.21  [dropped]
+# population:stage          0.09  [dropped]
+# mother_std_length         0.25  [dropped]
+# mother_origin             NA    [dropped]
+# brood_size                0.97  [dropped]
 
-# stats: ANOVA and Tukey
-tetixchic_fit <- lmer(embryo_dry_weight_g ~ population + stage + brood_size + mother_std_length + (1|brood_ID),data=tetixchic_data, REML=T)
-summary(tetixchic_fit)
-emmeans(tetixchic_fit, list(pairwise ~ population | stage), adjust = "tukey")
-# 1                      estimate       SE   df t.ratio p.value
-# CHICxCHIC - TETI2      0.001680 0.000647 10.5   2.599  0.0612
-# CHICxCHIC - TETIxCHIC  0.001103 0.000799 11.4   1.380  0.3827
-# TETI2 - TETIxCHIC     -0.000577 0.000595 12.1  -0.970  0.6085
+# chosen fit
+tetixchic_fit <- lmer(embryo_dry_weight_g ~ population + (1|brood_ID),data=tetixchic_data, REML=T)
+
+# Stats: compare means with ANOVA and Tukey
+emmeans(tetixchic_fit, pairwise ~ population, adjust = "tukey")
+# contrast               estimate       SE   df t.ratio p.value
+# CHICxCHIC - TETI2      0.001770 0.000385 11.4   4.598  0.0018
+# CHICxCHIC - TETIxCHIC  0.001637 0.000535 13.8   3.059  0.0220
+# TETI2 - TETIxCHIC     -0.000133 0.000427 16.1  -0.312  0.9480
 
 # get within cross averages
 tetixchic_data_summed <- as.data.frame(
@@ -199,14 +240,28 @@ fry_fat_content <- read.csv("Data/X-23_fry_starvation_fat_content.csv")
 fry_fat_content <- subset(fry_fat_content, FC_percent >= 0 & !is.na(FC_percent) & brood_no != "1m" & brood_no != "1b")
 fry_fat_content$condition <- paste(fry_fat_content$species,fry_fat_content$treatment, sep="_")
 
-# choose model
-step(lm(dry_mass_1 ~ condition+species+treatment+brood_no,fry_fat_content)) # dry_mass_1 ~ condition + brood_no
+# select best model by LRT
+# evaluate whether brood_ID should be included as a random effect
+fit_full <- lme4::lmer(dry_mass_1 ~ condition+(1|brood_no), data = fry_fat_content, REML=F)
+fit_reduced <- lm(dry_mass_1 ~ condition,data = fry_fat_content)
+anova(fit_full,fit_reduced)
+# variable                  Pr(>Chisq)
+# (1|brood_ID)              1.4*10^-5 [kept]
 
 # Stats: Compare raw means, accounting for covariates
-dry_mass_fit <- lme(dry_mass_1 ~ condition, random=~1|brood_no,data=fry_fat_content)
+dry_mass_fit <- lme4::lmer(dry_mass_1 ~ condition+(1|brood_no), data = fry_fat_content, REML=T)
 emmeans(dry_mass_fit, list(pairwise ~ condition), adjust = "tukey")
+# 1                            estimate       SE    df t.ratio p.value
+# Xbir_control - Xbir_starved  0.001043 0.000190 51.16   5.500  <.0001
+# Xbir_control - Xmal_control -0.000256 0.000394  6.27  -0.650  0.9121
+# Xbir_control - Xmal_starved  0.000552 0.000392  6.17   1.409  0.5370
+# Xbir_starved - Xmal_control -0.001300 0.000391  6.03  -3.328  0.0581
+# Xbir_starved - Xmal_starved -0.000492 0.000388  5.93  -1.267  0.6131
+# Xmal_control - Xmal_starved  0.000808 0.000160 51.35   5.047  <.0001
+
+## old:
 # ANOVA - posthoc Tukey
-# no difference between Xmal v Xbir
+# no difference between Xmal v Xbir in either condition
 # no difference between Xmal control v starved
 # sig difference (decrease) between Xbir control v starved
 # $`pairwise differences of condition`
@@ -219,10 +274,22 @@ emmeans(dry_mass_fit, list(pairwise ~ condition), adjust = "tukey")
 #Xmal_control - Xmal_starved  0.000808 0.000160 50   5.054  <.0001
 
 ## B. Standard length (cm)
-## chose to plot partial residuals of standard lengths, instead of lengths normalized
-## by average initial lengths, because it better shows that Xmal and Xbir fry achieve
-## roughly the same size after 3 days, despite starting much smaller, and shows that
-## xbir gain less in no food conditions
+fry_fat_content$standard_length_mm <- fry_fat_content$standard_length_cm*10 # convert post-trial std length cm to mm
+std_length_fit <- lme4::lmer(standard_length_mm ~ condition+(1|brood_no), data = fry_fat_content, REML=T)
+
+# Stats: Compare raw means, accounting for covariates
+# ANOVA - posthoc Tukey
+emmeans(std_length_fit, list(pairwise ~ condition), adjust = "tukey")
+# $`pairwise differences of condition`
+# 1                           estimate     SE df t.ratio p.value
+# Xbir_control - Xbir_starved    1.130 0.325 51.78   3.471  0.0057
+# Xbir_control - Xmal_control   -0.393 0.400  9.98  -0.980  0.7634
+# Xbir_control - Xmal_starved    0.280 0.396  9.86   0.707  0.8921
+# Xbir_starved - Xmal_control   -1.522 0.390  8.52  -3.901  0.0171
+# Xbir_starved - Xmal_starved   -0.850 0.385  8.39  -2.206  0.1978
+# Xmal_control - Xmal_starved    0.672 0.274 52.19   2.451  0.0800
+
+## additional information
 # add average pre-trial standard length per brood to dataframe
 fry_initial_std_lengths <- read.csv("Data/X-23_fry_starvation_initial_standard_lengths.csv")
 fry_initial_std_lengths_avg <- as.data.frame(
@@ -230,8 +297,6 @@ fry_initial_std_lengths_avg <- as.data.frame(
     group_by(brood_no) %>%
     reframe(avg_initial_std_length_mm = mean(standard_length_cm,na.rm=T)*10))
 fry_fat_content <- merge(fry_fat_content,fry_initial_std_lengths_avg,by="brood_no")
-# convert post-trial std length cm to mm
-fry_fat_content$standard_length_mm <- fry_fat_content$standard_length_cm*10
 
 # normalize standard lengths by avg length pre-trial
 fry_fat_content$std_length_normalized <- fry_fat_content$standard_length_mm / fry_fat_content$avg_initial_std_length_mm
@@ -242,41 +307,27 @@ std_length_growth_rates_avg <- as.data.frame(
     group_by(condition) %>%
     reframe(std_length_growth_rate = mean(std_length_growth_rate,na.rm=T)))
 std_length_growth_rates_avg
-
-# choose model
-step(lm(standard_length_mm ~ condition+species+avg_initial_std_length_mm+brood_no,fry_fat_content)) #standard_length_mm ~ condition + brood_no
-
-# Stats: Compare raw means, accounting for covariates
-# ANOVA - posthoc Tukey
-std_length_fit <- lme(standard_length_mm ~ condition, random=~1|brood_no,data=fry_fat_content)
-emmeans(std_length_fit, list(pairwise ~ condition), adjust = "tukey")
-#$`pairwise differences of condition`
-#1                           estimate     SE df t.ratio p.value
-#Xbir_control - Xbir_starved   0.1130 0.0325 50   3.481  0.0056
-#Xbir_control - Xmal_control  -0.0393 0.0397 50  -0.989  0.7562
-#Xbir_control - Xmal_starved   0.0280 0.0393 50   0.712  0.8920
-#Xbir_starved - Xmal_control  -0.1522 0.0384 50  -3.963  0.0013
-#Xbir_starved - Xmal_starved  -0.0850 0.0380 50  -2.237  0.1274
-#Xmal_control - Xmal_starved   0.0672 0.0273 50   2.462  0.0786
+#    condition std_length_growth_rate
+# Xbir_control             0.31943182
+# Xbir_starved            -0.10678571
+# Xmal_control             0.08593491
+# Xmal_starved            -0.19475373
 
 ## C. Fat content (total %)
-# choose model
-step(lm(FC_percent ~ condition+species+treatment+brood_no,data=fry_fat_content)) # FC_percent ~ condition + brood_no
+fry_fat_fit <- lme4::lmer(FC_percent ~ condition+(1|brood_no), data = fry_fat_content, REML=T)
 
 # stats: ANOVA and Tukey
-fry_fat_fit <- lme(FC_percent ~ condition, random=~1|brood_no,data=fry_fat_content)
-summary(fry_fat_fit)
 emmeans(fry_fat_fit, list(pairwise ~ condition), adjust = "tukey")
 # Stats: Compare raw means, accounting for covariates
 # ANOVA - posthoc Tukey
 # $`pairwise differences of condition`
-#                           estimate   SE df t.ratio p.value
-#Xbir_control - Xbir_starved    6.492 1.39 50   4.658  0.0001
-#Xbir_control - Xmal_control   -0.898 4.51 50  -0.199  0.9972
-#Xbir_control - Xmal_starved    8.006 4.50 50   1.779  0.2953
-#Xbir_starved - Xmal_control   -7.390 4.49 50  -1.644  0.3637
-#Xbir_starved - Xmal_starved    1.514 4.48 50   0.338  0.9866
-#Xmal_control - Xmal_starved    8.903 1.18 50   7.573  <.0001
+# 1                           estimate   SE    df t.ratio p.value
+# Xbir_control - Xbir_starved    6.492 1.39 51.06   4.657  0.0001
+# Xbir_control - Xmal_control   -0.898 4.51  5.48  -0.199  0.9969
+# Xbir_control - Xmal_starved    8.006 4.50  5.44   1.779  0.3732
+# Xbir_starved - Xmal_control   -7.390 4.50  5.40  -1.644  0.4303
+# Xbir_starved - Xmal_starved    1.514 4.48  5.35   0.338  0.9853
+# Xmal_control - Xmal_starved    8.903 1.18 51.14   7.568  <.0001
 
 # write out complete table (Supp Table 20)
 write.csv(fry_fat_content,"Data/TableS21_food-deprivation-expt_data.csv")
@@ -289,7 +340,7 @@ pregnancy_data <- read.csv("Data/pregnancy_rate_CHIC_COAC_collections.csv",heade
 ## Supp Table S23 - Mortality data on X. birchmanni mother x X. malinche father F1 crosses
 
 
-## Supp Table S24 - Partial residuals of standard length used to calculate broad-sense heritability
+## REMOVED - Partial residuals of standard length used to calculate broad-sense heritability
 # prepare partial residuals to account for covariates in trait values
 nb_fry_data <- read.csv("Data/newborn_fry_size_data.csv")
 nb_fry_data$born_year <- as.character(nb_fry_data$born_year)
@@ -303,6 +354,12 @@ subset_nb_fry_data$season[subset_nb_fry_data$born_month=="II"] <- "cold" # XI-II
 subset_nb_fry_data$season[subset_nb_fry_data$born_month=="III"] <- "cold" # XI-III
 
 # choose model
+## XXX
+## # model selection by LRT with mother ID as random effect, mother length, season/collection date, etc
+## fit0 <- lme4::glmer(sl ~ species + (1 | motherID), family = binomial, data = data)
+## fit1 <- lme4::glmer(sl ~ species, family = binomial, data = data)
+## lrtest(fit0,fit1)
+
 model_all<-lm(sl_mm~species+season,data=subset_nb_fry_data)
 selectedMod <- step(model_all) # sl_mm~species+season
 summary(model_all)
@@ -378,7 +435,7 @@ dim(subset(combined_subset_summed,species=="Xcortezi")) # 19 (only pregnant)
 
 
 
-## Supp Materials S2: Heritability of standard length calculation
+## REMOVED: Heritability of standard length calculation
 # prepare partial residuals to account for covariates in trait values
 nb_fry_data <- read.csv("Data/newborn_fry_size_data.csv")
 nb_fry_data$born_year <- as.character(nb_fry_data$born_year)
@@ -439,8 +496,8 @@ h2
 ## h^2 = 0.2541165
 
 
-## Supp Materials S3: Matrotrophy Index calculations and bootstraps
-## calculate matrotrophy index
+## Supp Materials S2: Matrotrophy Index calculations and bootstraps
+## calculated MI based on average embryo size by stage within brood
 combined_embryo_data <- read.table("Data/all-pops_combined_embryo_datasets.csv",header=T,sep=',')
 combined_subset <- subset(combined_embryo_data,(popcoll=="CHIC_V-2022" | popcoll=="CHIC_VIII_20" | popcoll=="COAC_VIII_20" | popcoll=="COAC_II-2023" | popcoll=="COAC_IX-2022" | popcoll=="COAC_X-2023" | popcoll=="PTHC_II-2023") & stage!="0" & stage!="2" & stage!="5" & stage!="?" & stage!="-")
 
@@ -483,16 +540,30 @@ coac_pr_table <- subset(coac_avg_pr,stage=="10" | stage=="50")
 coac_pr_table$species <- "Xbirchmanni"
 write.csv(coac_pr_table,"Data/MI-calculation_COAC_partial-residuals-avg_stage-10-50.csv")
 
-# Xbir MI with partial residuals, with brood ID as mixed effect instead of averaging within brood
-# calculate partial residuals
-coac_fit <- lmer(embryo_dry_weight_g~stage+season+mother_std_length+(1|brood_ID),data=coac_subset, REML=T)
-coac_pr <- visreg(coac_fit, "stage", plot=F)$res
-# calculate MI
-coac_stage10 <- subset(coac_pr,stage=="10")
-coac_stage10_mean <- mean(coac_stage10$visregRes)
-coac_stage50 <- subset(coac_pr, stage=="50")
-coac_stage50_mean <- mean(coac_stage50$visregRes)
-coac_stage50_mean/coac_stage10_mean # 0.7240099
+## Bootstrap MI for COAC Xbir population, by post-2020 collections
+# average embryos at the same stage in the same brood, and filter out unused stages (0-5)
+combined_subset <- subset(combined_embryo_data,(popcoll=="CHIC_V-2022" | popcoll=="CHIC_VIII_20" | popcoll=="COAC_VIII_20" | popcoll=="COAC_II-2023" | popcoll=="COAC_IX-2022" | popcoll=="COAC_X-2023") & stage!="0" & stage!="2" & stage!="5" & stage!="?" & stage!="-")
+combined_subset_avg <- as.data.frame(
+  combined_subset %>%
+    group_by(brood_ID,species,population,stage) %>%
+    reframe(embryo_dry_weight_g_mean = mean(embryo_dry_weight_g,na.rm=T), popcoll=first(popcoll)))
+combined_subset_avg
+
+coac_subset_avg <- subset(combined_subset_avg,population=="COAC")
+table(coac_subset_avg$stage)
+coac_avg_stage10 <- subset(coac_subset_avg,stage==10)
+coac_avg_stage50 <- subset(coac_subset_avg,stage==50)
+coac_mi_bootstrap <- c()
+for(i in 1:1000) {
+  resample_stage10 <- sample(coac_avg_stage10$embryo_dry_weight_g_mean, replace = TRUE)
+  mean_stage10 <- mean(resample_stage10)
+  resample_stage50 <- sample(coac_avg_stage50$embryo_dry_weight_g_mean, replace = TRUE)
+  mean_stage50 <- mean(resample_stage50)
+  coac_mi <- mean_stage50/mean_stage10
+  coac_mi_bootstrap <- c(coac_mi_bootstrap,coac_mi)
+}
+mean(coac_mi_bootstrap) # 0.658127
+t.test(coac_mi_bootstrap,conf.level = 0.95) # 0.6565315 0.6597226
 
 
 ## Xmalinche MI
@@ -536,20 +607,52 @@ chic_pr_table <- subset(chic_stage_partial_residuals,stage=="10" | stage=="50")
 chic_pr_table$species <- "Xmalinche"
 write.csv(chic_pr_table,"Data/MI-calculation_CHIC_partial-residuals-avg_stage-10-50.csv")
 
-# Xmal MI with partial residuals, with brood ID as mixed effect instead of averaging within brood
-# calculate partial residuals
-chic_fit <- lmer(embryo_dry_weight_g~stage+mother_std_length+(1|brood_ID),data=chic_subset, REML=T)
-chic_pr <- visreg(chic_fit, "stage", plot=F)$res
-# calculate MI
-chic_stage10 <- subset(chic_pr,stage=="10")
-chic_stage10_mean <- mean(chic_stage10$visregRes)
-chic_stage50 <- subset(chic_pr,stage=="50")
-chic_stage50_mean <- mean(chic_stage50$visregRes)
-chic_stage50_mean/chic_stage10_mean # 0.9439981
+## Bootstrap MI for CHIC Xmal population
+# average embryos at the same stage in the same brood, and filter out unused stages (0-5)
+combined_subset <- subset(combined_embryo_data,(popcoll=="CHIC_V-2022" | popcoll=="CHIC_VIII_20" | popcoll=="COAC_VIII_20" | popcoll=="COAC_II-2023" | popcoll=="COAC_IX-2022" | popcoll=="COAC_X-2023") & stage!="0" & stage!="2" & stage!="5" & stage!="?" & stage!="-")
+combined_subset_avg <- as.data.frame(
+  combined_subset %>%
+    group_by(brood_ID,species,population,stage) %>%
+    reframe(embryo_dry_weight_g_mean = mean(embryo_dry_weight_g,na.rm=T), popcoll=first(popcoll)))
+combined_subset_avg
+
+chic_subset_avg <- subset(combined_subset_avg,population=="CHIC")
+table(chic_subset_avg$stage)
+chic_avg_stage10 <- subset(chic_subset_avg,stage==10)
+chic_avg_stage50 <- subset(chic_subset_avg,stage==50)
+chic_mi_bootstrap <- c()
+for(i in 1:1000) {
+  resample_stage10 <- sample(chic_avg_stage10$embryo_dry_weight_g_mean, replace = TRUE)
+  mean_stage10 <- mean(resample_stage10)
+  resample_stage50 <- sample(chic_avg_stage50$embryo_dry_weight_g_mean, replace = TRUE)
+  mean_stage50 <- mean(resample_stage50)
+  chic_mi <- mean_stage50/mean_stage10
+  chic_mi_bootstrap <- c(chic_mi_bootstrap,chic_mi)
+}
+mean(chic_mi_bootstrap) # 0.9599878
+t.test(chic_mi_bootstrap,conf.level = 0.95) #  0.9547505 0.9652250
 
 
 ## Xcortezi MI
 pthc_subset <- subset(combined_subset, population=="PTHC")
+
+# Xcor MI with partial residuals
+pthc_fit <- lm(embryo_dry_weight_g_mean~stage+mother_std_length,data=pthc_stage_size_avged)
+pthc_avg_pr <- visreg(pthc_fit, "stage",plot=F)$res
+# calculate MI
+pthc_stage10 <- subset(pthc_avg_pr,stage=="10") # 3 broods
+pthc_stage10_mean <- mean(pthc_stage10$visregRes)
+pthc_stage50 <- subset(pthc_avg_pr, stage=="50") # 1 brood
+pthc_stage50_mean <- mean(pthc_stage50$visregRes)
+pthc_stage50_mean/pthc_stage10_mean # 0.6995778
+pthc_stage50_45 <- subset(pthc_avg_pr,stage=="45" | stage=="50") # 5 broods
+pthc_stage50_45_mean <- mean(pthc_stage50_45$visregRes)
+pthc_stage50_45_mean/pthc_stage10_mean # 0.9404641
+# output table
+pthc_pr_table <- subset(pthc_stage_partial_residuals,stage=="10" | stage=="45" | stage=="50")
+write.csv(pthc_pr_table,"Data/MI-calculation_PTHC_partial-residuals-avg_stage-10-45-50.csv")
+
+## calculated MI based on average embryo size by stage within brood
 
 # average embryo size by stage within brood
 pthc_stage_size_avged <- as.data.frame(
@@ -571,68 +674,68 @@ pthc_stage50_45_mean/pthc_stage10_mean # 0.9484674
 pthc_raw_table <- subset(pthc_stage_size_avged,stage=="10" | stage=="45" | stage=="50")
 write.csv(pthc_raw_table,"Data/MI-calculation_PTHC_raw-avg-values_stage-10-45-50.csv")
 
-# Xcor MI with partial residuals
-pthc_fit <- lm(embryo_dry_weight_g_mean~stage+mother_std_length,data=pthc_stage_size_avged)
-pthc_avg_pr <- visreg(pthc_fit, "stage",plot=F)$res
+
+## Calculate MI with partial residuals
+
+## Calculate MI for Xmal with partial residuals instead of averages, with brood ID as random effect
+# calculate partial residuals, using the model selected for Fig 2A
+chic_fit <- lmer(embryo_dry_weight_g~stage+mother_std_length+(1|brood_ID),data=chic_subset, REML=T)
+chic_pr <- visreg(chic_fit, "stage", plot=F)$res
 # calculate MI
-pthc_stage10 <- subset(pthc_avg_pr,stage=="10") # 3 broods
-pthc_stage10_mean <- mean(pthc_stage10$visregRes)
-pthc_stage50 <- subset(pthc_avg_pr, stage=="50") # 1 brood
-pthc_stage50_mean <- mean(pthc_stage50$visregRes)
-pthc_stage50_mean/pthc_stage10_mean # 0.6995778
-pthc_stage50_45 <- subset(pthc_avg_pr,stage=="45" | stage=="50") # 5 broods
-pthc_stage50_45_mean <- mean(pthc_stage50_45$visregRes)
-pthc_stage50_45_mean/pthc_stage10_mean # 0.9404641
-# output table
-pthc_pr_table <- subset(pthc_stage_partial_residuals,stage=="10" | stage=="45" | stage=="50")
-write.csv(pthc_pr_table,"Data/MI-calculation_PTHC_partial-residuals-avg_stage-10-45-50.csv")
-
-
-## Boostrap MI using raw embryo sizes
-# average embryos at the same stage in the same brood, and filter out unused stages (0-5)
-combined_subset <- subset(combined_embryo_data,(popcoll=="CHIC_V-2022" | popcoll=="CHIC_VIII_20" | popcoll=="COAC_VIII_20" | popcoll=="COAC_II-2023" | popcoll=="COAC_IX-2022" | popcoll=="COAC_X-2023") & stage!="0" & stage!="2" & stage!="5" & stage!="?" & stage!="-")
-combined_subset_avg <- as.data.frame(
-  combined_subset %>%
-    group_by(brood_ID,species,population,stage) %>%
-    reframe(embryo_dry_weight_g_mean = mean(embryo_dry_weight_g,na.rm=T), popcoll=first(popcoll)))
-combined_subset_avg
+chic_stage10 <- subset(chic_pr,stage=="10")
+chic_stage10_mean <- mean(chic_stage10$visregRes)
+chic_stage50 <- subset(chic_pr,stage=="50")
+chic_stage50_mean <- mean(chic_stage50$visregRes)
+chic_stage50_mean/chic_stage10_mean # 0.9439981
 
 # Bootstrap MI for CHIC Xmal population
-chic_subset_avg <- subset(combined_subset_avg,population=="CHIC")
-table(chic_subset_avg$stage)
-chic_avg_stage10 <- subset(chic_subset_avg,stage==10)
-chic_avg_stage50 <- subset(chic_subset_avg,stage==50)
+
+table(chic_pr$stage)
+chic_stage10 <- subset(chic_pr,stage==10)
+chic_stage50 <- subset(chic_pr,stage==50)
 chic_mi_bootstrap <- c()
 for(i in 1:1000) {
-  resample_stage10 <- sample(chic_avg_stage10$embryo_dry_weight_g_mean, replace = TRUE)
+  resample_stage10 <- sample(chic_stage10$visregRes, replace = TRUE)
   mean_stage10 <- mean(resample_stage10)
-  resample_stage50 <- sample(chic_avg_stage50$embryo_dry_weight_g_mean, replace = TRUE)
+  resample_stage50 <- sample(chic_stage50$visregRes, replace = TRUE)
   mean_stage50 <- mean(resample_stage50)
   chic_mi <- mean_stage50/mean_stage10
   chic_mi_bootstrap <- c(chic_mi_bootstrap,chic_mi)
 }
-mean(chic_mi_bootstrap) # 0.9599878
-t.test(chic_mi_bootstrap,conf.level = 0.95) #  0.9547505 0.9652250
+mean(chic_mi_bootstrap) # 0.9451785
+t.test(chic_mi_bootstrap,conf.level = 0.95) #  0.9437161 0.9466408
+
+
+## Calculate MI for Xbir with partial residuals instead of averages, with brood ID as random effect
+# calculate partial residuals, using the model selected for Fig 2A
+coac_fit <- lme4::lmer(embryo_dry_weight_g~stage+season+mother_std_length+(1|brood_ID),data=coac_subset, REML=T)
+coac_pr <- visreg(coac_fit, "stage", plot=F)$res
+# calculate MI
+coac_stage10 <- subset(coac_pr,stage=="10")
+coac_stage10_mean <- mean(coac_stage10$visregRes) # 0.003508688
+coac_stage50 <- subset(coac_pr, stage=="50")
+coac_stage50_mean <- mean(coac_stage50$visregRes) # 0.002540325
+coac_stage50_mean/coac_stage10_mean # 0.7240099
 
 # Bootstrap MI for COAC Xbir population, by post-2020 collections
-coac_subset_avg <- subset(combined_subset_avg,population=="COAC")
-table(coac_subset_avg$stage)
-coac_avg_stage10 <- subset(coac_subset_avg,stage==10)
-coac_avg_stage50 <- subset(coac_subset_avg,stage==50)
+table(coac_pr$stage)
+coac_stage10 <- subset(coac_pr,stage==10)
+coac_stage50 <- subset(coac_pr,stage==50)
 coac_mi_bootstrap <- c()
 for(i in 1:1000) {
-  resample_stage10 <- sample(coac_avg_stage10$embryo_dry_weight_g_mean, replace = TRUE)
+  resample_stage10 <- sample(coac_stage10$visregRes, replace = TRUE)
   mean_stage10 <- mean(resample_stage10)
-  resample_stage50 <- sample(coac_avg_stage50$embryo_dry_weight_g_mean, replace = TRUE)
+  resample_stage50 <- sample(coac_stage50$visregRes, replace = TRUE)
   mean_stage50 <- mean(resample_stage50)
   coac_mi <- mean_stage50/mean_stage10
   coac_mi_bootstrap <- c(coac_mi_bootstrap,coac_mi)
 }
-mean(coac_mi_bootstrap) # 0.658127
-t.test(coac_mi_bootstrap,conf.level = 0.95) # 0.6565315 0.6597226
+mean(coac_mi_bootstrap) # 0.7251131
+t.test(coac_mi_bootstrap,conf.level = 0.95) # 0.7229252 0.7273011
 
 
-## Supp Materials S4: Relationship between ovary dry weight and mother hybrid index / mitotype
+
+## Supp Materials S3: Relationship between ovary dry weight and mother hybrid index / mitotype
 # with embryo and ovary dry weights in hybrids from natural hybrid population Calnali Low
 combined_embryo_data <- read.table("Data/all-pops_combined_embryo_datasets.csv",header=T,sep=',')
 CALL_embryo_data <- subset(combined_embryo_data,population=="CALL")
@@ -650,14 +753,22 @@ CALL_ovary_weight_unique <- as.data.frame(
   CALL_embryo_data_nomal %>%
     group_by(brood_ID,stage) %>%
     reframe(ovarian_tissue_dry_weight_g = first(ovarian_tissue_dry_weight_g),brood_size=first(brood_size),mother_hi=first(mother_hi),mitotype=first(mitotype)))
-# model fit: mother hybrid index
-CALL_hi_ovary_lm_fit <- lm(ovarian_tissue_dry_weight_g ~ mother_hi*stage + brood_size, CALL_ovary_weight_unique)
-selectedMod <- step(CALL_hi_ovary_lm_fit) # ovarian_tissue_dry_weight_g ~ mother_hi + stage + mother_hi:stage + brood_size
+# model fit with LRT: mother hybrid index
+CALL_hi_ovary_lm_full <- lm(ovarian_tissue_dry_weight_g ~ mother_hi*stage + brood_size, CALL_ovary_weight_unique)
+CALL_hi_ovary_lm_reduced <- lm(ovarian_tissue_dry_weight_g ~ stage + mother_hi + brood_size, CALL_ovary_weight_unique)
+anova(CALL_hi_ovary_lm_full,CALL_hi_ovary_lm_reduced)
+# brood_size                0.001242 [kept]
+# stage                     0.004342 [kept]
+# mother_hi+mother_hi:stage 0.01971 [kept]
+# mother_hi:stage           0.01221 [kept]
+# ovarian_tissue_dry_weight_g ~ mother_hi + stage + mother_hi:stage + brood_size
+
 # evaluate significance with likelihood ratio test (anova) on full and reduced model
 CALL_hi_ovary_lm_fit <- lm(ovarian_tissue_dry_weight_g ~ mother_hi + stage + mother_hi:stage + brood_size, CALL_ovary_weight_unique)
 summary(CALL_hi_ovary_lm_fit)
 CALL_hi_ovary_lm_fit_reduced <- lm(ovarian_tissue_dry_weight_g ~ stage + brood_size, CALL_ovary_weight_unique)
 anova(CALL_hi_ovary_lm_fit,CALL_hi_ovary_lm_fit_reduced)
+#   Res.Df       RSS Df   Sum of Sq      F  Pr(>F)
 # 2     75 0.0016711 -5 -0.00028619 2.8931 0.01971 *
 
 # plot mother hi and ovary dry weight
@@ -666,18 +777,26 @@ plot(visregRes ~ mother_hi,CALL_hi_ovary_lm_vr$res,xlab="mother ancestry proport
 abline(lm(CALL_hi_ovary_lm_vr$res$visregRes~CALL_hi_ovary_lm_vr$res$mother_hi), col="purple",lwd=4)
 
 ## Relationship between ovary dry weight and mother mitotype
-# model fit
-CALL_mito_ovary_lm_fit <- lm(ovarian_tissue_dry_weight_g ~ mitotype*stage + brood_size, CALL_ovary_weight_unique)
-selectedMod <- step(CALL_mito_ovary_lm_fit) # ovarian_tissue_dry_weight_g ~ stage + brood_size
+# model fit with LRT: mitotype
+CALL_hi_ovary_lm_full <- lm(ovarian_tissue_dry_weight_g ~ mitotype + stage + mitotype:stage + brood_size, CALL_ovary_weight_unique)
+CALL_hi_ovary_lm_reduced <- lm(ovarian_tissue_dry_weight_g ~ mitotype + stage + mitotype:stage, CALL_ovary_weight_unique)
+anova(CALL_hi_ovary_lm_full,CALL_hi_ovary_lm_reduced)
+# mitotype:stage        0.4323 [dropped]
+# stage+mitotype:stage  0.01671 [kept]
+# brood_size            0.001541 [kept]
+# ovarian_tissue_dry_weight_g ~ mitotype + stage + brood_size
+
+# evaluate significance of mitotype with likelihood ratio test
 summary(CALL_mito_ovary_lm_fit) # mitotypemalinche          1.210e-03  2.620e-03   0.462  0.64561
 CALL_mito_ovary_lm_fit <- lm(ovarian_tissue_dry_weight_g ~ mitotype + stage + brood_size, CALL_ovary_weight_unique)
 CALL_mito_ovary_lm_fit_reduced <- lm(ovarian_tissue_dry_weight_g ~ stage + brood_size, CALL_ovary_weight_unique)
 anova(CALL_mito_ovary_lm_fit,CALL_mito_ovary_lm_fit_reduced)
+#   Res.Df       RSS Df   Sum of Sq      F Pr(>F)
 # 2     75 0.0016711 -1 -6.2071e-07 0.0275 0.8687
 
 ## correlation between mother hybrid index and mitotype
 temp <- CALL_embryo_data
 temp$mito_num <- ifelse(temp$mitotype=="birchmanni",0,1)
 temp <- subset(temp,!is.na(mother_hi) & !is.na(mito_num))
-cor(temp$mother_hi,temp$mito_num,method="spearman") # spearman rho=0.69
+cor(temp$mother_hi,temp$mito_num,method="spearman") # spearman rho=0.61
 
