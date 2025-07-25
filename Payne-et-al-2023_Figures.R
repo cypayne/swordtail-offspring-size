@@ -1188,7 +1188,7 @@ Xbir_preg_rate_plot <-
     panel.background = element_rect(fill = "transparent"),
     panel.border = element_rect(colour = text_col, fill=NA)
   ) +
-  scale_x_discrete(labels = c("February", "May", "August", "November")) +
+  scale_x_discrete(labels = c("February", "May", "August", "September")) +
   xlab("X. birchmanni") +
   ylab("percentage of females collected")
 Xbir_preg_rate_plot
@@ -1215,7 +1215,7 @@ Xmal_preg_rate_plot <-
     panel.background = element_rect(fill = "transparent"),
     panel.border = element_rect(colour = text_col, fill=NA)
   ) +
-  scale_x_discrete(labels = c("February", "May", "August", "November")) +
+  scale_x_discrete(labels = c("February", "May", "August", "September")) +
   xlab("X. malinche") +
   ylab("percentage of females collected")
 Xmal_preg_rate_plot
