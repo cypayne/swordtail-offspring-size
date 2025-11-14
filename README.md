@@ -1,5 +1,4 @@
-# Recent evolution of large offspring size and post-fertilization nutrient provisioning in swordtails
-## Payne et al 2025. Proc B. 
+# Recent evolution of large offspring size and post-fertilization nutrient provisioning in swordtails - Payne et al 2025. Proc B. 
 
 This repository contains all code and accompanying input data files that generated the results 
 presented in this study.
