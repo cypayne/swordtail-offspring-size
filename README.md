@@ -2,7 +2,7 @@
 ### Payne et al 2025. Proc B.
 
 This repository contains all code and accompanying input data files that generated the results
-presented in this study. Please see our paper for detailed Methods.
+presented in this study.
 
 ## Abstract
 
@@ -43,13 +43,13 @@ Organisms have evolved diverse reproductive strategies that impact the probabili
 - `all-pops_combined_embryo_datasets.csv` - Combined embryo dry weight measurements across all populations and developmental stages
 - `CHIC_COAC_PTHC_fully-yolked-stage0_dry-weights_mother-length.csv` - Dry weights of fully-yolked (stage 0) embryos with maternal length data
 - `IV-2023_roof-tank_CHIC-COAC-F1_embryo-weights.csv` - Embryo dry weights from F1 hybrid crosses (X. malinche × X. birchmanni)
-- `III-2023_TETI2_TETIxCHIC_CHICxCHIC_embryo-dry-weights.csv` - Embryo dry weights from wild-caught and lab populations
+- `III-2023_TETI2_TETIxCHIC_CHICxCHIC_embryo-dry-weights.csv` - Embryo dry weights of intraspecific X. malinche crosses (TETIxTETI, TETIxCHIC, CHICxCHIC)
 - `CALL_mother_hybrid-index_mitotype.csv` - Genetic hybrid index and mitochondrial type data for mothers from the natural hybrid zone (Calnali)
 - `newborn_fry_size_data.csv` - Standard length and head width measurements for newborn fry
-- `TableS21_food-deprivation-expt_data.csv` - Starvation experiment data measuring fry survival and growth under food deprivation
-- `X-23_fry_starvation_fat_content.csv` - Fat content measurements from fry starvation experiments
-- `X-23_fry_starvation_initial_standard_lengths.csv` - Initial size measurements for fry used in starvation experiments
-- `CTmin_Xmal_Xbirch_newborn_trial_data.csv` - Critical thermal minimum (CTmin) tolerance data for newborn X. malinche and X. birchmanni
+- `X-23_fry_starvation_fat_content.csv` - Fat content measurements from fry food deprivation experiments
+- `X-23_fry_starvation_initial_standard_lengths.csv` - Initial size measurements for fry included in food deprivation experiments
+- `TableS21_food-deprivation-expt_data.csv` - Formatted and combined data from food deprivation experiment
+- `CTmin_Xmal_Xbirch_newborn_trial_data.csv` - Critical thermal minimum (CTmin) data for newborn X. malinche and X. birchmanni fry
 - `pregnancy_rate_embryo_collections.csv` - Pregnancy rates across different collection sites, seasons, and species
 - `II-2023_IX-2023_nonpreg-females_lipid-extraction.csv` - Lipid content measurements from non-pregnant females
 
@@ -104,17 +104,6 @@ Organisms have evolved diverse reproductive strategies that impact the probabili
 - `dplyr` - Data manipulation
 - `tidyr` - Data tidying
 
-**For viewing and manipulating CSV/TSV data files:**
-- **Microsoft Excel** (commercial) or **LibreOffice Calc** (free) - [https://www.libreoffice.org/](https://www.libreoffice.org/)
-- **R** or **Python pandas** library - For programmatic access
-- Any text editor (for viewing TSV files)
-
-**For RDS files (R binary data):**
-- **R software** - Required to load .rds files using `readRDS()` function
-
-**For RData files (R workspace):**
-- **R software** - Required to load .RData files using `load()` function
-
 ---
 
 ## Data Files and Variable Definitions
@@ -123,7 +112,7 @@ Organisms have evolved diverse reproductive strategies that impact the probabili
 Morphological measurements of newborn fry (free-swimming offspring at birth) from multiple Xiphophorus species, populations, and crosses.
 
 **Variables:**
-- `born_on_date` - Date when fry were born (format: D-MONTH-YY)
+- `born_on_date` - Date when fry were born (format: DAY-MONTH-YEAR)
 - `born_month` - Month of birth (Roman numerals: I-XII)
 - `born_year` - Year of birth (two-digit format)
 - `collection` - Collection identifier combining month and year
@@ -153,7 +142,7 @@ Combined dataset of embryo dry weight measurements across all populations, speci
 - `collection` - Collection identifier (month-year format)
 - `female_ID` - Female individual identifier within a collection
 - `embryo_ID` - Embryo individual identifier within a brood
-- `stage` - Developmental stage (0 = fully-yolked/no development; 30 = mid-development with eye pigmentation; 35 = late development with pectoral fin pigmentation; 40 = near-term with full pigmentation)
+- `stage` - Developmental stage as defined in Reznick (1981)
 - `brood_size` - Total number of embryos in the brood
 - `embryo_dry_weight_g` - Dry weight of individual embryo in grams (g) - measured after drying to constant mass
 - `ovarian_tissue_dry_weight_g` - Dry weight of attached ovarian tissue in grams (g) - NA if not included
@@ -166,7 +155,7 @@ Combined dataset of embryo dry weight measurements across all populations, speci
 ---
 
 ### 3. CHIC_COAC_PTHC_fully-yolked-stage0_dry-weights_mother-length.csv
-Dry weights of fully-yolked embryos (developmental stage 0, prior to organogenesis) with maternal morphological data.
+Dry weights of fully-yolked eggs (developmental stage 0, unfertilized, even distribution of yolk) with maternal morphological data.
 
 **Variables:**
 - `brood_ID` - Unique identifier for each brood
@@ -178,7 +167,7 @@ Dry weights of fully-yolked embryos (developmental stage 0, prior to organogenes
 - `brood_size` - Total number of embryos in the brood
 - `sample_storage` - Storage conditions (e.g., "2ml etoh")
 - `embryo_ID` - Embryo individual identifier within a brood
-- `stage` - Developmental stage (0 = fully-yolked, no organogenesis)
+- `stage` - Developmental stage (all 0 = fully-yolked, unfertilized egg, as defined in Reznick (1981))
 - `embryo_dry_weight_g` - Dry weight of individual embryo in grams (g)
 - `ovarian_tissue_dry_weight_g` - Dry weight of attached ovarian tissue in grams (g)
 - `Comments` - Descriptive notes about lipid distribution and yolk appearance
@@ -187,7 +176,7 @@ Dry weights of fully-yolked embryos (developmental stage 0, prior to organogenes
 ---
 
 ### 4. IV-2023_roof-tank_CHIC-COAC-F1_embryo-weights.csv
-Embryo dry weight measurements from experimental F1 hybrid crosses between X. malinche (CHIC population) and X. birchmanni (COAC population).
+Embryo dry weight measurements from lab-reared F1 hybrid crosses between X. malinche (CHIC population) and X. birchmanni (COAC population).
 
 **Variables:**
 - `brood_ID` - Unique identifier for each brood
@@ -200,7 +189,7 @@ Embryo dry weight measurements from experimental F1 hybrid crosses between X. ma
 - `sample_storage` - Storage conditions
 - `ovary_tissue_included` - Whether ovarian tissue was included in measurements (yes/no)
 - `embryo_ID` - Embryo individual identifier within a brood
-- `stage` - Developmental stage (35 = late development)
+- `stage` - Developmental stage as defined in Reznick (1981)
 - `embryo_dry_weight_g` - Dry weight of individual embryo in grams (g)
 - `ovarian_tissue_dry_weight_g` - Dry weight of attached ovarian tissue in grams (g) - NA if not included
 - `comments` - Descriptive notes about developmental stage
@@ -211,12 +200,12 @@ Embryo dry weight measurements from experimental F1 hybrid crosses between X. ma
 ---
 
 ### 5. III-2023_TETI2_TETIxCHIC_CHICxCHIC_embryo-dry-weights.csv
-Embryo dry weight measurements from wild-caught populations (TETI) and lab-reared populations.
+Embryo dry weight measurements of embryos from intraspecific X. malinche crosses.
 
 **Variables:**
 - `brood_ID` - Unique identifier for each brood
 - `species` - Species name (Xmalinche)
-- `population` - Population code (TETI2 = wild population; TETIxCHIC = offspring of TETI×CHIC cross; CHICxCHIC = lab-reared)
+- `population` - Population code (TETI2 = TETIxTETI embryos from wild-caught mothers; TETIxCHIC = TETI×CHIC embryos from lab cross; CHICxCHIC = CHICxCHIC embryos from lab-reared mothers)
 - `collection` - Collection identifier
 - `female_ID` - Female individual identifier
 - `fresh_or_etoh-preserved` - Sample preservation method
@@ -306,7 +295,7 @@ Initial size measurements for fry used in starvation experiments (measured at st
 ---
 
 ### 10. CTmin_Xmal_Xbirch_newborn_trial_data.csv
-Critical thermal minimum (CTmin) tolerance data for newborn X. malinche and X. birchmanni. CTmin is the temperature at which fish lose equilibrium and swimming ability when temperature is gradually decreased.
+Critical thermal minimum (CTmin) data for newborn X. malinche and X. birchmanni. CTmin is the temperature at which fish lose equilibrium and swimming ability when temperature is gradually decreased.
 
 **Variables:**
 - `newborn_ID` - Unique identifier for each newborn fish
@@ -379,7 +368,7 @@ Sample metadata for RNA-sequencing experiments on ovary and embryo tissues.
 - `species` - Species (Xbirchmanni, Xmalinche, Xcortezi)
 - `population` - Population code (CHIC, COAC, PTHC)
 - `tissue` - Tissue type (ovary or embryo)
-- `embryo_stage` - Developmental stage (0, 5, 15, 25, 30, 40)
+- `embryo_stage` - Developmental stage as defined in Reznick (1981)
 - `stage_category` - Developmental category (early or late)
 - `stage_group` - Combined species and stage category (e.g., mal_late, bir_early)
 - `origin` - Sample origin (lab)
@@ -414,7 +403,7 @@ Differential gene expression results for ovary tissue comparing species and deve
 - Sample columns (1C2O, 1M6O, etc.) - Variance-stabilized expression values for each sample
 - `annot` - Gene name/symbol annotation
 
-Note: Positive log2 fold changes indicate higher expression in the first species/stage; negative values indicate higher expression in the second species/stage. Adjusted p-values < 0.05 are typically considered statistically significant.
+Note: Positive log2 fold changes indicate higher expression in the first listed species/stage; negative values indicate higher expression in the second listed species/stage. Adjusted p-values < 0.05 are typically considered statistically significant.
 
 ---
 
@@ -472,55 +461,42 @@ These files contain R objects and require R software to open:
 
 ### Species Abbreviations
 - **Xmal** or **X. malinche** - *Xiphophorus malinche*, high-elevation swordtail species from Mexico
-- **Xbir** or **X. birchmanni** - *Xiphophorus birchmanni*, lowland swordtail species from Mexico
-- **Xcor** or **X. cortezi** - *Xiphophorus cortezi*, southern swordtail species
-- **Xpyg** or **X. pygmaeus** - *Xiphophorus pygmaeus*, pygmy swordtail
-- **Xvar** or **X. variatus** - *Xiphophorus variatus*, variable platyfish
+- **Xbir** or **X. birchmanni** - *Xiphophorus birchmanni*, lowland swordtail from Mexico, sister species to *X. malinche*
+- **Xcor** or **X. cortezi** - *Xiphophorus cortezi*, swordtail from Mexico, sister species to the *X. malinche* and *X. birchmanni* clade
+- **Xpyg** or **X. pygmaeus** - *Xiphophorus pygmaeus*, swordtail species from Mexico
+- **Xvar** or **X. variatus** - *Xiphophorus variatus*, platyfish species from Mexico
 
 ### Population Codes
-- **CHIC** - Chicayotla, high-elevation stream in Hidalgo, Mexico (X. malinche type locality)
-- **COAC** - Coacuilco, lowland stream in Veracruz, Mexico (X. birchmanni population)
-- **PTHC** - Pethá, stream in San Luis Potosí, Mexico (X. cortezi population)
-- **CALL** - Calnali, natural hybrid zone between X. malinche and X. birchmanni
-- **TETI** - Tetitla, high-elevation X. malinche population
-- **IZAPA** - Streams near Izapa, X. birchmanni population
+- **CHIC** - Chicayotla, high-elevation *X. malinche* population in a tributary of Río Xontla in Hidalgo, Mexico 
+- **COAC** - Coacuilco, lowland *X. birchmanni* population on the Río Coacuilco in Hidalgo, Mexico 
+- **CALL** - Calnali Low, natural hybrid population between *X. malinche* and *X. birchmanni* on the Río Calnali in Hidalgo, Mexico
+- **PTHC** - Puente de Huichihuayán, *X. cortezi* population on the Río Santa Cruz in San Luis Potosí, Mexico
+- **TETI** - Tetipanchalco, *X. malinche* population
 
-### Morphological Terms
+### Morphology/Trait Terms
 - **Standard length (SL)** - Distance from the tip of the snout to the posterior end of the caudal peduncle (base of tail fin), measured in mm or cm
 - **Head width (HW)** - Maximum width of the head, measured in mm
-- **Dry weight** - Weight after drying to constant mass, typically at 60°C, measured in grams (g)
+- **Dry weight** - Weight after drying to constant mass measured in grams (g)
 - **Wet mass** - Fresh weight before drying, measured in grams (g)
+- **Fat content (FC)** - Lipid content measured as difference in dry mass before and after lipid extraction, expressed as percentage
+- **CTmin (Critical Thermal Minimum)** - Temperature at which fish lose equilibrium and cannot maintain swimming position when cooled gradually
 
-### Developmental Stages (as defined in Reznick (1981))
+### Developmental Stages
 Reznick D. 1981 ‘Grandfather Effects’: The Genetics of Interpopulation Differences in Offspring Size in the Mosquito Fish. Evolution 35, 941–953. (doi:10.2307/2407865)
 
 Embryonic development in *Xiphophorus* is divided into stages based on morphological landmarks:
-- 0	no development, even lipid distribution
-- 2	blastodisc formed
-- 5 nerula starts to form or is already present
-- 10	head and optic cups are visible (under high magnification)
-- 15	faint eye pigmentation (grey eyed)
-- 20	eye pigmentation (black) and caudal fin bud
-- 25	pectoral fin buds and body pigmentation
-- 30	caudal fin rays clearly visible and dorsal and anal fin buds
-- 35	pectoral fin rays clearly visible
-- 40	dorsal and anal fin rays visible
-- 45	oval shape, operculae conspicuous, scales visible
-- 50	pericardial cavity almost or completely closed
-
-### Reproductive Biology Terms
-- **Brood** - All offspring from a single female at one birth/collection
-- **Matrotrophy** - Post-fertilization maternal nutrient provisioning to developing embryos beyond the yolk
-- **Lecithotrophy** - Embryonic development relying solely on yolk nutrients provided before fertilization
-- **Pregnancy rate** - Proportion of adult females carrying developing embryos at time of sampling
-- **Fully-yolked** - Embryos at stage 0, prior to the start of organogenesis, containing maximum yolk reserves
-
-### Genetic Terms
-- **Hybrid index** - Proportion of genome from one parental species (0 = pure species 1, 1 = pure species 2, 0.5 = F1 hybrid)
-- **Mitotype** - Mitochondrial haplotype (maternal lineage indicator)
-- **F1** - First filial generation (offspring from cross between two pure-bred parents)
-- **F2** - Second filial generation (offspring from F1 × F1 cross)
-- **Heterozygous** - Having two different alleles at a genetic locus
+- **0** -	no development, even lipid distribution
+- **2** -	blastodisc formed
+- **5** - nerula starts to form or is already present
+- **10** - head and optic cups are visible (under high magnification)
+- **15** - faint eye pigmentation (grey eyed)
+- **20** - eye pigmentation (black) and caudal fin bud
+- **25** - pectoral fin buds and body pigmentation
+- **30** - caudal fin rays clearly visible and dorsal and anal fin buds
+- **35** - pectoral fin rays clearly visible
+- **40** - dorsal and anal fin rays visible
+- **45** - oval shape, operculae conspicuous, scales visible
+- **50** - pericardial cavity almost or completely closed
 
 ### Bioinformatics and Statistical Terms
 - **DGE (Differential Gene Expression)** - Statistical comparison of gene expression levels between conditions
@@ -535,10 +511,6 @@ Embryonic development in *Xiphophorus* is divided into stages based on morpholog
 - **GO enrichment** - Statistical test to identify GO terms that are over-represented in a gene set compared to background
 - **Ensembl gene ID** - Unique identifier for genes in the Ensembl database (format: ENSXMAG########)
 
-### Experimental Terms
-- **CTmin (Critical Thermal Minimum)** - Temperature at which fish lose equilibrium and cannot maintain swimming position when cooled gradually
-- **Fat content (FC)** - Lipid content measured as difference in dry mass before and after lipid extraction, expressed as percentage
-- **Food deprivation experiment** - Controlled starvation trial comparing growth and survival of starved vs. fed (control) individuals
 
 ---
 
@@ -546,7 +518,7 @@ Embryonic development in *Xiphophorus* is divided into stages based on morpholog
 
 Questions, comments, and suggestions are always welcome. Please feel free to contact the repository owner:
 
-**Cheyenne Y. Payne**
+**Cheyenne Y. Payne**:
 Email: cypayne [at] ucsc [dot] edu
 
 For issues or bugs with code, please open an issue on the GitHub repository.
@@ -561,6 +533,3 @@ Payne et al. (2025). Recent evolution of large offspring size and post-fertiliza
 
 ---
 
-## License
-
-[MIT](https://choosealicense.com/licenses/mit/)
