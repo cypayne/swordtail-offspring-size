@@ -481,7 +481,7 @@ These files contain R objects and require R software to open:
 - **Fat content (FC)** - Lipid content measured as difference in dry mass before and after lipid extraction, expressed as percentage
 - **CTmin (Critical Thermal Minimum)** - Temperature at which fish lose equilibrium and cannot maintain swimming position when cooled gradually
 
-### Developmental Stages
+### Developmental Stages (as defined in Reznick (1981))
 Reznick D. 1981 ‘Grandfather Effects’: The Genetics of Interpopulation Differences in Offspring Size in the Mosquito Fish. Evolution 35, 941–953. (doi:10.2307/2407865)
 
 Embryonic development in *Xiphophorus* is divided into stages based on morphological landmarks:
